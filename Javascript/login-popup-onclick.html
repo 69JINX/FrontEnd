@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        .main {
+            width: 100%;
+            background-color: pink;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            filter: blur(0px);
+            transition: 1s;
+            position: fixed;
+            z-index: 2;
+            box-shadow: 1px 1px 7px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu {
+            width: 80%;
+            
+        }
+
+        ol {
+            list-style: none;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+
+        }
+
+        .log-in {
+            background-color: rgb(252, 120, 142);
+            padding: 10px 20px;
+            border-radius: 10px;
+            opacity: 0.5;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 0px 30px;
+        }
+
+
+        .log-in:hover {
+            opacity: 1;
+        }
+
+        input {
+            padding: 10px 20px;
+            border:none;
+            border-radius: 10px;
+        }
+
+        .log-in-form {
+            display: flex;
+            background-color: rgb(238, 237, 237, 0.5);
+            border-radius: 10px;
+            margin: auto;
+            width: 20%;
+            flex-wrap: wrap;
+            justify-content: right;
+            padding: 50px 30px;
+            box-sizing: content-box;
+            position: fixed;
+            top:-250px;
+            left:35%;
+            transition: 1s;
+            z-index: 3;
+            opacity: 0;
+        }
+
+        .log-in-form label {
+            padding: 10px;
+            /* border: 1px solid red; */
+            display: block;
+        }
+
+        .log-in:nth-child(2) {
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .form {
+            display: flex;
+            justify-content: center;
+        }
+        .form div *{
+         margin: 10px;
+        }
+        img{
+            width: 100%;
+            transition: 1s;
+        }
+        .image{
+            width: 100%;
+            overflow: hidden;
+            height:100vh;
+        }
+        .close-form{
+            position: absolute;
+            top:10px;
+            right:20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="menu">
+            <ol>
+                <li>Home</li>
+                <li>Courses</li>
+                <li>About us</li>
+                <li>Contact us</li>
+            </ol>
+        </div>
+        <div class="log-in">
+            Log-in
+        </div>
+    </div>
+    <div class="log-in-form">
+        <div class="close-form">
+            X
+        </div>
+        <div class="form">
+            <div>
+                <label>Username</label>
+                <label>Password</label>
+            </div>
+            <div>
+                <input type="text" placeholder="Username"><br>
+                <input type="password" placeholder="password">
+            </div>
+        </div>
+        <div class="log-in">
+            Sign-up
+        </div>
+    </div>
+    <div class="image">
+        <img src="images/1.jpg">
+    </div>
+</body>
+<script>
+    let login = document.querySelector('.log-in');
+    let main = document.querySelector('.main');
+    let image = document.querySelector('img');
+    let loginform = document.querySelector('.log-in-form');
+    let closeform=document.querySelector('.close-form');
+
+    login.addEventListener('click',()=>{
+        loginform.style.top = '200px';
+        loginform.style.opacity = '1';
+        main.style.filter = 'blur(3px)';
+        image.style.filter = 'blur(3px)';
+    });
+
+    closeform.addEventListener('click',()=>{
+        loginform.style.top = '-300px';
+        loginform.style.opacity = '0';
+        main.style.filter = 'blur(0px)';
+        image.style.filter = 'blur(0px)';
+    });
+
+
+</script>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .main {
+            height: 720px;
+            width: 1200px;
+            border: 1px solid red;
+            position: relative;
+            display: inline-block;
+        
+        }
+
+        .box {
+            height: 200px;
+            width: 140px;
+            /* background-color: green; */
+            position: absolute;
+            /* border: 1px solid red; */
+            top:0px;
+            left:0px;
+            transition: 0.6s;
+            /* transition-timing-function: ease-in; */
+            background-size: 90%;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+        .box:nth-child(1){background-image:url('cards/2C.png');}
+        .box:nth-child(2){background-image:url('cards/2D.png');}
+        .box:nth-child(3){background-image:url('cards/2H.png');}
+        .box:nth-child(4){background-image:url('cards/2S.png');}
+        .box:nth-child(5){background-image:url('cards/3C.png');}
+        .box:nth-child(6){background-image:url('cards/3D.png');}
+        .box:nth-child(7){background-image:url('cards/3H.png');}
+        .box:nth-child(8){background-image:url('cards/3S.png');}
+        .box:nth-child(9){background-image:url('cards/4C.png');}
+        .box:nth-child(10){background-image:url('cards/4D.png');}
+        .box:nth-child(11){background-image:url('cards/4H.png');}
+        .box:nth-child(12){background-image:url('cards/4S.png');}
+        .box:nth-child(13){background-image:url('cards/5C.png');}
+        .box:nth-child(14){background-image:url('cards/5D.png');}
+        .box:nth-child(15){background-image:url('cards/5S.png');}
+        .box:nth-child(16){background-image:url('cards/5H.png');}
+        .box:nth-child(17){background-image:url('cards/6C.png');}
+        .box:nth-child(18){background-image:url('cards/6D.png');}
+
+        .main:hover .box:nth-child(1){top:520px;left: 100px;}
+        .main:hover .box:nth-child(2){top:520px;left: 260px;}
+        .main:hover .box:nth-child(3){top:520px;left: 420px;}
+        .main:hover .box:nth-child(4){top:520px;left: 580px;}
+        .main:hover .box:nth-child(5){top:520px;left: 740px;}
+        .main:hover .box:nth-child(6){top:300px;left: 900px;}
+        .main:hover .box:nth-child(7){top:300px;left: 740px;}
+        .main:hover .box:nth-child(8){top:300px;left: 580px;}
+        .main:hover .box:nth-child(9){top:300px;left: 580px;}
+        .main:hover .box:nth-child(10){top:300px;left: 420px;}
+        .main:hover .box:nth-child(11){top:300px;left: 260px;}
+        .main:hover .box:nth-child(12){top:300px;left: 100px;}
+        .main:hover .box:nth-child(13){top:80px;left: 100px;}
+        .main:hover .box:nth-child(14){top:80px;left: 260px;}
+        .main:hover .box:nth-child(15){top:80px;left: 420px;}
+        .main:hover .box:nth-child(16){top:80px;left: 580px;}
+        .main:hover .box:nth-child(17){top:80px;left: 740px;}
+        .main:hover .box:nth-child(18){top:80px;left: 900px;}
+        
+        
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+       
+        
+    </div>
+</body>
+
+</html>

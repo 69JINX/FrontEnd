@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    var num = Number(prompt("Enter a number..."));
+    while(isNaN(num)){
+        num = Number(prompt("Only numbers are allowed"));
+    }
+    document.write(`Number of characters in Digit <u>${num}</u> are ${String(num).length}`);
+</script>
+</html>

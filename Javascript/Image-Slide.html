@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div img {
+            width: 100%;
+            margin: auto;
+            display: table;
+            height: 100%;
+        }
+        .main{
+            position: relative;
+            width: 50%;
+            height: 70vh;
+            margin: auto;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 20px;
+        }
+
+        .buttons {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top:45%;
+        }
+        button{
+            margin: 10px;
+            cursor: pointer;
+            opacity: 0.7;
+            background-color: white;
+            border:none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <img src="images/P1.jpg">
+        <div class="buttons">
+            <button id="but1">&lt;</button>
+            <button id="but2">&gt;</button>
+        </div>
+    </div>
+</body>
+<script>
+    let images = ['P1','P2','P3','P4','P5','P6'];
+    let buttons = document.querySelectorAll('button');
+    let image = document.querySelector('img');
+    let i = 0,j=images.length-1;
+
+    buttons[0].addEventListener('click',() =>{
+        if(i<0){
+            i=images.length-1;
+        }
+        image.src = 'images/' + images[i] + '.jpg';
+        i--;
+    });
+
+    buttons[1].addEventListener('click',() =>{
+        if(i>=images.length-1){
+            i=0;
+        }
+        i++;
+        image.src = 'images/' + images[i] + '.jpg';
+    });
+
+    
+</script>
+
+</html>

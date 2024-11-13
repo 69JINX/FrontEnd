@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+
+    var choice = Number(prompt("Enter your choice as number:\n1. Enter a number and check if its a Perfect Number or not\n2. Enter the range to print all Perfect Number till range"))
+    var sum = 0;
+ 
+        if (choice == 1) 
+        {
+            var num = Number(prompt("Enter the number to check if it is a perfect number or not"));
+            for (i = 1; i <= num / 2; i++) 
+            {
+                if (num % i == 0) 
+                {
+                    sum = sum + i;
+                    document.write(`${i} + `);
+                }
+            }
+            if (sum == num) 
+            {
+                document.write(` = <u>${num} is a Perfect Number</u>`);
+            }
+            else 
+            {
+                document.write(` != <u>${num} is not a Perfect Number</u>`);
+            }
+        }
+        else if(choice == 2) 
+        {
+            var range = Number(prompt("Enter the range to print all Perfect Number till the range"));
+            document.write(`All Perfect numbers till ${range} are :<br>` )
+            for (i = 1; i <= range; i++) 
+            {
+                for (j = 1; j <= i / 2; j++) 
+                {
+                    if (i % j == 0) 
+                    {
+                        sum = sum + j;
+                    }
+                }
+                if (sum == i) 
+                {
+                    document.write(`${i} <br> `);
+                }
+                sum = 0;
+            }
+        }
+        else 
+        {
+            document.write("Invalid Choice");
+        }
+        document.write("<h4><u>Refresh to run again....</u></h4>")
+</script>
+
+</html>

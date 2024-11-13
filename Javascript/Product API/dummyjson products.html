@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Page Title</title>
+    <style>
+        .checkboxes {
+            margin: 10px;
+
+        }
+
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        input[type="checkbox"],
+        label {
+            cursor: pointer;
+        }
+
+        .main {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="checkboxes">
+
+        </div>
+        <div class="products">
+
+        </div>
+    </div>
+</body>
+    <script>
+
+        let products = document.querySelector('.products');
+        let checkboxes = document.querySelector('.checkboxes');
+        let checkbox;
+        let url;
+
+
+        let getcategory = async () => {
+            let i = 1;
+            let response = await fetch('https://dummyjson.com/products/category-list');
+            let data = await response.json();
+            data.forEach(category => {
+                checkboxes.innerHTML += `<label for="checkbox${i}">${category}</label><input type="checkbox" id="checkbox${i}" alt="${category}"/><br>`;
+                i++;
+            });
+            checkbox = document.querySelectorAll("input[id^='checkbox']");
+            console.log(checkbox);
+
+            checkboxes.addEventListener('change', (e) => {
+                products.innerHTML = "";
+                if (e.target.type == 'checkbox' && e.target.checked) {
+                    url = `https://dummyjson.com/products/category/${e.target.alt}`;
+                    getdata(url);
+
+                }
+            });
+
+
+        }
+
+
+        let getdata = async (url) => {
+            let response = await fetch(url);
+            let data = await response.json();
+            data.products.forEach(product => {
+                products.innerHTML += `<img src=${product.thumbnail}></img><b>${product.category}</b>`;
+            });
+
+
+        }
+        getcategory();
+
+
+
+
+
+    </script>
+
+</html>

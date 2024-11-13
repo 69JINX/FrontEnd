@@ -1,0 +1,63 @@
+.Sidebar .accordion {
+    --bs-accordion-bg: transparent;
+    --bs-accordion-color: white;
+    --bs-border-radius: 0;
+    --bs-accordion-btn-focus-box-shadow: none;
+    --bs-accordion-border-width: 0;
+}
+
+
+.Sidebar .accordion-item {
+    border:none;
+    border-radius: 10px !important;
+}
+
+.Sidebar .accordion-button {
+    color: white !important;
+    background-color: transparent !important;
+    border-radius: 10px !important;
+    margin: 5px 0px;
+}
+
+.Sidebar svg {
+    color: #83868E;
+}
+
+.Menu{
+    margin:8px;
+}
+.Menu::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.Menu:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(123, 123, 123);
+    border-radius: 10px;
+}
+
+.Sidebar {
+    background-color: #212631;
+    height: 100vh;
+}
+
+.Sidebar .Menu {
+    height: 90%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.ecommerce {
+    font-size: 13px;
+}
+
+.Dashboard-btn:hover,
+.Profile-btn:hover,
+.Order:hover,.accordion-item:hover {
+    background-color: #2A303D !important;
+    cursor: pointer;
+}

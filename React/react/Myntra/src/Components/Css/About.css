@@ -1,0 +1,47 @@
+.About{
+    font-size: 14px;
+    display: inline-flex;
+    width: 70vw;
+}
+.Aboutback{
+    background-color: rgba(238, 235, 235,0.3);
+}
+.About li{
+    margin:3px 0px;
+    color:rgb(123, 123, 123);
+}
+.col ul{
+    list-style: none;
+}
+.col{
+    display: inline-block;
+}
+.col3{
+    flex-basis:100px;
+}
+.col3 li:nth-child(2)>img{
+    height: 40px;
+    margin-right:5px;
+}
+.col3 li:nth-child(4)>img{
+    height: 20px;
+    margin-right:10px;
+}
+.col4 img{
+    height: 45px;
+}
+.About span{
+    font-size: 16px;
+    width: 250px;
+    height: 45px;
+    display: inline-block;
+}
+.heading{
+    font-size: 13px;
+    color:black;
+}
+b{color:black;}
+
+
+
+

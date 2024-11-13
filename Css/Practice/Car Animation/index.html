@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-image: url('images/track.png');
+            background-repeat: repeat-x;
+            background-position: 5% -105%;
+        }
+
+        @keyframes drive {
+            0% {
+                transform: translate(-500px, 0px);
+            }
+
+            40% {
+                transform: translate(500px, 0px);
+            }
+
+            60% {
+                transform: translate(500px, 0px);
+            }
+
+            100% {
+                transform: translate(2500px, 0px);
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            40% {
+                transform: rotate(1200deg);
+            }
+
+            65% {
+                transform: rotate(1200deg);
+            }
+
+            100% {
+                transform: rotate(3000deg);
+            }
+        }
+
+        @keyframes rotate1 {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            40% {
+                transform: rotate(1200deg);
+            }
+
+            65% {
+                transform: rotate(1200deg);
+            }
+
+            /* 65%{
+        transform: rotate(2000deg);
+       } */
+            100% {
+                transform: rotate(6000deg);
+            }
+        }
+
+        @keyframes vibrate {
+            from {
+                transform: translate(1px, 0px);
+            }
+
+            to {
+                transform: translate(-1px, 0px);
+            }
+        }
+
+        .main {
+            position: fixed;
+            /* border: 0.1px solid red; */
+            bottom: 50px;
+            left: -400px;
+            animation: drive 5s ease-in-out 0.3s infinite;
+        }
+
+        .car {
+            width: 400px;
+            bottom: 0px;
+            z-index: 0;
+            animation: vibrate 0.1s linear 0s infinite alternate;
+        }
+
+        .tires {
+            position: absolute;
+            z-index: 2;
+        }
+
+        .tire-back {
+            width: 70px;
+            left: 17px;
+            top: 56px;
+            animation: rotate1 5s linear 0s infinite normal;
+
+        }
+
+        .tire-front {
+            width: 69px;
+            top: 61px;
+            left: 283px;
+            animation: rotate 5s linear 0s infinite normal;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <img class="car" src="images/car.png">
+        <img class="tires tire-back" src="images/tire-back.png">
+        <img class="tires tire-front" src="images/tire-front.png">
+    </div>
+</body>
+
+</html>

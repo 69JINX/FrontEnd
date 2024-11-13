@@ -1,0 +1,591 @@
+// Question form
+$('#enquiry-form').bootstrapValidator({
+    // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    excluded: [':disabled'],
+    fields: {
+        name: {
+            validators: {
+                notEmpty: {
+                    message: 'Name is required and cannot be empty'
+                },
+                regexp: {
+                    regexp: /^[a-z A-Z]+$/,
+                    message: ' Name should only consist of alphabets'
+                },
+            }
+        },
+        mobile_number: {
+            message: 'Please enter your mobile number',
+            validators: {
+                notEmpty: {
+                    message: 'Mobile number is required and cannot be empty'
+                },
+                stringLength: {
+                    max: 15,
+                    min: 10,
+                    message: 'Please enter valid mobile number'
+                }
+            }
+        },
+        email: {
+            validators: {
+                notEmpty: {
+                    message: 'Email address is required and cannot be empty'
+                },
+                regexp: {
+                    regexp: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
+                    message: 'Please enter a valid email address'
+                },
+            }
+        },
+        message: {
+            validators: {
+                notEmpty: {
+                    message: 'Please enter your message'
+                },
+            }
+        },
+        
+    }
+}).on("success.form.bv", function(e) {
+    e.preventDefault();
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': "{{csrf_token()}}"
+        },
+        url: BASE_URL + "/question-enquiry",
+        method: "POST",
+        data: $('#question-form').serialize(),
+
+        beforeSend: function() {
+            $('.question-submit').html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+            $('.question-submit').attr('disabled', true);
+        },
+        success: function(data) {
+            if (data.status == true) {
+                $('.question_message').html(data.message);
+                $('#question-form').bootstrapValidator('resetForm', true);
+            } else {
+                $('.question_message').html(data.message);
+            }
+        },
+        complete: function(data) {
+            $('.question-submit').html('Submit');
+            $('.question-submit').attr('disabled', false);
+        }
+    });
+});
+
+// contact form
+$('#contact-form').bootstrapValidator({
+    // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+        name: {
+            validators: {
+                notEmpty: {
+                    message: 'Name is required and cannot be empty'
+                },
+                regexp: {
+                    regexp: /^[a-z A-Z]+$/,
+                    message: 'Name should only consist of alphabets'
+                },
+            }
+        },
+        mobile_number: {
+            validators: {
+                notEmpty: {
+                    message: 'Mobile Number is required and cannot be empty'
+                },
+                stringLength: {
+                    max: 15,
+                    min: 10,
+                    message: 'Please enter valid mobile number'
+                }
+            }
+        },
+        email: {
+            validators: {
+                notEmpty: {
+                    message: 'Email address is required and cannot be empty'
+                },
+                regexp: {
+                    regexp: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
+                    message: 'Please enter a valid email address'
+                },
+            }
+        },
+        number_of_guest: {
+            validators: {
+                notEmpty: {
+                    message: 'Number of Guest is required and cannot be empty'
+                },
+            }
+        },
+        pickup_location: {
+            validators: {
+                notEmpty: {
+                    message: 'Pickup Location is required and cannot be empty'
+                },
+            }
+        },
+        drop_location: {
+            validators: {
+                notEmpty: {
+                    message: 'Drop Location is required and cannot be empty'
+                },
+            }
+        },
+        start_date: {
+            validators: {
+                notEmpty: {
+                    message: 'Start Date is required and cannot be empty'
+                },
+            }
+        },
+        end_date: {
+            validators: {
+                notEmpty: {
+                    message: 'End Date is required and cannot be empty'
+                },
+            }
+        },
+        message: {
+            validators: {
+                notEmpty: {
+                    message: 'Message is required and cannot be empty'
+                },
+            }
+        }
+    }
+})
+.on('error.validator.bv', function(e, data) {
+    // $(e.target)    --> The field element
+    // data.bv        --> The BootstrapValidator instance
+    // data.field     --> The field name
+    // data.element   --> The field element
+    // data.validator --> The current validator name
+
+    data.element
+        .data('bv.messages')
+        // Hide all the messages
+        .find('.help-block[data-bv-for="' + data.field + '"]').hide()
+        // Show only message associated with current validator
+        .filter('[data-bv-validator="' + data.validator + '"]').show();
+})
+.on("success.form.bv", function(e) {
+    e.preventDefault();
+
+    $.ajax({
+        headers: { 'X-CSRF-TOKEN': "{{csrf_token()}}" },
+        url: BASE_URL + "/contact-form-submit",
+        datatType: 'json',
+        type: 'POST',
+        data: $('#contact-form').serialize(),
+        beforeSend: function() {
+            $('#send_enquiry').html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+            $('#send_enquiry').attr('disabled', !0)
+        },
+        success: function(data) {
+            if (data.status == true) {
+                $('#send_enquiry').html('Send Message');
+                $('#send_enquiry').attr('disabled', !1);
+                $('#contact-form').bootstrapValidator('resetForm', !0);
+                $('.contactMessage').html('<div class="alert alert-success"> Thank you for contacting us. Our representative will contact you soon.</div>');
+            } else {
+                $('#send_enquiry').html('Send Message');
+                $('#send_enquiry').attr('disabled', !1);
+                $('.contactMessage').html('<div class="alert alert-danger"> Oops , Something went wrong please try again after sometime !!</div>');
+            }
+        },
+        complete: function(data) {
+            $('#send_enquiry').html('Send Message');
+            $('#send_enquiry').attr('disabled', !1)
+        }
+    });
+});
+
+// package enquiry form
+$('#package-enquiry-form').bootstrapValidator({
+    // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+        name: {
+            validators: {
+                notEmpty: {
+                    message: 'Name is required and cannot be empty'
+                },
+                regexp: {
+                    regexp: /^[a-z A-Z]+$/,
+                    message: 'Name should only consist of alphabets'
+                },
+            }
+        },
+        mobile_number: {
+            validators: {
+                notEmpty: {
+                    message: 'Mobile Number is required and cannot be empty'
+                },
+                stringLength: {
+                    max: 15,
+                    min: 10,
+                    message: 'Please enter valid mobile number'
+                }
+            }
+        },
+        email: {
+            validators: {
+                notEmpty: {
+                    message: 'Email address is required and cannot be empty'
+                },
+                regexp: {
+                    regexp: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
+                    message: 'Please enter a valid email address'
+                },
+            }
+        },
+        number_of_guest: {
+            validators: {
+                notEmpty: {
+                    message: 'Number of Guest is required and cannot be empty'
+                },
+            }
+        },
+        currrent_location: {
+            validators: {
+                notEmpty: {
+                    message: 'Current Location is required and cannot be empty'
+                },
+            }
+        },
+    }
+})
+.on('error.validator.bv', function(e, data) {
+    // $(e.target)    --> The field element
+    // data.bv        --> The BootstrapValidator instance
+    // data.field     --> The field name
+    // data.element   --> The field element
+    // data.validator --> The current validator name
+
+    data.element
+        .data('bv.messages')
+        // Hide all the messages
+        .find('.help-block[data-bv-for="' + data.field + '"]').hide()
+        // Show only message associated with current validator
+        .filter('[data-bv-validator="' + data.validator + '"]').show();
+})
+.on("success.form.bv", function(e) {
+    e.preventDefault();
+
+    $.ajax({
+        headers: { 'X-CSRF-TOKEN': "{{csrf_token()}}" },
+        url: BASE_URL + "/package-enquiry-form-submit",
+        datatType: 'json',
+        type: 'POST',
+        data: $('#package-enquiry-form').serialize(),
+        beforeSend: function() {
+            $('#send_enquiry').html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+            $('#send_enquiry').attr('disabled', !0)
+        },
+        success: function(data) {
+            if (data.status == true) {
+                $('#send_enquiry').html('SEND ENQUERY');
+                $('#send_enquiry').attr('disabled', !1);
+                $('#package-enquiry-form').bootstrapValidator('resetForm', !0);
+                $('.packageSuccessMessage').html('<div class="alert alert-success"> Thank you for contacting us. Our representative will contact you soon.</div>');
+            } else {
+                $('#send_enquiry').html('SEND ENQUERY');
+                $('#send_enquiry').attr('disabled', !1);
+                $('.packageSuccessMessage').html('<div class="alert alert-danger"> Oops , Something went wrong please try again after sometime !!</div>');
+            }
+        },
+        complete: function(data) {
+            $('#send_enquiry').html('SEND ENQUERY');
+            $('#send_enquiry').attr('disabled', !1)
+        }
+    });
+});
+
+
+// package enquiry form
+$('#package-enquiry').bootstrapValidator({
+    // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+        name: {
+            validators: {
+                notEmpty: {
+                    message: 'Name is required and cannot be empty'
+                },
+                regexp: {
+                    regexp: /^[a-z A-Z]+$/,
+                    message: 'Name should only consist of alphabets'
+                },
+            }
+        },
+        mobile_number: {
+            validators: {
+                notEmpty: {
+                    message: 'Mobile Number is required and cannot be empty'
+                },
+                stringLength: {
+                    max: 15,
+                    min: 10,
+                    message: 'Please enter valid mobile number'
+                }
+            }
+        },
+        email: {
+            validators: {
+                notEmpty: {
+                    message: 'Email address is required and cannot be empty'
+                },
+                regexp: {
+                    regexp: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
+                    message: 'Please enter a valid email address'
+                },
+            }
+        },
+        number_of_guest: {
+            validators: {
+                notEmpty: {
+                    message: 'Number of Guest is required and cannot be empty'
+                },
+            }
+        },
+        currrent_location: {
+            validators: {
+                notEmpty: {
+                    message: 'Current Location is required and cannot be empty'
+                },
+            }
+        },
+        date: {
+            validators: {
+                notEmpty: {
+                    message: 'Please select date and cannot be empty'
+                },
+            }
+        },
+    }
+})
+.on('error.validator.bv', function(e, data) {
+    // $(e.target)    --> The field element
+    // data.bv        --> The BootstrapValidator instance
+    // data.field     --> The field name
+    // data.element   --> The field element
+    // data.validator --> The current validator name
+
+    data.element
+        .data('bv.messages')
+        // Hide all the messages
+        .find('.help-block[data-bv-for="' + data.field + '"]').hide()
+        // Show only message associated with current validator
+        .filter('[data-bv-validator="' + data.validator + '"]').show();
+})
+.on("success.form.bv", function(e) {
+    e.preventDefault();
+
+    $.ajax({
+        headers: { 'X-CSRF-TOKEN': "{{csrf_token()}}" },
+        url: BASE_URL + "/package-enquiry-form-submit",
+        datatType: 'json',
+        type: 'POST',
+        data: $('#package-enquiry').serialize(),
+        beforeSend: function() {
+            $('#send_enquiryy').html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+            $('#send_enquiryy').attr('disabled', !0)
+        },
+        success: function(data) {
+            if (data.status == true) {
+                $('#send_enquiryy').html('SEND ENQUERY');
+                $('#send_enquiryy').attr('disabled', !1);
+                $('#package-enquiry').bootstrapValidator('resetForm', !0);
+                $('.packageSuccessMessagee').html('<div class="alert alert-success"> Thank you for contacting us. Our representative will contact you soon.</div>');
+            } else {
+                $('#send_enquiryy').html('SEND ENQUERY');
+                $('#send_enquiryy').attr('disabled', !1);
+                $('.packageSuccessMessagee').html('<div class="alert alert-danger"> Oops , Something went wrong please try again after sometime !!</div>');
+            }
+        },
+        complete: function(data) {
+            $('#send_enquiryy').html('SEND ENQUERY');
+            $('#send_enquiryy').attr('disabled', !1)
+        }
+    });
+});
+
+//  newsletter_form
+$('#newsletter_form').bootstrapValidator({
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+        name: {
+            validators: {
+                notEmpty: {
+                    message: 'Name is required and cannot be empty'
+                },
+                regexp: {
+                    regexp: /^[a-z A-Z]+$/,
+                    message: 'Name should only consist of alphabets'
+                },
+            }
+        },
+        mobile_number: {
+            message: 'Please enter your mobile number',
+            validators: {
+                notEmpty: {
+                    message: 'Mobile number is required and cannot be empty'
+                },
+                stringLength: {
+                    max: 15,
+                    min: 10,
+                    message: 'Please enter valid mobile number'
+                }
+            }
+        },
+        email: {
+            validators: {
+                notEmpty: {
+                    message: 'Email address is required and cannot be empty'
+                },
+                regexp: {
+                    regexp: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/,
+                    message: 'Please enter a valid email address'
+                },
+            }
+        },
+    }
+})
+.on('error.validator.bv', function(e, data) {
+    // $(e.target)    --> The field element
+    // data.bv        --> The BootstrapValidator instance
+    // data.field     --> The field name
+    // data.element   --> The field element
+    // data.validator --> The current validator name
+
+    data.element
+        .data('bv.messages')
+        // Hide all the messages
+        .find('.help-block[data-bv-for="' + data.field + '"]').hide()
+        // Show only message associated with current validator
+        .filter('[data-bv-validator="' + data.validator + '"]').show();
+})
+.on("success.form.bv", function(e) {
+    e.preventDefault();
+    $.ajax({
+        url: BASE_URL + "/newsletter",
+        method: "POST",
+        data: $('#newsletter_form').serialize(),
+
+        beforeSend: function() {
+            $('#newsletter').html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+            $('#newsletter').attr('disabled', true);
+        },
+        success: function(data) {
+            if (data.status == true) {
+                $('.newsletter-info-success').html(data.message);
+                $('#newsletter_form').bootstrapValidator('resetForm', true);
+
+                var delay = 3000;
+                setTimeout(function() { $('.newsletter-info-success').html(''); }, delay);
+            } else {
+                $('.newsletter-info-success').html(data.message);
+            }
+        },
+        complete: function(data) {
+            $('#newsletter').html('<i class="fa fa-paper-plane"></i> Subscribe');
+            $('#newsletter').attr('disabled', false);
+        }
+    });
+});
+
+$('.topEnquiry').on('click', function(e){
+    $('.packageSuccessMessagee').html('');
+    $('#enquiry_package_id').val('');
+    $('.tourpackage').html('Get The Best Packages');
+    $('#package-enquiry').bootstrapValidator('resetForm', !0);
+    $("#package-enquiry").find('.has-error').removeClass("has-error");
+    $("#package-enquiry").find('.has-success').removeClass("has-success");
+    $('#package-enquiry').find('.help-block').css("display", "none");
+});
+
+function packageEnquiry(name,id){
+    $('.packageSuccessMessagee').html('');
+    $('#enquiry_package_id').val(id);
+    $('.tourpackage').html('Get The Best '+name+' Packages');
+    $('#package-enquiry').bootstrapValidator('resetForm', !0);
+    $("#package-enquiry").find('.has-error').removeClass("has-error");
+    $("#package-enquiry").find('.has-success').removeClass("has-success");
+    $('#package-enquiry').find('.help-block').css("display", "none");
+}
+
+// for phone number validation
+$(function() {
+    $('.numeric').on('input', function(event) {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+});
+
+function filterProduct(value) {
+    $('#product-loading').modal('toggle');
+    var data = $('#filterForm').serialize();
+
+    $.ajax({
+        headers: { 'X-CSRF-TOKEN': "{{csrf_token()}}" },
+        url: BASE_URL + "/filter-form",
+        datatType: 'json',
+        type: 'POST',
+        data: data,
+        beforeSend: function() {},
+        success: function(data) {
+            if(data.status = true){
+                var delay = 100;
+                var URL = data.currentUrl + data.filterUrl;
+                setTimeout(function() { window.location = URL; }, delay);    
+            }
+        },
+        complete: function(data) {}
+    });
+}
+
+$(".input_digit").on("keyup", function (e) {
+    var number_1 = $("#number_1").val(),
+        number_2 = $("#number_2").val(),
+        number_3 = $("#number_3").val(),
+        number_4 = $("#number_4").val();
+
+    if(number_1 != '' && number_2 != '' && number_3 != '' && number_4 != ''){
+        $("#otp_error").hide();
+    }
+});
+
+function closepopup(){
+    $("#loginModal").modal("hide");
+}
+
+function show_registration(){
+    $('#otp_error').html('');
+    $('.verification_content').hide();
+    $('.login_content').show();
+}

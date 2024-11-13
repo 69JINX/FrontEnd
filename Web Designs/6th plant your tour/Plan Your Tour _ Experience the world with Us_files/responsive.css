@@ -1,0 +1,394 @@
+@media only screen and (min-width: 0px) and (max-width: 776px){
+    .carousel-caption p{
+	font-size: 15px !important;
+	line-height: 20px!important;
+}
+.trandinglayout h3 {
+    font-size: 16px!important;
+    line-height: 15px!important;
+}
+.trangimgtop .owl-carousel .owl-nav button.owl-prev {
+    display: none!important;
+    
+}
+.trangimgtop .owl-carousel .owl-nav button.owl-next {
+     display: none!important; 
+}
+
+.carousel-caption {
+    position: absolute;
+    top:15%;
+    right: 5% !important;
+    left:5%;
+    bottom: 1.25rem !important;
+}
+.carousel-caption h1{
+  font-size:22px!important;
+  line-height: 26px!important;
+}
+.firstslider img{
+ width:100% !important;
+ }
+    .owl-carousel .owl-item img {
+    display: block;
+    width: 100%;
+    height: 140px !important;
+}
+    .packages{  
+    top: 280px;
+    position: absolute;
+  }
+
+  .showpackage .form-select{
+    width: 100%;
+}
+
+
+.itemlayout .owl-carousel .owl-nav button.owl-prev {
+    top: 170px;
+    left: -10px;
+}
+.itemlayout .owl-carousel .owl-nav button.owl-next {
+    top: 170px;
+    right: -10px;
+
+}
+
+.sellerheading {
+    font-size: 24px;
+}
+
+.sellerheading a {
+    padding-top: 0px;
+}
+
+
+
+.placesheading {
+  font-size: 24px;
+}
+
+.customerheading {
+    font-size: 24px;
+    text-align: left;
+}
+.frequentlyheading {
+    font-size: 24px;
+    text-align: left;
+}
+
+.chooseheading {
+    font-size: 24px;
+}
+
+.informheading h3 {
+    font-size: 24px;
+    text-align: left;
+}
+
+.modalenquery .tourpackage {
+ padding-top: 20px;
+ font-size: 15px;
+
+}
+.modalenquery .enquery img {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.questioncontant .accordion-flush .accordion-item .accordion-button {
+    font-size: 13px;
+}
+.aboutimg{
+    text-align: center;
+}
+
+.aboutpage h1 {
+    text-align: center;
+    line-height: 150px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+
+.contactpage  h1{
+    text-align: center;
+    line-height: 150px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.flight img {
+    padding: 0px 4px;
+}
+.abouttopmenu .nav-tabs .nav-link {
+    font-size: 9px;
+}
+.slidertour .owl-carousel .owl-nav button.owl-next{
+  top: 170px;
+  right: -10px;
+}
+.slidertour .owl-carousel .owl-nav button.owl-prev{
+   top: 170px;
+   left: -10px;
+}
+.slidertour .bestimg:hover img{
+    transform:scale(1);
+    border-radius: 0px;
+}
+.popularsikimslider .owl-carousel .owl-nav button.owl-prev {
+    top: 100px;
+    left: -10px;
+}
+.popularsikimslider .owl-carousel .owl-nav button.owl-next {
+    top: 100px;
+    right: -10px;
+
+}
+.tourtabing .nav-pills .nav-link {
+    background: 0 0;
+    border: 0;
+    border-radius: 0.25rem;
+    color: #000000;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 8px 8px;
+}
+
+.sikkimgalleryslider1 .owl-carousel .owl-nav button.owl-prev {
+    top: 170px;
+    left: -10px;
+}
+
+.sikkimgalleryslider1 .owl-carousel .owl-nav button.owl-next {
+    top: 170px;
+    right: -10px;
+}
+
+.findcontantfirst {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+}
+.headingdis {
+    font-size: 24px;
+}
+
+.slidertour .owl-carousel .owl-nav button.owl-prev {
+    top: 80px;
+    left: -10px;
+}
+.slidertour .owl-carousel .owl-nav button.owl-next {
+    top: 80px;
+    right: -10px;
+
+}
+
+.sikkimgalleryslider1 .owl-carousel .owl-nav button.owl-prev {
+    top: 100px;
+    left: -10px;
+}
+.sikkimgalleryslider1 .owl-carousel .owl-nav button.owl-next {
+    top: 100px;
+    right: -10px;
+
+}
+
+.landingcontant h5 {
+    font-size: 24px;
+    line-height: 30px;
+}
+
+.landingcontant p {
+    font-size: 24px;
+    line-height: 30px;
+}
+
+.partnerheading h1 {
+    font-size: 24px;
+    text-align: left;
+}
+
+.partnerheading p {
+    font-size: 18px;
+    text-align: left;
+}
+
+.menucontant{
+    padding: 20px;
+}
+
+.photography {
+    font-size: 24px;
+}
+
+.listmenu {
+    font-size: 18px;
+}
+.menucontant button {
+    padding: 6px 11px;
+}
+
+.menucontant p {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+
+.businessheading {
+    font-size: 24px;
+    line-height: 30px;
+    text-align: left;
+
+}
+
+  .headinggrowbusi {
+    font-size: 23px;
+    line-height: 30px;
+      text-align: left;
+
+}
+.bgcontant {
+  
+    padding: 75px 0 0;
+    font-size: 24px;
+    line-height: 50px;
+}
+
+.menuimages img{
+width: 100%;
+height: 100%;
+
+}
+
+.landingcontant button{
+    padding: 10px 15px;
+}
+
+
+/*tourlist*/
+
+
+.headingtourmenu h2 {
+    font-size: 24px;
+    line-height: 54px;
+    text-align: left;
+}
+
+.headingtourmenu h2 {
+    font-size: 27px;
+    line-height: 54px;
+    text-align: left;
+    }
+
+
+ .cardsimg{
+    text-align: center;
+    margin: auto;
+ }
+
+ .card-body{
+    padding-left: 10px!important;
+ }
+.carousel-caption p{
+	font-size: 16px;
+}
+
+.carousel-caption {
+    position: absolute;
+    right: 15%;
+    bottom: 1.25rem;
+}
+
+.showpackage .btn {
+  
+    line-height: 2.5 !important;
+   
+}
+
+.navbar-brand img{
+	width: 162px;
+    height: auto;
+}
+
+.sellerheading {
+    font-size: 24px;
+    position: relative;
+}
+
+.sellerheading a {
+    padding-top: 0;
+    position: absolute;
+    right: 15px;
+    top: 37px;
+}
+
+.sendenquery {
+    background-color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    border: solid 1px rgb(247 106 0);
+    color: rgb(247 106 0);
+    font-size: 14px;
+    margin-bottom: 5px;
+    width: 100%;
+    padding: 5px 0px;
+}
+
+
+.modal-dialog {
+    width: auto !important;
+}
+
+.enquery img{
+	display:none;
+}
+
+.has-feedback {
+    margin-bottom: 10px;
+    color: red;
+}
+
+.modalenquery .tourpackage {
+    padding-top: 0px;
+    font-size: 23px;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    padding-bottom: 13px;
+}
+.gngtok h1 {
+    font-size: 24px;
+     line-height: 40px;
+}
+.slidertourheading {
+    font-size: 24px;
+    line-height: 40px;
+}
+.overview h2 {
+ font-size: 24px;
+     line-height: 40px;
+}
+.informheading p{
+    margin-left:0px!important;
+}
+.informheading{
+    padding: 10px;
+}
+.showpackage{
+    background:rgba(0,0,0,.125);
+}
+.overview p {
+    font-size: 16px;
+    text-align: left;
+  
+}
+.overviewtabs h2 {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 40px;
+}
+ 
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.parentbox{
+perspective:350px;
+
+
+}
+.box{ margin:300px auto;
+height:100px;
+width:100px;
+background-color:green;
+transform-origin:top;
+transform:rotateX(-180deg);
+opacity:0;
+transition:0.4s;
+transition-timing-function:cubic-bezier(.54,-0.05,1,1.5);
+
+&:hover{background-color:blue;;
+opacity:1;
+transform:rotateX(-360deg);}
+}
+
+</style>
+</head>
+<body>
+<div class="parentbox">
+<div class="box">
+</div>
+</div>
+
+</body>
+<script>
+let box = document.querySelector('.box');
+window.onload=()=>{
+box.style.transform='rotateX(-360deg)';
+box.style.opacity='1';
+}
+</script>
+</html>

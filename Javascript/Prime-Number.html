@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    var num = Number(prompt("Enter a range to print all prime numbers"));
+    document.write("All prime numbers till " + num + " are: <br>");
+    var check = false;
+    for (i = 2; i <= num; i++) {
+        for (j = 2; j <= i/2; j++) {
+            if (i % j == 0) {
+                check = true;
+            }
+        }
+        if (!check == true) {
+            document.write(i + ", ");
+        }
+        check = false;
+
+    }
+</script>
+
+</html>

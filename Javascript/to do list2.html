@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Page Title</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		ul {
+			list-style: none;
+		}
+
+		.insert-box {
+			padding: 10px;
+		}
+
+		.task-list {
+			display: relative;
+			z-index: 2;
+		}
+
+		.task-list li {
+			padding: 5px 0px;
+			border-bottom: 1px solid grey;
+			display: flex;
+			justify-content: space-around;
+			align-content: center;
+		}
+
+		.task-list li span {
+			font-size: 25px;
+		}
+
+		.main {
+			margin: auto;
+			display: table;
+			user-select: none;
+		}
+
+		li {
+			cursor: pointer;
+		}
+
+		li>button {
+			padding: 2px;
+			background-color: red;
+			border: none;
+			border-radius: 4px;
+
+		}
+
+		button {
+			cursor: pointer;
+		}
+
+		.li-highlight {
+			background-color: rgb(181, 245, 235);
+		}
+
+		.li-highlight:before {
+			content: "\2713";
+			display: absolute;
+			top: 3px;
+			z-index: 1;
+		}
+
+		.selected-items {
+			position: fixed;
+			top: 10px;
+			margin: 30px;
+		}
+
+		.selected-items>ul>li {
+			border-radius: 10px;
+			padding: 10px 30px;
+			margin: 5px;
+			box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.4);
+		}
+
+		.insert-box>input {
+			padding: 10px;
+			margin: 10px;
+			border-radius: 0px 10px 0px 10px;
+		}
+
+		.insert-box>button {
+			padding: 10px;
+			font-size: 20px;
+			background-color: lightblue;
+			border: none;
+			border-radius: 10px;
+		}
+
+		.insert-box input[type="checkbox"] {}
+
+		.auto-check {
+			display: inline-block;
+			background-color: pink;
+			border-radius: 10px;
+
+			text-align: center;
+		}
+
+		.auto-check input,
+		label {
+			padding: 10px;
+			border: none;
+			cursor: pointer;
+			font-size: 20px;
+		}
+	</style>
+
+</head>
+
+<body>
+	<div class="main">
+		<div class="insert-box">
+			<div class="auto-check">
+				<label for="checkbox1">Auto-check</label>
+				<br><input id="checkbox1" type="checkbox">
+			</div>
+			<input type="text" placeholder="Add Task...." />
+			<button>ADD</button>
+		</div>
+		<div class="task-list">
+			<ul>
+			</ul>
+		</div>
+	</div>
+	<div class="selected-items">
+		Selected Tasks:
+		<ul></ul>
+	</div>
+</body>
+<script>
+	let addbtn = document.querySelector(".insert-box button");
+	let inputbox = document.querySelector(".insert-box input[type='text']");
+	let list = document.querySelector(".task-list ul");
+	let final_list = document.querySelectorAll('.li-highlight  span');
+	let final_list_array = [];
+	let selected_items = document.querySelector('.selected-items ul');
+	let auto_check = document.querySelector(".insert-box input[type='checkbox']");
+	let delbtns;
+	let All_li;
+
+
+	inputbox.addEventListener('keyup', (e) => {
+		if (e.keyCode == 13 && inputbox.value != "") {
+			addbtn.click();
+		}
+
+	});
+
+	addbtn.addEventListener('click', () => {
+		delbtns = document.querySelectorAll(".deletebtn");
+		if (inputbox.value != '') {
+			list.innerHTML = `${list.innerHTML} <li><span>${inputbox.value}</span><button class="deletebtn">Delete</button></li>`;
+
+			if (auto_check.checked == true) {
+				All_li = document.querySelectorAll('.task-list>ul>li');
+				All_li[(All_li.length) - 1].classList.add('li-highlight');
+			}
+
+			inputbox.value = "";
+			inputbox.focus();
+			final_list = document.querySelectorAll('.li-highlight span');
+			update_arr(final_list);
+		}
+		else {
+			alert("Input box can't be empty");
+
+		}
+
+	});
+	list.addEventListener('click', (e) => {
+		if (e.target.tagName == 'BUTTON') {
+			e.target.parentNode.remove();
+			final_list = document.querySelectorAll('.li-highlight span');
+			update_arr(final_list);
+		}
+	});
+	list.addEventListener('click', (e) => {
+		if (e.target.tagName == 'LI') {
+			e.target.classList.toggle("li-highlight");
+			final_list = document.querySelectorAll('.li-highlight span');
+			update_arr(final_list);
+		}
+		if (e.target.tagName == 'SPAN') {
+			e.target.parentNode.classList.toggle("li-highlight");
+			final_list = document.querySelectorAll('.li-highlight span');
+			update_arr(final_list);
+		}
+	});
+
+	let update_arr = (arr) => {
+		selected_items.innerHTML = "";
+		final_list_array = [];
+		arr.forEach((x) => {
+			final_list_array.push(x.innerText);
+			selected_items.innerHTML += `<li>${x.innerText}</li>`;
+		});
+
+		console.log(final_list_array);
+	}
+
+</script>
+
+</html>

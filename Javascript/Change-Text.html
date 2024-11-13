@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main {
+            width: 600px;
+            border: 1px solid red;
+            margin: auto;
+            text-align: center;
+            padding: 20px;
+            
+        }
+        .boxes , .buttons{
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        .box {
+            display: inline-block;
+            width: 40%;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="boxes">
+            <div class="box">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo asperiores quo amet aut excepturi
+                quibusdam quae,
+                repellendus, nulla quidem nemo vero maxime consequatur, dolorem aspernatur hic. Beatae, enim ex?
+                Temporibus.
+            </div>
+            <div class="box">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo asperiores quo amet aut excepturi
+                quibusdam quae,
+                repellendus, nulla quidem nemo vero maxime consequatur, dolorem aspernatur hic. Beatae, enim ex?
+                Temporibus.
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo asperiores quo amet aut excepturi
+                quibusdam quae,
+                repellendus, nulla quidem nemo vero maxime consequatur, dolorem aspernatur hic. Beatae, enim ex?
+                Temporibus.
+            </div>
+        </div>
+        <div class="buttons">
+            <button>Butt1</button>
+        </div>
+    </div>
+</body>
+<script>
+    let box = document.getElementsByClassName("box");
+    let temp;
+    let button = document.querySelector('button');
+    button.onclick = () =>{
+        temp = box[0].innerText;
+        box[0].innerText = box[1].innerText;
+        box[1].innerText = temp;
+    }
+
+</script>
+
+</html>

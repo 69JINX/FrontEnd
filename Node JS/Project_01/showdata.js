@@ -1,0 +1,3 @@
+exports.showDate = () => {
+    return Date();
+};

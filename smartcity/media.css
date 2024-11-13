@@ -1,0 +1,20 @@
+@media screen and (max-width: 991px) {
+    .site-visit-inputs input{
+        width:100%;
+    }
+  }
+  
+  @media screen and (max-width: 800px) {
+    .side-bar ul li img {
+        width: 40px;
+        transition: 0.8s;
+    }
+}
+ 
+@media screen and (max-width: 575px) {
+    .site-visit-text{   
+        padding:30px 5%;
+    }
+}
+  
+ 

@@ -1,0 +1,59 @@
+.main{
+    height: 700px;
+    width: 1300px;
+    margin: auto;
+}
+h1{
+    text-align: center;
+    color:black;
+}
+body{
+    background-color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.main div{
+    background-color: aqua;
+    width:29%;
+    height: 40%;
+    margin: 1%;
+    float: left;
+    text-align: center;
+    background-color:rgb(234, 234, 234);
+    border-radius: 10px;
+    color:black;
+    padding: 1%;
+    transition: all;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out; 
+}
+
+img{
+    height: 25%;
+    margin-top: 5%;
+    transition: all;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out; 
+}
+
+p{
+    line-height: 150%;
+}
+
+
+.main div:hover img{
+transform: translate(0,-10px);
+}
+
+.main div:hover{
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.2);
+    transform: scale(1.01);
+}
+h3{
+    transition: all;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;  
+}
+.main div:hover h3{
+    color:#2699FB;
+}
