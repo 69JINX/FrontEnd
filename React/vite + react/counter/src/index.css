@@ -1,0 +1,12 @@
+.Box{
+  width:30%;
+  height: 200px;
+  border:1px solid red;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  *{
+    padding:10px;
+    border-radius: 10px;
+  }
+}

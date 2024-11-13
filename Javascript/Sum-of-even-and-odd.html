@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>    
+    var range = Number(prompt("Enter a range to print sum of all even and odd numbers...."));
+    var even_sum=0, odd_sum=0;
+    for (var i = 0; i <=range; i++) {
+        if (i % 2 == 0) {
+            even_sum = even_sum + i;
+        }
+        else {
+            odd_sum = odd_sum + i;
+        }
+    }
+    document.write(`Sum of all even numbers till ${range} are ${even_sum}<br/>`);
+    document.write(`Sum of all odd numbers till ${range} are ${odd_sum} <br/>`);
+</script>
+
+</html>

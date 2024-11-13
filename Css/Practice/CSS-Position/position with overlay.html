@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+       .main{
+        height: 400px;
+        width: 400px;
+        margin: 60px auto;
+        position:relative;
+        overflow: hidden;
+        border-radius: 50%;
+       }
+       .box1,.box2{
+        height: 100%;
+        width: 100%;
+        background-size: cover;
+        background-position: center center;
+        position: absolute;
+        transition: 1s;
+        transition-timing-function: ease-in-out;
+        border-radius: 50%;
+        color: white;
+        background-color: aquamarine;
+        font-size: 40px;
+        display: inline-block;
+        text-align: center;
+        align-content: center;
+        /* top:0px;
+        left:0px; */
+       }
+       .box1{opacity: 1;}
+       .box2{background-image: url('../images/2.jpg');top:400px;left:400px;}
+       .main:hover .box2{
+        top:0px;
+        left:0px;
+       }
+       .main:hover .box1{
+        opacity: 0;
+       }
+       
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="box1">Hover to See DP</div>
+        <div class="box2"></div>
+    </div>
+</body>
+</html>

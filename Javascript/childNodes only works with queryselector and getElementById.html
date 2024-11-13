@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body id="boody" class="main">
+
+    <ul>
+        <li>foo</li>
+        <li>bar</li>
+        <li>baz</li>
+    </ul>
+    <h1>foo</h1>
+    <p>bar</p>
+</body>
+<script>
+
+    /*childNodes only works with selectors which returns single element/Node
+    (It works with querySelector and getElementsById. It doesn't work with querySelectorAll, getelementByTagName and getElementByClassName)*/
+
+    const listItems_querySelectorAll = document.querySelectorAll('li');
+    console.log(listItems_querySelectorAll);
+
+    console.log(document.querySelector('body').childNodes);
+
+    console.log(document.getElementsByTagName('body').childNodes);
+    console.log( document.getElementById('boody').childNodes);
+    console.log(document.getElementsByClassName('main').childNodes);
+
+    const list = document.querySelector('ul');
+    const listItems_childNodes = list.childNodes;
+    console.log(listItems_childNodes);
+</script>
+
+</html>

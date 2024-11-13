@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <form>
+        <fieldset class="personalinfo">
+            
+            <legend>Name</legend>
+            <div class="first_name">
+                <label>Enter Your Name : </label>
+                <input type="text" name="fname" placeholder="Name" autofocus>
+            </div>
+            <div class="last_name">
+                <label>Enter Your Last Name</label>
+                <input type="text" name="lname" placeholder="Last Name">
+            </div>
+            <div class="Gender">
+                <label>Gender : </label>
+                <input type="radio" name="gender" value="Male">&nbsp;Male
+                <input type="radio" name="gender" value="Female">&nbsp;Female
+            </div>
+            <div class="Sports">
+                <label>Select Favourite Sport :</label>
+                <input type="checkbox"  name="sport[]">&nbsp;Chess&nbsp;&nbsp;&nbsp;
+                <input type="checkbox"  name="sport[]">&nbsp;Football&nbsp;&nbsp;&nbsp;
+                <input type="checkbox"  name="sport[]">&nbsp;Chess&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="age">
+                <label>Enter Age :</label>&nbsp;
+                <input type="number" min="18" placeholder="18 or above...">
+            </div>
+            <div class="email">
+                <label>Email :</label>
+                <input type="text" pattern="[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]+">
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Address</legend>
+            <div class="address">
+                <textarea rows="12" cols="120"></textarea>
+            </div>
+            <div>
+                <input type="text" list="countries" placeholder="-Select Country-" >
+            </div>
+        </fieldset>
+        <datalist id="countries">
+            <option>India</option>
+            <option>America</option>
+            <option>Russia</option>
+            <option>Pakistan</option>
+            <option>Africa</option>
+            <option>China</option>
+        </datalist>
+        <fieldset>
+            <legend>Enter Course to Pursue :</legend>
+            <select>
+                <option>-Select Course-</option>
+                <optgroup label="Front-End">
+                    <option>HTML</option>
+                    <option>CSS</option>
+                    <option>JavaScript</option>
+                </optgroup>
+                <optgroup label="Back-End">
+                    <option>PHP</option>
+                    <option>MongoDB</option>
+                    <option>NodeJs</option>
+                </optgroup>
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend>Payment Details :</legend>
+            <div>
+            <label>Card Number :</label>
+            <input type="text" style="border:2px solid black" disabled value="4674-XXXX-XXXX-XXXX">
+        </div>
+        </fieldset>
+        <button>Submit</button>
+    </form>
+</body>
+
+</html>

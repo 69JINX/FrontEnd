@@ -1,0 +1,687 @@
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+a{
+    text-decoration: none;
+    color: white;
+    font-weight: bolder;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+        .logo img {
+            width: 250px;
+            margin-right: 70px;
+        }
+
+        .image {
+            display: inline-block;
+            width: 100%;
+            height: 41em;
+            background-image: url('1.jpg');
+            background-size: cover;
+        }
+
+        ul {
+            list-style: none;
+        }
+        li{
+            cursor: pointer;
+        }
+
+        .main {
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            box-shadow: 3px 3px 3px 4px black;
+        }
+        .contact-navbar{
+            background-color: rgb(46, 44, 44);
+            color:white;
+            font-size: 14px;
+            display: flex;
+            justify-content: right;
+            padding-right: 100px;   
+            padding: 10px 100px 10px 0px;
+        }
+        .contact{
+            padding-right: 100px;
+        }
+        .socialmedia *{
+            font-size: 14px;
+            padding: 0px 10px;
+        }
+
+        .list>ul {
+            color: black;
+            display: flex;
+            font-size: 13px;
+            font-family: Arial, Helvetica, sans-serif;
+            padding-top: 20px;
+        }
+
+        .list ul>li {
+            /* padding: 10px 20px; */
+            padding-right: 10px;
+            position: relative;
+            
+        }
+
+        .listitem>ul{
+            position: absolute;
+            top: 40px;
+            left:10px;
+            visibility: hidden;     /*If you don't give visibility hidden, the multilist will appear even if you dont click on the list item, 
+            because the list is their, its just the opacity is down so if you hover on the place where the multilist was before, the list will appear */
+        }
+
+        .listitem>ul>li, .pali-item>ul>li{
+            padding: 10px 120px 10px 10px;
+            text-align: center;
+            background-color: rgba(52, 148, 244,0.7);
+            /* margin:2px; */
+            border:2px solid transparent;
+            transition: all 0.4s;
+            top:0px;
+            left:0px;
+            opacity: 0;
+            
+            background-clip: padding-box;
+        }
+
+        .listitem li:hover{
+            background-color: rgba(3, 107, 211, 0.7);
+        }
+
+        .pali-item ul{
+            position: absolute;
+            visibility: hidden;
+        }
+        .pali-item>ul>li{
+            top:-20px;
+            left:140%;
+            opacity: 0;
+        }
+
+        .listitem>ul>li:nth-child(2){transition: top 0.4s 0.1s,opacity 0.4s 0.1s,background-color 0s 0s;}
+        .listitem>ul>li:nth-child(3){transition: top 0.4s 0.2s,opacity 0.4s 0.2s,background-color 0s 0s;}
+        .listitem>ul>li:nth-child(4){transition: top 0.4s 0.3s,opacity 0.4s 0.3s,background-color 0s 0s;}
+        .list>ul>li:hover .listitem>ul{visibility: visible;}
+        .list>ul>li:hover .listitem>ul>li{opacity: 1;top:-20px;}
+        .list>ul>li:hover .taxi-services{opacity: 1;visibility: visible;}
+
+        .pali-item>ul>li:nth-child(2){transition: left 0.4s 0.1s,opacity 0.4s 0.1s,background-color 0s 0s;}
+        .pali-item>ul>li:nth-child(3){transition: left 0.4s 0.2s,opacity 0.4s 0.2s,background-color 0s 0s;}
+        .pali-item>ul>li:nth-child(4){transition: left 0.4s 0.3s,opacity 0.4s 0.3s,background-color 0s 0s;}
+        .listitem>ul>li:hover .pali-item>ul{visibility: visible;}
+        .listitem>ul>li:hover .pali-item>ul>li{opacity: 1;left:94%}
+
+        .taxi-services{
+            position: absolute;
+            text-wrap: nowrap;
+            font-size: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.4s;
+            top:40px;
+            background-color: white;
+        }
+        .taxi-services>div ul{
+            display: flex;
+        }
+        .taxi-services>div ul>li{
+            width: 150px;
+            padding: 4px;
+            border-bottom:1px solid rgb(0, 165, 190);
+            margin: 10px;
+            
+        }
+        .block2{
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            background-image: url('images/home-slider.webp');
+            background-size: 100% 100%;
+            
+        }
+        .block2r1 {
+            color:white;
+            
+
+        }
+        .block2r1 h1{
+            padding: 250px 0px 30px 0px;
+        }
+        .block2r1 p{
+            font-size: 20px;
+            padding-bottom: 50px;
+            
+        }
+        .block2r2{
+            padding-bottom: 100px;
+        }
+        .search {
+            margin: auto;
+            width: 1200px;
+            background-color: rgba(255, 255, 255,0.2);
+            padding: 10px;
+        }
+        .search .buttons{
+            display: flex;
+            padding: 10px 10px 0px 0px;
+            border-bottom:1px solid white;
+        }
+        .search .buttons a{
+            background-color: #009ddc;
+            padding: 15px 20px;
+            margin: 4px 4px 0px 0px;
+            border-radius: 5px 5px 0px 0px;
+        }
+        .search .inputfield{
+           display: flex;
+           justify-content: center;
+           align-content: center;
+           padding: 10px;
+        }
+        .search .inputfield .inputsize{
+            height: 40px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        select.inputsize{
+            width:40%;
+        }
+    
+        input[type="number"].inputsize{
+            width: 20%;
+        }
+        input[type="button"].inputsize{
+            /* width: 20%; */
+            background-color: #337ab7;
+            color:white;
+            border:none;
+            border-radius: 0px 5px 5px 0px;
+        }
+        .block3{
+            padding: 120px 20px 20px 150px;
+            display: flex;
+        }
+        .block3 .para{
+            width: 80%;
+        }
+        .block3 h3{
+            font-family:philosopherbold;
+            padding-bottom: 20px;
+        }
+        .block3 p{
+            line-height: 30px;
+            color:rgb(78, 78, 78);
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: justify;
+            padding: 10px 0px 40px 0px;
+        }
+        .block3 p span>a{
+            color:rgb(54, 161, 242);
+        }
+        .block3 p span>a:hover{
+            text-decoration: underline;
+        }
+        .readmore{
+            background-color: rgb(61, 61, 61);
+            padding: 15px 25px;
+            transition: 0.4s;
+        }
+        .readmore:hover{
+            background-color: rgb(57, 116, 244);
+        }
+        .block3 .image{
+            padding-left: 40px;
+        }
+        .block4{
+            /* width: 50%; */
+            display: flex;
+            text-align: center;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+            margin: auto;
+            width: 80vw;
+            padding: 0px 0px 30px 0px;
+        }
+        .block4 h1{
+            
+            padding: 20px 0px;
+        }
+        .block4 .carlogo{
+            padding: 10px 0px;
+        }
+      
+        .cars-slide{
+            display: flex;
+            justify-content: center;
+        }
+        .block4 ul{
+            width: 80%;
+        }
+        .block4 ul>li{
+            border: 1px solid rgb(207, 207, 207);
+            padding: 12px 0px;
+            /* border:1px solid rgba(254, 103, 103); */
+        }
+        .block4 ul>li:nth-child(1){
+            border: none;
+            
+        }
+        .block4 ul>li:nth-child(2){
+            border: none;
+            font-family: philosopherbold;
+            color:rgb(82, 81, 81);
+            font-size: 20px;
+        }
+        .cars-slide>.cars{
+            padding: 0px 10px;
+        }
+        .cars-slide>.cars img{
+            width: 230px;
+        }
+        .fa-snowflake-o{
+            /* font-size: 40px; */
+            color:black;
+        }
+        .block5{
+            display: flex;
+            background-color: rgba(197, 197, 197,0.3);
+            padding: 20px 0px;
+        }
+        .block5>.para{
+            text-align: justify;
+            width: 50%;
+            padding: 20px;            
+        }
+        .block5>.para>h1{
+            font-family: philosopherbold;
+            padding: 10px 0px;
+        }
+        .block5>.para>p{
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            color:rgb(107, 105, 105);
+            padding: 10px 0px;
+            line-height: 20px;
+        }
+        .block5>.images{
+            display: flex;
+            padding-left:100px;
+        }
+        .block5>.images>div{
+            width: 250px;
+            height: 90%;
+            margin: 30px;
+        }
+        
+                .block5>.images>div:nth-child(1) {
+                    background-image: url('images/indian-traditional-2659269_1280.jpg');
+                    background-size:220%;
+                    background-position: -150px 0px;
+                    background-repeat: no-repeat;
+
+                    /* padding: 10px; */
+                }
+                .block5>.images>div:nth-child(2) {
+                    background-image: url('images/HD-wallpaper-amber-fort-amber-fort-india-jaipur-rajasthan.jpg');
+                    background-size:180%;
+                    background-position: -120px -80px;
+                    background-repeat: no-repeat;
+
+                    /* padding: 10px; */
+                }
+            .block6{
+                margin: auto;
+                text-align: center;
+                padding: 100px 0px;
+                width: 80%;
+                position: relative;
+            }
+            .block6 .heading{
+                font-family: philosopherbold;
+                font-size: 40px;
+                color:rgb(49, 49, 49);
+            }
+            .block6>p{
+                font-size: 17px;
+                color:rgb(100, 96, 96);
+                line-height: 30px;
+                font-family: Arial, Helvetica, sans-serif;
+                text-align: center;
+            }
+            .block6 .audi{
+                padding: 300px 0px 0px 0px;
+            }
+            .hoverlogo{
+                position: absolute;
+            }
+            .hoverlogo img{
+                
+            }
+            .hoverlogo p{
+                font-size: 20px;
+                font-family:Arial, Helvetica, sans-serif ;
+                color: rgb(81, 81, 81);
+                font-weight: bold;
+            }
+            .hoverlogo:nth-child(1){top:700px;left:100px;}
+            .hoverlogo:nth-child(2){top:500px;left:100px;}
+            .hoverlogo:nth-child(3){top:350px;left:250px;}
+            .hoverlogo:nth-child(4){top:280px;left:440px;}
+            .hoverlogo:nth-child(5){top:280px;left:650px;}
+            .hoverlogo:nth-child(6){top:350px;left:850px;}
+            .hoverlogo:nth-child(7){top:500px;left:1000px;}
+            .hoverlogo:nth-child(8){top:700px;left:1000px;}
+            .hoverlogo img{transition: 0.7s;transition-timing-function:cubic-bezier(0.175, 0.885, 0.32, 1.275)}
+            .hoverlogo img:hover{rotate:360deg;}
+
+            .gallblock .gallpara h1{
+                font-family: 'Londrina Outline', sans-serif;
+                color: rgb(111, 111, 111);
+                font-size: 60px;
+            }
+            .gallery{
+                display: flex;
+                flex-wrap: wrap;
+                width: 80%;
+                margin: auto;
+            }
+            .gallblock{
+                margin: auto;
+                display: flex;
+                justify-content: center;
+                padding: 30px;
+                width: 50%;
+            }
+            .gallblock .gallimg{
+                width:300px;
+                height: 400px;
+                overflow: hidden;
+            }
+            .gallblock .gallimg img{width: 100%; height: 100%;}
+            .gallblock:nth-child(2) .gallimg img{width: 170%; height: 100%;position:relative;left:-80px;}
+            .gallblock:nth-child(3) .gallimg img{width: 200%; height: 100%;position:relative;left:-80px;}
+            .gallblock .gallpara{
+                width: 300px;
+                text-align: center;
+            }
+            .gallblock .gallpara p{
+                padding: 10px 10px 20px 10px;
+                color:rgb(86, 86, 86);
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            .certified{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-image: linear-gradient(112deg, #282828 44%, #01a0de 66%);
+                color:white;
+            }
+            .certified *{
+                margin: 10px;
+            }
+            .certified p{
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            .certified h1 {
+                font-size: 25px;
+                           }
+            .certified .para{
+                width: 800px;
+                text-align: center;
+            }               
+            .certifiedlogo,.trademark{
+                height: 200px;
+                width: 200px;
+            }
+            .certifiedlogo img{
+                height: 100%;
+                width: 100%;
+            }
+            .trademark img{
+                height: 80%;
+                width: 100%;
+            }
+            
+            .places{
+                text-align: center;
+                padding-top: 60px;
+                padding-bottom: 20px;
+            }
+            .photos{
+                display: flex;
+                padding-top: 20px;
+            }
+
+            .photos .leftphoto{
+                background-color: rgba(90, 45, 0,0.8);
+                height: 300px;
+                width: 100px;
+                border-radius: 0px 10px 10px 0px;
+                box-shadow: 4px 5px 6px 2px rgb(81, 81, 81);
+            }
+            .photos .textheading{
+                font-family: 'Londrina Outline', sans-serif;
+                font-size: 25px;
+                color: rgb(65, 65, 65);
+                writing-mode: vertical-lr;
+                margin-left: 150px;
+            }
+            .photos .middlephoto{
+                height: 350px;
+                width: 400px;
+                background-image: url('images/testing-img-1.jpg');
+                border-radius: 10px;
+                background-position: -150px 0px;
+                background-size: cover;
+                margin-left: 40px;
+            }
+
+            .photos .rightphoto{
+                width: 900px;
+                height:350px;
+                text-align: left;
+                margin-left: 20px;
+                background-color: rgb(132, 139, 151);
+                padding: 20px;
+                color:white;
+                border-radius: 10px 0px 0px 10px;
+                box-shadow: -4px 5px 6px 2px rgb(81, 81, 81);
+                
+            }
+            .photos .rightphoto .para{
+                font-family: Arial, Helvetica, sans-serif;
+                width: 600px;
+                font-size: 15px;  
+            }
+            .gallery2{
+                display: flex;
+                padding: 30px 0px;
+            }
+            .gallery2 .box{
+                width: 280px;
+                height: 300px;
+                margin: 0px 10px;
+            }
+            .gallery2 .box .image{
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+            .gallery2 .box .image img{
+                width: 140%;
+                height: 100%;
+                position: relative;
+                left:-50px;
+            }
+            .gallery2 .box .text{
+                background-color: rgb(47, 46, 46);
+                color:white;
+                width: 100%; 
+                padding: 10px;
+                text-align: center;
+                font-size: 18px;   
+            }
+                        .gallery2 .box:nth-child(1) {
+                            writing-mode: vertical-rl;
+                            font-family: 'Londrina Outline', sans-serif;
+                            font-size: 45px;
+
+                            color: rgb(94, 94, 94);
+                        }
+                        .bar{
+                            width:100%;
+                            text-align: center;
+                            padding-top: 80px;
+                        }
+                        .gallery3{
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            height: 400px;
+                        }
+            .gallery3 .box{
+                height:250px;
+                width: 300px;
+                /* text-align: center; */
+                margin:0px 30px;
+            }
+            .gallery3 .box .imag{
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                display: inline-block;
+                align-content: center;
+            }
+            .gallery3 .box .imag img{
+                width: 100%;
+            }
+            .gallery3 .box h3{
+                text-align: center;
+                padding-bottom: 5px;
+            }
+            .box .text{
+                padding: 10px;
+            }
+            .box .text p{
+                font-size: 14px;
+                font-family: Arial, Helvetica, sans-serif;
+                color:rgb(61, 59, 59);
+            }
+            .partners{
+                margin-top: 200px;
+                padding: 10px 0px;
+                background-color: #e7f8ff;
+                text-align: center;
+            }
+            .partners .heading{
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                font-size: 40px;
+                padding: 20px;
+                
+            }
+            .partners .sites{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 50px;
+            }
+            .partners .sites .siteimg{
+                width: 180px;
+                height: 100px;
+                background-color: white;
+                margin: 10px;
+                display: inline-block;
+                align-content: center;
+                border: 1px solid rgba(44, 44, 44,0.2);
+            }
+            .partners .sites .siteimg img{
+                width: 70%;
+                height: 60%;
+                
+            }
+            .partners .G20{
+                background-image: url('images/g20-bg.jpg');
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-size: contain;
+
+            }
+                        .partners .G20 h2 {
+                            font-size: 40px;
+                            background: -webkit-linear-gradient(270deg, orange 53%, white 65%, green 70%);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            padding-right: 50px;
+                        }
+                        .footer{
+                            background-color: rgb(35, 35, 35);
+                        }
+                                                .footer .addresses {
+                                                    display: flex;
+                                                    flex-wrap: wrap;
+                                                    margin: auto;
+                                                    width: 1200px;
+                                                    justify-content: center;
+                                                    border-bottom: 1px solid rgb(139, 139, 139);
+                                                }
+            .footer .address{
+                padding: 20px 40px;
+                width: 400px;
+                display: flex;
+                font-size: 13px;
+                font-weight: lighter;
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+            a{
+                transition: 0.2s;
+            }
+            .footer  a:hover{
+                color:#009ddc;
+                text-decoration: underline;
+
+            }
+            #bwlogo{
+                filter: brightness(0) invert(1);
+            }
+            .contact{
+                display: flex;
+                /* flex-direction: row; */
+                justify-content: center;
+                align-items: center;
+            }
+            .copyright{
+                text-align: center;
+                background-color: #282828;
+                padding:20px;
+                /* font-size: 20px; */
+                font-family: Arial, Helvetica, sans-serif;
+                color:white;
+            }
+            .copyright span{
+                color:#009ddc
+            }
+
+            
+            
+            
+
+
+
+         
+        
+
+        
+
+        
+        
+        

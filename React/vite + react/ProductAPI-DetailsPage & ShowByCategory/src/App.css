@@ -1,0 +1,30 @@
+.category-list{
+    list-style: none;
+    display: inline-block;
+
+    li{
+        margin-bottom: 0.5em;
+        color: #333;
+        text-decoration: none;
+        cursor: pointer;
+        input,label{
+            cursor: pointer;
+            user-select: none;
+        }
+    }
+    li:hover{
+        color: #666;
+    }
+}
+.products{
+    top:10px;
+    margin: 0px 40px;
+    position:absolute;
+    height: 98vh;
+    overflow: scroll;
+}
+.product{transition: 0.2s;}
+.product:hover{
+    box-shadow: 2px 2px 5px rgb(171, 171, 171) ;
+    transform: scale(1.02);
+}

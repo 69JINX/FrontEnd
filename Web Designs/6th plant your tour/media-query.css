@@ -1,0 +1,90 @@
+@media only screen and (max-width: 1300px) and (min-width: 1150px) {
+    .navbar .list ul li {
+        text-wrap: wrap;
+    }
+
+    .search-packages select {
+        padding-right: 50px;
+    }
+}
+
+@media only screen and (max-width: 1151px) and (min-width: 1090px) {
+
+    .navbar .list ul li {
+        /* font-size: 12px; */
+        margin: 10px;
+    }
+
+    .navbar .list ul li {
+        text-wrap: wrap;
+    }
+}
+
+@media only screen and (max-width: 1091px) {
+
+    .navbar .list {
+        display: none;
+    }
+
+    .fa-bars {
+        display: block;
+    }
+
+    .navbar {
+        justify-content: space-between;
+        align-items: center;
+    }
+
+}
+
+@media only screen and (max-width:1350px) {
+    .search-packages select {
+        padding-right: 50px;
+    }
+}
+
+@media only screen and (max-width:1160px) {
+    .search-packages select {
+        padding-right: 20px;
+        /* font-size: 13px; */
+    }
+}
+
+@media only screen and (max-width:1050px) {
+    .search-packages {
+        width: 90%;
+    }
+
+}
+
+@media only screen and (max-width:800px) {
+    .search-packages {
+        flex-direction: column;
+        width: 90%;
+
+    }
+
+    .search-packages select {
+        width: 80%;
+    }
+
+    .search-packages * {
+        margin: 10px;
+    }
+    .gallery{
+        flex-direction: column;
+    }
+    .galllery .para{
+        width: 80%;
+    }
+}
+@media only screen and (max-width:600px){
+    .gallery .gallery-items{
+        flex-direction: column;
+        
+    }
+    .gallery .gallery-items div{
+        width: 70%;
+        margin: auto;
+    }
+}

@@ -1,0 +1,12 @@
+.read-more-button{
+    color: #000dff;
+    cursor: pointer;
+}
+table td{
+width: 14%;
+}
+.outlet{
+    height: calc(100vh - 80px);
+    overflow-y: scroll;
+    z-index: 9;
+}

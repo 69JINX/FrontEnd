@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            font-family: sans-serif;
+            margin: 0px;
+            padding: 0px;
+        }
+        .main{
+            height: 800px;
+            width: 90%;
+            margin: auto;
+            /* border: 1px solid black; */
+        }
+        .row1{
+            width: 50%;
+            height: 100%;
+            /* border:1px solid black; */
+            float:left;
+        }
+        .row2{
+            height: 100%;
+            width: 45%;
+            margin: auto;
+            text-align: center;
+            align-content: center;
+            float: left;
+        }
+        .row2 .img{
+            background: url("../images/iq-dot-bg.png") no-repeat,url("../images/iq-circle.png") no-repeat bottom right;
+            /* border: 1px solid black; */
+            padding-top:8%;
+            padding-bottom:9%;
+            
+        }
+        p{
+            color:grey;
+        }
+        .row1 .card{
+            height: 22%;
+            width: 90%;
+            border: 1px solid rgb(198, 198, 198);
+            margin: 3%;
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            padding-left:20px;
+        }
+        .row1 .card > *{  /*set 2% margin for all the child elements in all div which are in .row1 class*/
+            margin: 2%;
+        }
+        h1{
+            margin: 2%;
+            font-size: 250%;
+        }
+
+        p{
+            margin: 2%;
+            font-size: 110%;
+        }
+        a{
+            text-decoration: none;
+
+            color:rgb(97, 129, 247);
+            font-weight: bold;
+        }
+        button{
+            height: 5%;
+            width: 15%;
+            font-size: 100%;
+            background-color: rgb(33, 137, 248);
+            border:none;
+            border-radius: 10px;
+            color:white;
+            cursor: pointer;
+            margin:4% 3%;
+            
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+
+        <div class="row1">
+            <h1>Nail Job Interviews with Core Questions</h2>
+            <p>Explore the most comprehensive set of interview questions that are frequently asked by companies/employers:</p>
+            <div class="card">
+                <h3>Top 108 SEO Interview Questions and Answers</h3>
+                <p>Well-curated basic to advanced interview questions on SEO, categorized into freshers and experienced professionals. Also, find tips to fast-track a career in SEO.</p>
+                <a href="#" target="_blank">Learn Now &rarr;</a>
+            </div>
+            <div class="card">
+                <h3>Top 55 JavaScript Interview Questions and Answers</h3>
+                <p>The most detailed and well-structured set of interview questions on JavaScript for Freshers and experienced professionals in the field of web development.</p>
+                <a href="#" target="_blank">Learn Now &rarr;</a>
+            </div>
+            <div class="card">
+                <h3>Top 60 NodeJS Interview Questions and Answers</h3>
+                <p>A list of top NodeJS interview questions and answers for both freshers & experienced candidates to prepare and boost chances of selection.</p>
+                <a href="#" target="_blank">Learn Now &rarr;</a>
+            </div>
+
+                <button>View All</button>
+            
+                
+        </div>
+
+        <div class="row2">
+            <div class="img">
+                <img src="../images/iq-question.png">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

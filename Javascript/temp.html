@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            background-color: #f1f1f1;
+            border-radius: 50%;
+            position: relative;
+            animation: rotate 2s linear infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div></div>
+
+    <h1>The Window Object</h1>
+    <h2 id="test" style="background-color:lightblue">The getComputedStyle() Method</h2>
+
+    <p>The computed background color for the test div is:</p>
+    <p id="demo"></p>
+</body>
+<script>
+    console.log(getComputedStyle(document.querySelectorAll('div')[0]).borderRadius);
+    console.log(getComputedStyle(document.querySelector('div'),'border-radius'));
+
+    const element = document.getElementById("test");
+    const cssObj = window.getComputedStyle(element, null);
+    console.log(getComputedStyle(element, null).getPropertyValue('background-color'));
+    let bgColor = cssObj.getPropertyValue("background-color");
+    document.getElementById("demo").innerHTML = bgColor;
+    console.log(bgColor);
+</script>
+
+</html>

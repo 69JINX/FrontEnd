@@ -1,0 +1,33 @@
+.main{
+    height: 700px;
+    width: 1300px;
+    margin: auto;
+}
+h1{
+    text-align: center;
+    color:black;
+}
+body{
+    background-color: rgb(228, 228, 228);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.main .card{
+    background-color: aqua;
+    width:29%;
+    height: 40%;
+    margin: 1%;
+    float: left;
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    color:black;
+    padding: 1%;
+}
+img{
+    height: 25%;
+    margin-top: 5%;
+}
+p{
+    line-height: 150%;
+}

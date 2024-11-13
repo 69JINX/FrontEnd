@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+        p {
+            font-size: 20px;
+            line-height: 1.5;
+            font-weight: bold;
+            color: red;
+            text-decoration: underline;
+            text-transform: uppercase;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <p class="para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa adipisci est doloremque doloribus quidem nulla
+        accusamus! Similique sapiente, facilis fugiat, quis, inventore autem possimus minima iusto non cumque porro
+        magnam.
+        Veritatis, deleniti. Est facilis corrupti culpa beatae debitis harum modi perspiciatis quas incidunt saepe,
+        blanditiis ullam labore dolores maxime eaque totam, tempora repellendus quia illum aspernatur alias? Voluptas,
+        dolorum saepe.
+        Maxime consequatur consequuntur atque porro similique veniam molestiae, vero repellendus maiores necessitatibus
+        minima modi sunt in amet facilis dolores corrupti tenetur sapiente repudiandae ipsam consectetur incidunt.
+        Consequatur repellendus reiciendis in!</p>
+</body>
+<script>
+    // console.log(document.querySelector('p').getComputedStyle());
+    // let p = ;
+    // console.log(p);
+    // console.log(document.getElementsByTagName('p')[0]);
+    console.log(getComputedStyle(document.getElementsByClassName('para')[0]));
+    //getComputedStyle() only works when there is only one element, it doesn't work with that DOM selector that give a html collectioon or node list
+</script>
+
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE
+ html>
+<html>
+
+<head>
+	<title>Page Title</title>
+	<style>
+		table,
+		tr,
+		td {
+			border: 1px solid black;
+			border-collapse: collapse;
+			margin: 2% auto;
+			text-align: center;
+		}
+
+		td,
+		th {
+			padding: 20px 50px;
+			text-align: center;
+			font-size: 35px;
+		}
+		.result{
+			font-size: 50px;
+			padding: 10px;
+			background-color: gray;
+			position: fixed;
+			display: inline-block;
+			border: 6px groove rgb(59, 49, 49);
+			border-radius: 10px;
+			box-shadow:5px 5px 4px rgb(157, 157, 157) ;
+		}
+		button{
+			position: fixed; 
+			top:150px;
+			
+			
+		}
+	
+	</style>
+
+	 <script>
+		
+		var marks = [];
+		var subjects = ["English", "Hindi", "Science", "SST", "Maths"];
+		var result=0, temp, valid_string, valid_number;
+
+		function check_string(num, subject) {
+			while (isNaN(num)) {
+				num = Number(prompt(`Strings are not allowed!\n Please Enter only a valid number for subject ${subject}`));
+			}
+			num = check_range(num, subject);
+
+			temp = num;
+			valid_string = true;
+			return num;
+		}
+
+		function check_range(num, subject) {
+			while (!(num >= 1 && num <= 100)) {
+				if (!isNaN(num)) {
+					num = Number(prompt(`Please Enter marks only between 1 and 100 of subject ${subject}`));
+				}
+				if (isNaN(num)) {
+					num = check_string(num, subject);
+				}
+			}
+			temp = num;
+			valid_number = true;
+			return num;
+		}
+
+		function check_marks(num, subject) {
+			check_string(num, subject);
+			while (!(valid_number && valid_string)) {
+				if (!(valid_string)) {
+					check_string(num, subject);
+				}
+				if (!(valid_number)) {
+					check_range(num, subject);
+				}
+			}
+		}
+		function refresh_page(condition) {
+			location.reload(condition);
+		}
+
+
+		for (i = 0; i < subjects.length; i++) {
+			check_marks(Number(prompt(`Enter Marks of ${subjects[i]}`)), subjects[i]);
+			marks.push(Number(temp));
+			console.log("marks" + marks[i]);
+			result = result + marks[i];
+			
+		}
+		
+	</script>  
+</head>
+
+<body><div class="result">
+	<script>
+		if((result/5)>=36){
+			document.write("PASSED");
+			document.querySelector(".result").style.backgroundColor ="rgb(27, 153, 27)";
+		}else
+		{	
+			document.write("FAILED");
+			document.querySelector(".result").style.backgroundColor ="rgb(226, 42, 42)";
+		}
+	</script>
+</div>
+<button onclick="refresh_page(true)">Try Again...</button>
+	<table>
+		<tr >
+			<th colspan="2">Marksheet</th>
+		</tr>
+		<tr>
+			<td>English</td>
+			<td>
+				<script>document.write(marks[0]);</script>
+			</td>
+		</tr>
+		<tr>
+			<td>Hindi</td>
+			<td>
+				<script>document.write(marks[1]);</script>
+			</td>
+		</tr>
+		<tr>
+			<td>Science</td>
+			<td>
+				<script>document.write(marks[2]);</script>
+			</td>
+		</tr>
+		<tr>
+			<td>SST</td>
+			<td>
+				<script>document.write(marks[3]);</script>
+			</td>
+		</tr>
+		<tr>
+			<td>Maths</td>
+			<td>
+				<script>document.write(marks[4]);</script>
+			</td>
+		</tr>
+		<tr>
+			<td><u>Total</u></td>
+			<td>
+				<script>document.write(result);</script>
+			</td>
+		</tr>
+		<tr>
+			<td><u>Percentage</u></td>
+            <td>
+                <script>document.write(`${result / 5}%`);</script>
+            </td>
+		</tr>
+	</table>
+
+</body>
+
+</html>

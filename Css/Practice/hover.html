@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+
+        }
+        .he{
+            height: 50px;
+            width: 50px;
+            /* background-color: blue; */
+            /* margin: 10px; */
+            transition: .4s;
+            text-align: center;
+            display: inline-block;
+            align-content: center;
+        }
+       
+        .he::before{
+            content: "";
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            background-color: red;
+            z-index: -1;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="he">
+        H
+    </div>
+</body>
+</html>

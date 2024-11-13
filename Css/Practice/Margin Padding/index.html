@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main{
+            height: 600px;
+            width: 600px;
+            background-color: blue;
+        }
+        .main div{
+            height: 200px;
+            width: 200px;
+            background-color: red;
+            margin: 30px;               /*There is no margin in the parent element but in the browser it is still showing margin, which is not it's own but on the child element 30px*/
+            /*Margin of child element will keep collapsing with the 
+            parent element unless we add border/padding in the parent element(.main class)*/
+            /* If we don't want to set border/padding of the parent element, we can also set 
+            float left in the child element to stop collapsing margin of child element with the parent element*/
+            border:50px solid white;
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti numquam a minima consectetur optio, velit nesciunt officiis nisi dolorum aperiam veritatis est ad esse quam obcaecati atque? Dolorem, exercitationem rerum.
+        </div>
+    </div>
+</body>
+</html>

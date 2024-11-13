@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        table {
+            margin: 50px auto;
+            width: 50%;
+        }
+        table td{
+            font-size: 30px;
+            background-color: rgb(206, 202, 202);
+        }
+        td{
+            text-align: center;
+            padding:20px 40px;
+        }
+    </style>
+    <script>
+
+        var Eng = Number(prompt("Enter English marks"));
+        var Hindi = Number(prompt("Enter Hindi marks"));
+        var Maths = Number(prompt("Enter Maths marks"));
+        var Science = Number(prompt("Enter Science marks"));
+        var SST = Number(prompt("Enter SST marks"));
+        var marks,percentage;
+
+        marks = Eng + Hindi + Maths + Science + SST;
+        percentage = (marks/500)*100;
+
+        if (percentage>=36) {
+            result = "Passed";
+        }
+        else {
+            result = "Failed";
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <div>
+        <table>
+            <tr>
+                <td>English</td>
+                <td><script>document.write(Eng)</script></td>
+            </tr>
+            <tr>
+                <td>Hindi</td>
+                <td><script>document.write(Hindi)</script></td>
+            </tr>
+            <tr>
+                <td>Maths</td>
+                <td><script>document.write(Maths)</script></td>
+            </tr>
+            <tr>
+                <td>Science</td>
+                <td><script>document.write(Science)</script></td>
+            </tr>
+            <tr>
+                <td>SST</td>
+                <td><script>document.write(SST)</script></td>
+            </tr>
+            <tr>
+                <td><b><em><u>Result</u></em></b></td>
+                <td><script>document.write(result);</script></td>
+            </tr>
+            <tr>
+                <td><b><em><u>Total Marks</u></em></b></td>
+                <td><script>document.write(marks);</script></td>
+            </tr>
+            <tr>
+                <td><b><em><u>Percentage</u></em></b></td>
+                <td><script>document.write(percentage.toFixed(2));</script>%</td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+
+</html>
