@@ -12,24 +12,24 @@ function ThisJustIn() {
             <div>
                 <ul className='list-unstyled pe-5'>
                     <li><span className='heading mb-4 d-block fs-6 fw-medium'>Women's New Arrival</span></li>
-                    <li><Link href="#">Shop All</Link></li>
-                    <li><Link href="#">Tops</Link></li>
-                    <li><Link href="#">Bottoms</Link></li>
-                    <li><Link href="#">Jackets & Coats</Link></li>
-                    <li><Link href="#">Blazers</Link></li>
-                    <li><Link href="#">Dresses</Link></li>
-                    <li><Link href="#">Accessories</Link></li>
+                    <li><Link href="/collections">Shop All</Link></li>
+                    <li><Link href="/collections">Tops</Link></li>
+                    <li><Link href="/collections">Bottoms</Link></li>
+                    <li><Link href="/collections">Jackets & Coats</Link></li>
+                    <li><Link href="/collections">Blazers</Link></li>
+                    <li><Link href="/collections">Dresses</Link></li>
+                    <li><Link href="/collections">Accessories</Link></li>
                 </ul>
             </div>
             <div>
                 <ul className='list-unstyled ps-5 pe-5 me-5'>
                     <li><span className='heading mb-4 d-block fs-6 fw-medium'>Men's New Arrival</span></li>
-                    <li><Link href="#">Shop All</Link></li>
-                    <li><Link href="#">Tops</Link></li>
-                    <li><Link href="#">Bottoms</Link></li>
-                    <li><Link href="#">Overshirts</Link></li>
-                    <li><Link href="#">Jackets & Coats</Link></li>
-                    <li><Link href="#">Accessories</Link></li>
+                    <li><Link href="/collections">Shop All</Link></li>
+                    <li><Link href="/collections">Tops</Link></li>
+                    <li><Link href="/collections">Bottoms</Link></li>
+                    <li><Link href="/collections">Overshirts</Link></li>
+                    <li><Link href="/collections">Jackets & Coats</Link></li>
+                    <li><Link href="/collections">Accessories</Link></li>
                 </ul>
             </div>
 

@@ -9,7 +9,7 @@ function QuickAdd_Cards(props) {
     return (
         <Link href="#">
             <div className="box">
-                <div className='image position-relative d-flex justify-content-center align-items-end' style={{backgroundImage:`url('${Bg_img}')`}} onMouseEnter={()=>setBg_img(props.bg_in)} onMouseLeave={()=>setBg_img(props.bg_out)}>
+                <div className='image position-relative d-flex justify-content-center align-items-end' style={{ backgroundImage: `url('${Bg_img}')` }} onMouseEnter={() => setBg_img(props.bg_in)} onMouseLeave={() => setBg_img(props.bg_out)}>
                     <div className='best-seller bg-black p-1 text-white d-inline-block position-absolute m-1'>
                         BEST SELLER
                     </div>

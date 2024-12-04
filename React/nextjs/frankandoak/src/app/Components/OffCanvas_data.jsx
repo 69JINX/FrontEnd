@@ -29,11 +29,11 @@ function OffCanvas_data() {
     const [showOurStory, setShowOurStory] = useState('none');
 
     const showNavItems = (e) => {
-
         Ref_ThisJustIn.current.style.backgroundColor = '#EBECEE';
         Ref_Women.current.style.backgroundColor = '#EBECEE';
         Ref_Men.current.style.backgroundColor = '#EBECEE';
         Ref_OurStory.current.style.backgroundColor = '#EBECEE';
+        
         setShowThisJustIn('none');
         setShowWomen('none');
         setShowMen('none');
@@ -45,6 +45,7 @@ function OffCanvas_data() {
         let state_var = `setShow${e.target.innerHTML.replace(/ /g, "")}`;
         eval(state_var)('block');
     }
+
     return (
         <>
             <Offcanvas.Header closeButton>
