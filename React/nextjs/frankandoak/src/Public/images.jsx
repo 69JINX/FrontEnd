@@ -44,6 +44,7 @@ import logo from './../Public/FrankAndOak.jpg'
 import logo_dark from './../Public/FrankAndOak-dark.jpg'
 import b_corp_certified from './../Public/B_Corp/Certified_B_Corporation_B_Corp_Logo.svg'
 
+import cart_img from './../Public/Cart/Cart1.webp';
 
 export { MainPosterbg }
 export { FC_img1, FC_img2, FC_img3, FC_img4 }
@@ -51,4 +52,5 @@ export { QA_bgout1, QA_bgout2, QA_bgout3, QA_bgout4, QA_bgout5, QA_bgout6, QA_bg
 export { QA_bgin1, QA_bgin2, QA_bgin3, QA_bgin4, QA_bgin5, QA_bgin6, QA_bgin7, QA_bgin8, QA_bgin9, QA_bgin10 }
 export { HFU_img1, HFU_img2, HFU_img3, HFU_img4, HFU_img5, HFU_img6 };
 export { IBL_img1, IBL_img2, IBL_img3, IBL_img4 };
-export { logo, logo_dark, b_corp_certified }
+export { logo, logo_dark, b_corp_certified };
+export { cart_img };

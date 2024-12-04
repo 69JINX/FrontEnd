@@ -9,37 +9,37 @@ function Men() {
             <div>
                 <ul className='list-unstyled pe-5'>
                     <li><span className='heading mb-4 d-block fs-6 fw-medium'>Features</span></li>
-                    <li><Link href="#">New In</Link></li>
-                    <li><Link href="#">Best Sellers</Link></li>
-                    <li><Link href="#">Coming Soon</Link></li>
-                    <li><Link href="#">The Skyline</Link></li>
-                    <li><Link href="#">The Originals</Link></li>
-                    <li><Link href="#">Workwear</Link></li>
-                    <li><Link href="#">Gift Cards</Link></li>
-                    <li><Link href="#" className='text-danger'>Sale</Link></li>
+                    <li><Link href="/collections">New In</Link></li>
+                    <li><Link href="/collections">Best Sellers</Link></li>
+                    <li><Link href="/collections">Coming Soon</Link></li>
+                    <li><Link href="/collections">The Skyline</Link></li>
+                    <li><Link href="/collections">The Originals</Link></li>
+                    <li><Link href="/collections">Workwear</Link></li>
+                    <li><Link href="/collections">Gift Cards</Link></li>
+                    <li><Link href="/collections" className='text-danger'>Sale</Link></li>
                 </ul>
             </div>
             <div>
                 <ul className='list-unstyled ps-5'>
                     <li><span className='heading mb-4 d-block fs-6 fw-medium'>Clothing</span></li>
-                    <li><Link href="#">Shop All</Link></li>
-                    <li><Link href="#">T-shirts & Tops</Link></li>
-                    <li><Link href="#">Shirts & Polo Shirts</Link></li>
-                    <li><Link href="#">Sweaters & Cardigans</Link></li>
-                    <li><Link href="#">Overshirts & Blazers</Link></li>
-                    <li><Link href="#">Jackest & Coats</Link></li>
-                    <li><Link href="#">Denim</Link></li>
-                    <li><Link href="#">Pants</Link></li>
-                    <li><Link href="#">Shorts</Link></li>
+                    <li><Link href="/collections">Shop All</Link></li>
+                    <li><Link href="/collections">T-shirts & Tops</Link></li>
+                    <li><Link href="/collections">Shirts & Polo Shirts</Link></li>
+                    <li><Link href="/collections">Sweaters & Cardigans</Link></li>
+                    <li><Link href="/collections">Overshirts & Blazers</Link></li>
+                    <li><Link href="/collections">Jackest & Coats</Link></li>
+                    <li><Link href="/collections">Denim</Link></li>
+                    <li><Link href="/collections">Pants</Link></li>
+                    <li><Link href="/collections">Shorts</Link></li>
                 </ul>
             </div>
             <div>
                 <ul className='list-unstyled ps-5 pe-5 me-5'>
                     <li><span className='heading mb-4 d-block fs-6 fw-medium'>Accessories</span></li>
-                    <li><Link href="#">Shop All</Link></li>
-                    <li><Link href="#">Caps & Hats</Link></li>
-                    <li><Link href="#">Shoes & Boots</Link></li>
-                    <li><Link href="#">Bags</Link></li>
+                    <li><Link href="/collections">Shop All</Link></li>
+                    <li><Link href="/collections">Caps & Hats</Link></li>
+                    <li><Link href="/collections">Shoes & Boots</Link></li>
+                    <li><Link href="/collections">Bags</Link></li>
                 </ul>
             </div>
             <div className="ps-5 images">

@@ -8,9 +8,21 @@ a {
     height: 560px;
 }
 
+@media only screen and (max-width: 1020px) {
+    .box {
+        width: 250px;
+        height: 400px;
+    }
+
+    .image {
+        width: 100% !important;
+        height: 300px !important;
+    }
+}
+
 .image {
     width: 350px;
-    height: 480px;    
+    height: 480px;
     background-size: cover;
 }
 
@@ -75,10 +87,11 @@ a {
 
 .size {
     display: inline-block;
-    margin: 10px;
+    margin: 5px;
     padding: 10px;
     transition: 0.3s;
     font-size: 13px;
+    width: 50px;
 }
 
 .size:hover {
