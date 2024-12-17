@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Bar</title>
+    <style>
+        .main {
+            padding: 10px;
+            margin: 10px auto;
+            width: 60vw;
+            height: 205px;
+            display: flex;
+            justify-content: space-between;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            scroll-behavior: smooth;
+            pointer-events: none;
+        }
+
+        .main::-webkit-scrollbar {
+            display: none;
+        }
+
+        .box {
+            flex-shrink: 0;
+            height: 200px;
+            width: 200px;
+            margin: 5px 20px;
+            margin-left: 10px;
+            border: 1px solid white;
+            font-size: 30px;
+            text-align: center;
+            align-content: center;
+            background-color: pink;
+        }
+
+        .button {
+            top: 100%;
+            margin:auto;
+            padding:10px;
+            background-image: linear-gradient(red,orange,yellow);
+            display: inline-block;
+            margin:0 10px;
+            cursor:pointer;
+            font-size: 40px;
+            font-weight: bolder;
+        }
+        .navigations{
+            text-align: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="scrollBox" class="main">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+        <div class="box">5</div>
+        <div class="box">6</div>
+        <div class="box">7</div>
+        <div class="box">8</div>
+    </div>
+    <div class="navigations">
+        <div class="button" onclick="scrollStart()">&lt;</div>
+        <div class="button" onclick="scrollEnd()">&gt;</div>
+    </div>
+</body>
+<script type="text/javascript">
+
+let scrollStart=()=>{
+    scrollBox.scrollLeft=0;
+}
+let scrollEnd=()=>{
+    scrollBox.scrollLeft=scrollBox.scrollWidth;
+}
+</script>
+
+</html>
