@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.slick-active>.buttons{
+  background-color: black !important;
+}
+
+.slick-slide{
+  height: 100vh !important;
+}
+
+.slick-dots{
+  position: absolute;
+  top:150px;
+}
