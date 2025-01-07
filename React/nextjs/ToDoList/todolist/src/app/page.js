@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 // import logo from 'logo.png'
 
 export default function Home() {
-  const [items, setItems] = useState(()=>(typeof window)?JSON.parse(localStorage.getItem('ToDoListItems')) ?? []:[]);
+  // const [items, setItems] = useState(()=>JSON.parse(localStorage.getItem('ToDoListItems')) ?? []);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
