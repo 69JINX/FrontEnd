@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 // import logo from 'logo.png'
 
 export default function Home() {
-  const [items, setItems] = useState(JSON.parse(localStorage.getItem('ToDoListItems')) ?? []);
+  const [items, setItems] = useState(()=>(typeof window)?JSON.parse(localStorage.getItem('ToDoListItems')) ?? []:[]);
 
   useEffect(() => {
-    localStorage.setItem('ToDoListItems', JSON.stringify(items));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ToDoListItems', JSON.stringify(items));
+    }
   }, [items])
 
   const addItem = (e) => {
@@ -42,26 +44,30 @@ export default function Home() {
         </div>
       </div>
       <div className="max-h-[72vh] overflow-scroll">
-        {
-          items.map((item, i) => (
-            <div key={i} className=" mb-3 flex justify-between">
-              <div className="flex flex-grow">
-                <div className="content-center bg-slate-600 px-2 rounded-s-xl">{i + 1}.</div>
-                <div
-                  className="p-2 text-black w-[100%] overflow-x-scroll font-semibold bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500"
-                >
-                  {item}
+        <ul>
+          {
+            items.map((item, i) => (
+              <li>
+                <div key={i} className=" mb-3 flex justify-between">
+                  <div className="flex flex-grow">
+                    <div className="content-center bg-slate-600 px-2 rounded-s-xl">{i + 1}.</div>
+                    <div
+                      className="p-2 text-black w-[100%] overflow-x-scroll font-semibold bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500"
+                    >
+                      {item}
+                    </div>
+                  </div>
+                  <div className="bg-red-500 rounded-e-xl text-2xl px-2 content-center cursor-pointer bg-gradient-to-b from-red-400 to-red-600 hover:bg-red-600"
+                    data-value={i}
+                    onClick={(e) => setItems(items.filter((_, index) => !(index == e.target.dataset.value)))}
+                  >
+                    &#128465;
+                  </div>
                 </div>
-              </div>
-              <div className="bg-red-500 rounded-e-xl text-2xl px-2 content-center cursor-pointer bg-gradient-to-b from-red-400 to-red-600 hover:bg-red-600"
-                data-value={i}
-                onClick={(e) => setItems(items.filter((_, index) => !(index == e.target.dataset.value)))}
-              >
-                &#128465;
-              </div>
-            </div>
-          ))
-        }
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
 
