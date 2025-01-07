@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import logo from 'logo.png'
 
 export default function Home() {
@@ -16,6 +16,7 @@ export default function Home() {
     if (typeof window !== 'undefined') {
       localStorage.setItem('ToDoListItems', JSON.stringify(items));
     }
+
   }, [items])
 
   const addItem = (e) => {
@@ -53,8 +54,9 @@ export default function Home() {
         <ul>
           {
             [...items].reverse().map((item, index, arr) => (
-              <li>
-                <div key={index} className=" mb-3 flex justify-between">
+
+              <li key={index}>
+                <div className=" mb-3 flex justify-between">
                   <div className="flex flex-grow">
                     <div className="content-center bg-slate-600 px-2 rounded-s-xl">{arr.length - index}</div>
                     <div
@@ -64,7 +66,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="bg-red-500 rounded-e-xl text-2xl px-2 content-center cursor-pointer bg-gradient-to-b from-red-400 to-red-600 hover:bg-red-600"
-                    data-value={index}
+                    data-value={(arr.length - index) - 1}
                     onClick={(e) => setItems(items.filter((_, index) => !(index == e.target.dataset.value)))}
                   >
                     &#128465;
