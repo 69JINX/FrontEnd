@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 // import logo from 'logo.png'
 
 export default function Home() {
-  // const [items, setItems] = useState(()=>JSON.parse(localStorage.getItem('ToDoListItems')) ?? []);
-  // const [items, setItems] = useState([]);
+
   const [items, setItems] = useState(() => {
     if (typeof window !== "undefined") {
       return JSON.parse(localStorage.getItem("ToDoListItems")) ?? [];
@@ -53,11 +52,11 @@ export default function Home() {
       <div className="max-h-[72vh] overflow-scroll">
         <ul>
           {
-            items.map((item, i) => (
+            [...items].reverse().map((item, index, arr) => (
               <li>
-                <div key={i} className=" mb-3 flex justify-between">
+                <div key={index} className=" mb-3 flex justify-between">
                   <div className="flex flex-grow">
-                    <div className="content-center bg-slate-600 px-2 rounded-s-xl">{i + 1}.</div>
+                    <div className="content-center bg-slate-600 px-2 rounded-s-xl">{arr.length - index}</div>
                     <div
                       className="p-2 text-black w-[100%] overflow-x-scroll font-semibold bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500"
                     >
@@ -65,7 +64,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="bg-red-500 rounded-e-xl text-2xl px-2 content-center cursor-pointer bg-gradient-to-b from-red-400 to-red-600 hover:bg-red-600"
-                    data-value={i}
+                    data-value={index}
                     onClick={(e) => setItems(items.filter((_, index) => !(index == e.target.dataset.value)))}
                   >
                     &#128465;
