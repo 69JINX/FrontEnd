@@ -5,7 +5,13 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   // const [items, setItems] = useState(()=>JSON.parse(localStorage.getItem('ToDoListItems')) ?? []);
-  const [items, setItems] = useState([]);
+  // const [items, setItems] = useState([]);
+  const [items, setItems] = useState(() => {
+    if (typeof window !== "undefined") {
+      return JSON.parse(localStorage.getItem("ToDoListItems")) ?? [];
+    }
+    return [];
+  });
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
