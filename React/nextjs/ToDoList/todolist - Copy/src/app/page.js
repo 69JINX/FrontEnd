@@ -48,7 +48,6 @@ export default function Home() {
       setItems(items.filter((_, index) => !(index == e.target.dataset.value)))
       setdeletingItemInProgress(false);
     }, 500)
-
   }
 
   return (
