@@ -25,5 +25,6 @@ body {
 
 .remove-item-animation{
   opacity: 0;
-  transition: 1s;
+  transition: 0.5s;
+  transform:translateX(100px);
 }
