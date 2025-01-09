@@ -11,7 +11,7 @@ export default function Home() {
   const [newItems, setnewItems] = useState([]);
   const [items, setItems] = useState(() => {
     if (typeof window !== "undefined") {
-      refs.current = JSON.parse(localStorage.getItem("ToDoListItems")).map((_, i) => refs.current[i] || React.createRef());
+      if(localStorage.getItem("ToDoListItems")) refs.current = JSON.parse(localStorage.getItem("ToDoListItems")).map((_, i) => refs.current[i] || React.createRef());
       setnewItems(JSON.parse(localStorage.getItem("ToDoListItems")) ?? []);
       return JSON.parse(localStorage.getItem("ToDoListItems")) ?? [];
     }
