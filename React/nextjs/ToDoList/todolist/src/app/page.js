@@ -64,7 +64,7 @@ export default function Home() {
           onClick={() => setItems([])}
           className="block rounded group my-2 text-right bg-red-500 p-2 text-3xl cursor-pointer relative"
         >
-          &#128465;
+          <div className="text-sm">Delete All</div>
           <div className="mt-1 duration-300 opacity-0 overflow-hidden h-[0px] group-hover:opacity-100 group-hover:h-auto absolute left-[-60%] top-[100%] bg-white rounded text-black font-semibold text-[13px] px-1 whitespace-nowrap">
             Delete All
           </div>
