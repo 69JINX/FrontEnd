@@ -35,7 +35,7 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                     <button
                         onClick={() => seteditMode(!editMode)}
                         className={` ${!editMode ? 'block' : 'hidden'} content-center px-2 cursor-pointer  text-2xl bg-gradient-to-b from-blue-400 to-blue-600 select-none`}>
-                        &#128393;
+                        &#9998;
                     </button>
 
                 </div>
