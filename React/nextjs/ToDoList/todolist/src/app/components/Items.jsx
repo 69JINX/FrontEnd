@@ -10,7 +10,7 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                     <div className="content-center bg-slate-600 px-2 rounded-s-xl">{arr.length - index}</div>
                     <input
                         disabled={!editMode}
-                        className={`p-2 text-black w-[100%] overflow-x-scroll font-semibold ${!editMode?'bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500':'bg-white border border-black'}`}
+                        className={`p-2 text-black w-[100%] overflow-x-scroll font-semibold ${!editMode ? 'bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500' : 'bg-white border border-black'}`}
                         type="text"
                         onChange={(e) => {
                             setnewItems(() => {
@@ -18,14 +18,8 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                                 updatedItems[arr.length - (index + 1)] = e.target.value;
                                 return updatedItems;
                             })
-                            // setItems(() => {
-                            //     const updatedItems = [...items];
-                            //     updatedItems[arr.length - (index + 1)] = e.target.value;
-                            //     return updatedItems;
-                            // })
                         }}
                         value={newItems[arr.length - (index + 1)]}
-                    // value={item}
                     />
                     <button
                         onClick={() => seteditMode(!editMode)}
@@ -33,7 +27,6 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                         &#128393;
                     </button>
                     <div className={`mx-2 flex ${editMode ? 'block' : 'hidden'}`}>
-
                         <button
                             onClick={() => {
                                 seteditMode(!editMode)
@@ -57,7 +50,6 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                 <button
                     className="bg-red-500 select-none rounded-e-xl text-2xl px-2 content-center cursor-pointer bg-gradient-to-b from-red-400 to-red-600 hover:bg-red-600"
                     data-value={(arr.length - index) - 1}
-                    // onClick={(e) => setItems(items.filter((_, index) => !(index == e.target.dataset.value)))}
                     onClick={(!deletingItemInProgress) && deleteItem}
                 >
                     &#128465;
