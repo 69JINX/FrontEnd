@@ -19,7 +19,10 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                 <div className="flex flex-grow">
                     <div className="content-center bg-slate-600 px-2 rounded-s-xl">{arr.length - index}</div>
                     <input
-                        onKeyDown={(e) => e.key === 'Escape' ? cancel() : ''}
+                        onKeyDown={(e) => {
+                            e.key === 'Escape' ? cancel() : ''
+                            e.key === 'Enter'? save() : ''
+                        }}
                         disabled={!editMode}
                         className={`p-2 text-black w-[100%] overflow-x-scroll font-semibold ${!editMode ? 'bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500' : 'bg-white border border-black'}`}
                         type="text"
