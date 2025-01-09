@@ -26,27 +26,9 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                         className={` ${!editMode ? 'block' : 'hidden'} content-center px-2 cursor-pointer  text-2xl bg-gradient-to-b from-blue-400 to-blue-600 select-none`}>
                         &#128393;
                     </button>
-                    <div className={`mx-2 flex ${editMode ? 'block' : 'hidden'}`}>
-                        <button
-                            onClick={() => {
-                                seteditMode(!editMode)
-                                setItems(newItems);
-                            }}
-                            className="content-center px-2 cursor-pointer rounded-xl my-2 text-xl bg-gradient-to-b from-green-400 to-green-600 select-none"
-                        >
-                            Save
-                        </button>
-                        <button
-                            onClick={() => {
-                                seteditMode(!editMode)
-                                setnewItems(items);
-                            }}
-                            className="content-center px-2 cursor-pointer rounded-xl m-2 text-xl bg-gradient-to-b from-red-400 to-red-600 select-none"
-                        >
-                            Cancel
-                        </button>
-                    </div>
+
                 </div>
+
                 <button
                     className="bg-red-500 select-none rounded-e-xl text-2xl px-2 content-center cursor-pointer bg-gradient-to-b from-red-400 to-red-600 hover:bg-red-600"
                     data-value={(arr.length - index) - 1}
@@ -54,7 +36,28 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                 >
                     &#128465;
                 </button>
+                
             </div>
+            <div className={`mx-2 flex ${editMode ? 'block' : 'hidden'}`}>
+                    <button
+                        onClick={() => {
+                            seteditMode(!editMode)
+                            setItems(newItems);
+                        }}
+                        className="content-center px-2 cursor-pointer rounded-xl my-2 text-xl bg-gradient-to-b from-green-400 to-green-600 select-none"
+                    >
+                        Save
+                    </button>
+                    <button
+                        onClick={() => {
+                            seteditMode(!editMode)
+                            setnewItems(items);
+                        }}
+                        className="content-center px-2 cursor-pointer rounded-xl m-2 text-xl bg-gradient-to-b from-red-400 to-red-600 select-none"
+                    >
+                        Cancel
+                    </button>
+                </div>
         </li>
     )
 }
