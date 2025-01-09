@@ -1,31 +1,30 @@
 'use client'
 
 import React, { createRef, useEffect, useRef, useState } from "react";
+import Items from "./components/Items";
 // import logo from 'logo.png'
 
 export default function Home() {
   const refs = useRef([]);
   const [refslength, setrefslength] = useState(0);
   const [deletingItemInProgress, setdeletingItemInProgress] = useState(false);
-
+  const [newItems, setnewItems] = useState([]);
   const [items, setItems] = useState(() => {
     if (typeof window !== "undefined") {
       refs.current = JSON.parse(localStorage.getItem("ToDoListItems")).map((_, i) => refs.current[i] || React.createRef());
+      setnewItems(JSON.parse(localStorage.getItem("ToDoListItems")) ?? []);
       return JSON.parse(localStorage.getItem("ToDoListItems")) ?? [];
     }
     return [];
   });
 
   useEffect(() => {
-    console.log(refs);
     if (typeof window !== 'undefined') {
       localStorage.setItem('ToDoListItems', JSON.stringify(items));
     }
+    setnewItems(items);
     refs.current = items.map((_, i) => refs.current[i] || React.createRef());
     setrefslength(refs.current.length);
-    console.log('Items length====>', items.length)
-    console.log('refs length====>', refs.current.length)
-    console.log(items.length === refs.current.length);
   }, [items])
 
   const addItem = (e) => {
@@ -75,26 +74,7 @@ export default function Home() {
         <ul>
           {
             items.length === refslength && [...items].reverse().map((item, index, arr) => (
-
-              <li key={index} ref={refs.current[index]} className="HELlo">
-                <div className=" mb-3 flex justify-between">
-                  <div className="flex flex-grow">
-                    <div className="content-center bg-slate-600 px-2 rounded-s-xl">{arr.length - index}</div>
-                    <div
-                      className="p-2 text-black w-[100%] overflow-x-scroll font-semibold bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500"
-                    >
-                      {item}
-                    </div>
-                  </div>
-                  <div className="bg-red-500 rounded-e-xl text-2xl px-2 content-center cursor-pointer bg-gradient-to-b from-red-400 to-red-600 hover:bg-red-600"
-                    data-value={(arr.length - index) - 1}
-                    // onClick={(e) => setItems(items.filter((_, index) => !(index == e.target.dataset.value)))}
-                    onClick={(!deletingItemInProgress) && deleteItem}
-                  >
-                    &#128465;
-                  </div>
-                </div>
-              </li>
+              <Items items={items} newItems={newItems} refs={refs} index={index} item={item} arr={arr} deleteItem={deleteItem} setItems={setItems} setnewItems={setnewItems} deletingItemInProgress={deletingItemInProgress} />
             ))
           }
         </ul>
