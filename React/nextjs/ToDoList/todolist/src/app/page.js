@@ -11,7 +11,7 @@ export default function Home() {
   const [newItems, setnewItems] = useState([]);
   const [items, setItems] = useState(() => {
     if (typeof window !== "undefined") {
-      if(localStorage.getItem("ToDoListItems")) refs.current = JSON.parse(localStorage.getItem("ToDoListItems")).map((_, i) => refs.current[i] || React.createRef());
+      if (localStorage.getItem("ToDoListItems")) refs.current = JSON.parse(localStorage.getItem("ToDoListItems")).map((_, i) => refs.current[i] || React.createRef());
       setnewItems(JSON.parse(localStorage.getItem("ToDoListItems")) ?? []);
       return JSON.parse(localStorage.getItem("ToDoListItems")) ?? [];
     }
@@ -60,15 +60,12 @@ export default function Home() {
         </div>
       </form>
       <div className="flex justify-end">
-        <div
+        <button
           onClick={() => setItems([])}
-          className="block rounded group my-2 text-right bg-red-500 p-2 text-3xl cursor-pointer relative"
+          className="block rounded my-2 text-sm text-right bg-red-500 p-2 cursor-pointer relative"
         >
-          <div className="text-sm">Delete All</div>
-          <div className="mt-1 duration-300 opacity-0 overflow-hidden h-[0px] group-hover:opacity-100 group-hover:h-auto absolute left-[-60%] top-[100%] bg-white rounded text-black font-semibold text-[13px] px-1 whitespace-nowrap">
-            Delete All
-          </div>
-        </div>
+          Delete All
+        </button>
       </div>
       <div className="max-h-[72vh] overflow-scroll">
         <ul>

@@ -15,16 +15,15 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
 
     return (
         <li key={index} ref={refs.current[index]}>
-            <div className=" mb-3 flex justify-between">
+            <div className="mb-3 flex justify-between">
                 <div className="flex flex-grow">
                     <div className="content-center bg-slate-600 px-2 rounded-s-xl">{arr.length - index}</div>
-                    <input
+                    <textarea
                         onKeyDown={(e) => {
                             e.key === 'Escape' ? cancel() : ''
-                            e.key === 'Enter'? save() : ''
+                            e.key === 'Enter' ? save() : ''
                         }}
-                        disabled={!editMode}
-                        className={`p-2 text-black w-[100%] overflow-x-scroll font-semibold ${!editMode ? 'bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500' : 'bg-white border border-black'}`}
+                        className={` ${editMode ? 'block' : 'hidden'} p-2 text-black w-[100%] font-semibold 'bg-white border border-black`}
                         type="text"
                         onChange={(e) => {
                             setnewItems(() => {
@@ -35,6 +34,11 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                         }}
                         value={newItems[arr.length - (index + 1)]}
                     />
+                    <div
+                        className={`${!editMode ? 'block' : 'hidden'} max-h-[15vh] p-2 text-black w-[100%] overflow-y-scroll font-semibold bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500`}
+                    >
+                        {newItems[arr.length - (index + 1)]}
+                    </div>
                     <button
                         onClick={() => seteditMode(!editMode)}
                         className={` ${!editMode ? 'block' : 'hidden'} content-center px-2 cursor-pointer  text-2xl bg-gradient-to-b from-blue-400 to-blue-600 select-none`}>
