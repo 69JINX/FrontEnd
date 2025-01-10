@@ -1,0 +1,3 @@
+> netstat -ano | findstr :3000 (the port number)
+the above command will get you PID of the port, run below command with the PID you received and kill it
+> taskkill /F /PID 12017(or whatever the process ID is)
