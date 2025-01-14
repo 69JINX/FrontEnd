@@ -17,7 +17,7 @@ function Hero() {
                     <div>
                         <h1 className='hero-para-head text-2xl md:text-5xl font-semibold text-white'>STOCK SCREENING SIMPLIFIED</h1>
                         <div className={`tracking-wider font-light py-6 text-white text-sm md:text-xl ${assistant.className}`}>Find Winning Stock Faster with Nifty Trader's<br /> Advanced Stock Screening Tool</div>
-                        <div className='p-3 px-10 bg-[#13A8D7] font-semibold text-white inline-block rounded'>
+                        <div className='p-3 px-10 bg-[#13A8D7] font-semibold text-white inline-block rounded cursor-pointer'>
                             Free Trial
                         </div>
                     </div>
