@@ -21,15 +21,15 @@ function FAQ() {
                 <Accordion collapseAll className='border-none'>
                     <Accordion.Panel>
                         <Accordion.Title>What is NiftyTrader Prime Plan?</Accordion.Title>
-                        <Accordion.Content className='text-sm bg-[#f5f5f5]'><p>NiftyTrader Prime Plan.</p></Accordion.Content>
+                        <Accordion.Content className='text-sm text-[#999999] bg-[#f5f5f5]'><p>NiftyTrader Prime Plan.</p></Accordion.Content>
                     </Accordion.Panel>
                     <Accordion.Panel>
                         <Accordion.Title>What are the premium features included with the prime plan?</Accordion.Title>
-                        <Accordion.Content><p>Prime Plans</p></Accordion.Content>
+                        <Accordion.Content className='text-sm text-[#999999] bg-[#f5f5f5]'><p>Prime Plans</p></Accordion.Content>
                     </Accordion.Panel>
                     <Accordion.Panel>
                         <Accordion.Title>Can i try the premium features before I subscribe to the prime plan?</Accordion.Title>
-                        <Accordion.Content><p>YES</p></Accordion.Content>
+                        <Accordion.Content className='text-sm text-[#999999] bg-[#f5f5f5]'><p>YES</p></Accordion.Content>
                     </Accordion.Panel>
                     <Accordion.Panel>
                         <Accordion.Title>How do I subscribe the prime plan?</Accordion.Title>
