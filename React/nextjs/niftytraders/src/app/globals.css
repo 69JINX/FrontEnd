@@ -49,3 +49,7 @@ td {
 .price-list::-webkit-scrollbar{
   display: none;
 }
+
+.footer{
+  /* -webkit-filter: blur(3px); */
+}

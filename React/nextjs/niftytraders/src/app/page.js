@@ -10,6 +10,7 @@ import Testimonials from "./components/Testimonials";
 import Plans from "./components/Plans";
 import FAQ from "./components/FAQ";
 import FreeTrial from "./components/FreeTrial";
+import Footer from "./components/Footer";
 
 
 export default function Home() {
@@ -29,6 +30,7 @@ export default function Home() {
       <Plans />
       <FAQ />
       <FreeTrial />
+      <Footer />
     </div>
   );
 }

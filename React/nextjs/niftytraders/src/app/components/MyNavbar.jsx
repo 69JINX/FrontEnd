@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Navbar } from "flowbite-react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { MdOutlineNotificationsActive } from "react-icons/md";
+// import '../styles/toggledark.css'
+import './../../../styles/toggledark.css'
 
 function MyNavbar() {
     return (
@@ -21,7 +23,7 @@ function MyNavbar() {
                         <input type='text' className="bg-[#ECF5FE] py-1 w-[20vw] rounded-e text-black px-2 outline-none border-none" placeholder="Search Stock" />
                     </div>
                 </Navbar.Brand>
-                <Navbar.Toggle/>
+                <Navbar.Toggle />
                 <Navbar.Collapse>
                     <Navbar.Link href="#">
                         <div className="flex text-sm text-black">
@@ -68,16 +70,30 @@ function MyNavbar() {
                         <MdOutlineNotificationsActive size={25} color="black" />
                     </Navbar.Link>
                     <Navbar.Link>
-                        <div className="relative rounded-3xl text-[#4399EB] bg-[#ECF5FE] p-2 lg:me-10 font-semibold">
+                        <div className="relative rounded-3xl text-[#4399EB] bg-[#ECF5FE] p-2 font-semibold">
                             AA
                             <div className="absolute bottom-8">
                                 <img src="/premium.png" />
                             </div>
                         </div>
                     </Navbar.Link>
+                    <Navbar.Link>
+                        <div>
+                            <div id="dm-switch">
+                                <a href="#blank" className="buttonNub"></a>
+                                <div className="buttonGlow"></div>
+                                <div className="buttonClouds"></div>
+                                <div className="buttonStars">
+                                    ✨ ✨ ✨<br/>
+                                        &nbsp;&nbsp;&nbsp;✨ ✨
+                                </div>
+                                <div className="buttonBackground"></div>
+                            </div>
+                        </div>
+                    </Navbar.Link>
                 </Navbar.Collapse>
             </Navbar>
-        </div>
+        </div >
     )
 }
 
