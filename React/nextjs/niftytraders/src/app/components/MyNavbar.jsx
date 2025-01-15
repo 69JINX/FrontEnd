@@ -28,7 +28,7 @@ function MyNavbar() {
                     <Navbar.Link href="#">
                         <div className="relative group flex text-sm text-black">
                             Backtesting
-                            <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <div className="content-center group-hover:rotate-180"><svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg></div>
                             <ul className='hidden group-hover:block absolute top-[100%] left-[20%] pt-3'>
@@ -42,7 +42,7 @@ function MyNavbar() {
                     <Navbar.Link href="#">
                         <div className="relative group flex text-black  text-sm">
                             Screener
-                            <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <div className="content-center group-hover:rotate-180"><svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg></div>
                             <ul className='hidden group-hover:block absolute top-[100%] left-[10%] pt-3'>
@@ -56,7 +56,7 @@ function MyNavbar() {
                     <Navbar.Link href="#">
                         <div className="relative group flex text-black  text-sm">
                             Options
-                            <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <div className="content-center group-hover:rotate-180"><svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg></div>
                             <ul className='hidden group-hover:block absolute top-[100%] pt-3'>
@@ -70,7 +70,7 @@ function MyNavbar() {
                     <Navbar.Link href="#">
                         <div className="relative group flex text-black  text-sm">
                             Resources
-                            <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <div className="content-center group-hover:rotate-180"><svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg></div>
                             <ul className='hidden group-hover:block absolute top-[100%] left-[10%] pt-3'>
