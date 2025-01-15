@@ -20,7 +20,7 @@ function Footer() {
                 {/* <!-- Content Layer --> */}
                 <div className="relative text-white">
                     <div className='p-4 lg:p-8 flex flex-col-reverse lg:flex-row justify-between'>
-                        <div className='flex lg:hidden m-auto'>
+                        <div className='flex mt-3 lg:hidden m-auto'>
                             <img src="/google_play.png" width={150} />
                             <img src="/App_Store.svg" width={125} />
                         </div>
@@ -83,7 +83,7 @@ function Footer() {
                         </div>
                     </div>
                     <div>
-                        <div className='flex justify-around m-auto w-[400px]'>
+                        <div className='flex justify-around flex-wrap m-auto md:w-[400px] '>
                             <div className='cursor-pointer'>
                                 <img src="/social/Facebook.svg" />
                             </div>
