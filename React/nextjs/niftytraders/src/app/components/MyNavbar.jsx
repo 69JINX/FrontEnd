@@ -25,7 +25,7 @@ function MyNavbar() {
                 </Navbar.Brand>
                 <div className='block md:hidden'>
                     <div id="dm-switch">
-                        <a href="#blank" className="buttonNub"></a>
+                        <a href="#" className="buttonNub"></a>
                         <div className="buttonGlow"></div>
                         <div className="buttonClouds"></div>
                         <div className="buttonStars">
