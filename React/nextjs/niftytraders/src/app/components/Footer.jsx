@@ -19,7 +19,11 @@ function Footer() {
                 <div className="absolute inset-0 blur-sm bg-[url('/trading_bg.jpeg')] bg-[length:100%_800%] bg-center bg-no-repeat"></div>
                 {/* <!-- Content Layer --> */}
                 <div className="relative text-white">
-                    <div className='p-8 flex flex-col-reverse lg:flex-row justify-between'>
+                    <div className='p-4 lg:p-8 flex flex-col-reverse lg:flex-row justify-between'>
+                        <div className='flex lg:hidden m-auto'>
+                            <img src="/google_play.png" width={150} />
+                            <img src="/App_Store.svg" width={125} />
+                        </div>
                         <div className='flex justify-between'>
                             <div>
                                 <div className={`${poppins_head.className} lg:text-xl text-md`}>HELPFUL LINKS</div>
@@ -72,7 +76,7 @@ function Footer() {
                                     Subscribe
                                 </div>
                             </div>
-                            <div className='flex my-5'>
+                            <div className='hidden lg:flex my-5'>
                                 <img src="/google_play.png" width={150} />
                                 <img src="/App_Store.svg" width={125} />
                             </div>
@@ -106,7 +110,6 @@ function Footer() {
                             <div>Copyright <FaRegCopyright size={10} className='mx-1 inline-block' /> <a href="#" className='text-[#2889E7]'>NiftyTrader</a></div>
                             <div>All rights reserved ver 5.7.3</div>
                         </div>
-
                     </div>
                 </div>
 
