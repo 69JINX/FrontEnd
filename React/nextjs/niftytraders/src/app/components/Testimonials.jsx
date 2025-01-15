@@ -45,9 +45,9 @@ function Testimonials() {
     };
     return (
         <>
-            <div className='w-[100%] text-black py-2'>
+            <div className='w-[100%] text-black'>
                 <Slider {...settings}>
-                    <div className='my-10 py-10 lg:py-0 px-5'>
+                    <div className='mt-10 py-10 lg:py-0 px-5'>
                         <div className='p-5 lg:flex items-center relative text-center lg:text-left max-w-[600px] shadow-lg rounded-3xl'>
                             <div className='lg:w-[450px] w-[70px] md:w-[100px] absolute lg:static top-[-20%] left-[30%] sm:left-[40%] m-auto'>
                                 <img src="testimony_slide1_1.svg" />
@@ -62,7 +62,7 @@ function Testimonials() {
                             </div>
                         </div>
                     </div>
-                    <div className='my-10 py-10 lg:py-0 px-5'>
+                    <div className='mt-10 py-10 lg:py-0 px-5'>
                         <div className='p-5 lg:flex items-center relative text-center lg:text-left max-w-[600px] shadow-lg rounded-3xl'>
                             <div className='lg:w-[450px] w-[70px] md:w-[100px] absolute lg:static top-[-20%] left-[30%] sm:left-[40%] m-auto'>
                                 <img src="testimony_slide1_2.svg" />
@@ -77,7 +77,7 @@ function Testimonials() {
                             </div>
                         </div>
                     </div>
-                    <div className='my-10 py-10 lg:py-0 px-5'>
+                    <div className='mt-10 py-10 lg:py-0 px-5'>
                         <div className='p-5 lg:flex items-center relative text-center lg:text-left max-w-[600px] shadow-lg rounded-3xl'>
                             <div className='lg:w-[450px] w-[70px] md:w-[100px] absolute lg:static top-[-20%] left-[30%] sm:left-[40%] m-auto'>
                                 <img src="testimony_slide2_1.svg" />
@@ -92,7 +92,7 @@ function Testimonials() {
                             </div>
                         </div>
                     </div>
-                    <div className='my-10 py-10 lg:py-0 px-5'>
+                    <div className='mt-10 py-10 lg:py-0 px-5'>
                         <div className='p-5 lg:flex items-center relative text-center lg:text-left max-w-[600px] shadow-lg rounded-3xl'>
                             <div className='lg:w-[450px] w-[70px] md:w-[100px] absolute lg:static top-[-20%] left-[30%] sm:left-[40%] m-auto'>
                                 <img src="testimony_slide1_1.svg" />
