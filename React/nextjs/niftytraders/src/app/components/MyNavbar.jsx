@@ -37,62 +37,62 @@ function MyNavbar() {
                 </div>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
-                    <Navbar.Link className='cursor-pointer'>
+                    <div className='text-black cursor-pointer border-b-2 md:border-none py-2'>
                         <div className="relative group flex text-sm text-black">
                             Backtesting
                             <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5 duration-300 group-hover:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg></div>
-                            <ul className='hidden group-hover:block absolute top-[100%] left-[20%] pt-3'>
+                            <ul className='hidden group-hover:block group-hover:z-10 absolute top-[100%] left-[20%] pt-3'>
                                 <li className='px-2 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #1</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #2</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #3</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #4</li>
                             </ul>
                         </div>
-                    </Navbar.Link>
-                    <Navbar.Link className='cursor-pointer'>
+                    </div>
+                    <div className='text-black cursor-pointer border-b-2 md:border-none md:border-b-2 py-2'>
                         <div className="relative group flex text-black  text-sm">
                             Screener
                             <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5 duration-300 group-hover:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg></div>
-                            <ul className='hidden group-hover:block absolute top-[100%] left-[10%] pt-3'>
+                            <ul className='hidden group-hover:block group-hover:z-10 absolute top-[100%] left-[10%] pt-3'>
                                 <li className='px-2 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #1</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #2</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #3</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #4</li>
                             </ul>
                         </div>
-                    </Navbar.Link>
-                    <Navbar.Link className='cursor-pointer'>
+                    </div>
+                    <div className='text-black cursor-pointer border-b-2 md:border-none md:border-b-2 py-2'>
                         <div className="relative group flex text-black  text-sm">
                             Options
                             <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5 duration-300 group-hover:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg></div>
-                            <ul className='hidden group-hover:block absolute top-[100%] pt-3'>
+                            <ul className='hidden group-hover:block group-hover:z-10 absolute top-[100%] pt-3'>
                                 <li className='px-2 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #1</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #2</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #3</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #4</li>
                             </ul>
                         </div>
-                    </Navbar.Link>
-                    <Navbar.Link className='cursor-pointer'>
+                    </div>
+                    <div className='text-black cursor-pointer border-b-2 md:border-none md:border-b-2 py-2'>
                         <div className="relative group flex text-black  text-sm">
                             Resources
                             <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5 duration-300 group-hover:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg></div>
-                            <ul className='hidden group-hover:block absolute top-[100%] left-[10%] pt-3'>
+                            <ul className='hidden group-hover:block group-hover:z-10 absolute top-[100%] left-[10%] pt-3'>
                                 <li className='px-2 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #1</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #2</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #3</li>
                                 <li className='px-2 mt-1 py-1 bg-gradient-to-r from-[#7aabfa] hover:to-[#7aabfa] hover:from-[#a2c4fc] to-[#a2c4fc] rounded'>item #4</li>
                             </ul>
                         </div>
-                    </Navbar.Link>
+                    </div>
                     <Navbar.Link className='cursor-pointer'>
                         <div className="flex text-black  text-sm">
                             <div className="pe-2"><img src="/premium.png" /></div>
