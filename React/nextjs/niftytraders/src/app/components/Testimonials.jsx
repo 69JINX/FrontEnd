@@ -45,7 +45,7 @@ function Testimonials() {
     };
     return (
         <>
-            <div className='w-[100%] text-black py-2 px-5'>
+            <div className='w-[100%] text-black py-2'>
                 <Slider {...settings}>
                     <div className='my-10 py-10 lg:py-0 px-5'>
                         <div className='p-5 lg:flex items-center relative text-center lg:text-left min-w-[300px]s max-w-[600px] shadow-lg rounded-3xl'>
