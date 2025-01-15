@@ -23,6 +23,7 @@ function Testmo1() {
         slidesToScroll: 2,
         autoplay: true,
         autoplaySpeed: 5500,
+        arrows:false,
         mobileFirst: true,//add this one
         responsive: [
             {
