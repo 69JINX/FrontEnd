@@ -11,8 +11,8 @@ function MyNavbar() {
     return (
         <div>
             <Navbar fluid className='fixed top-0 z-10 w-full'>
-                <Navbar.Brand as={Link} href="#" className="p-2 ms-10">
-                    <img src="/Logo.png" className="h-8" />
+                <Navbar.Brand as={Link} href="#" className="p-2 xl:ms-5">
+                    <img src="/Logo.png" className="h-8 block" />
                     <div className="ms-1 relative text-3xl text-black">
                         <span className="font-bold">Nifty</span><span>Trader</span>
                         {/* <img src="/Nifty Trader.png" className="h-8" alt="Flowbite Logo" /> */}
@@ -23,9 +23,21 @@ function MyNavbar() {
                         <input type='text' className="bg-[#ECF5FE] py-1 w-[20vw] rounded-e text-black px-2 outline-none border-none" placeholder="Search Stock" />
                     </div>
                 </Navbar.Brand>
+                <div className='block md:hidden'>
+                    <div id="dm-switch">
+                        <a href="#blank" className="buttonNub"></a>
+                        <div className="buttonGlow"></div>
+                        <div className="buttonClouds"></div>
+                        <div className="buttonStars">
+                            ✨ ✨ ✨<br />
+                            &nbsp;&nbsp;&nbsp;✨ ✨
+                        </div>
+                        <div className="buttonBackground"></div>
+                    </div>
+                </div>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
-                    <Navbar.Link href="#">
+                    <Navbar.Link className='cursor-pointer'>
                         <div className="relative group flex text-sm text-black">
                             Backtesting
                             <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5 duration-300 group-hover:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -39,7 +51,7 @@ function MyNavbar() {
                             </ul>
                         </div>
                     </Navbar.Link>
-                    <Navbar.Link href="#">
+                    <Navbar.Link className='cursor-pointer'>
                         <div className="relative group flex text-black  text-sm">
                             Screener
                             <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5 duration-300 group-hover:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -53,7 +65,7 @@ function MyNavbar() {
                             </ul>
                         </div>
                     </Navbar.Link>
-                    <Navbar.Link href="#">
+                    <Navbar.Link className='cursor-pointer'>
                         <div className="relative group flex text-black  text-sm">
                             Options
                             <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5 duration-300 group-hover:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -67,7 +79,7 @@ function MyNavbar() {
                             </ul>
                         </div>
                     </Navbar.Link>
-                    <Navbar.Link href="#">
+                    <Navbar.Link className='cursor-pointer'>
                         <div className="relative group flex text-black  text-sm">
                             Resources
                             <div className="content-center"><svg className="w-2.5 h-2.5 ms-2.5 duration-300 group-hover:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -81,19 +93,19 @@ function MyNavbar() {
                             </ul>
                         </div>
                     </Navbar.Link>
-                    <Navbar.Link>
+                    <Navbar.Link className='cursor-pointer'>
                         <div className="flex text-black  text-sm">
                             <div className="pe-2"><img src="/premium.png" /></div>
                             <div className="text-[#4399EB] font-semibold">Refer and Earn</div>
                         </div>
                     </Navbar.Link>
-                    <Navbar.Link>
+                    <Navbar.Link className='cursor-pointer'>
                         <AiOutlineShoppingCart size={25} color="black" />
                     </Navbar.Link>
-                    <Navbar.Link>
+                    <Navbar.Link className='cursor-pointer'>
                         <MdOutlineNotificationsActive size={25} color="black" />
                     </Navbar.Link>
-                    <Navbar.Link>
+                    <Navbar.Link className='cursor-pointer'>
                         <div className="relative rounded-3xl text-[#4399EB] bg-[#ECF5FE] p-2 font-semibold">
                             AA
                             <div className="absolute right-1 bottom-8">
@@ -101,10 +113,10 @@ function MyNavbar() {
                             </div>
                         </div>
                     </Navbar.Link>
-                    <Navbar.Link>
-                        <div>
+                    <Navbar.Link className='cursor-pointer'>
+                        <div className='hidden md:block'>
                             <div id="dm-switch">
-                                <a href="#blank" className="buttonNub"></a>
+                                <a href="#" className="buttonNub"></a>
                                 <div className="buttonGlow"></div>
                                 <div className="buttonClouds"></div>
                                 <div className="buttonStars">
