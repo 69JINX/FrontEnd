@@ -90,7 +90,7 @@ function Footer() {
                                 <img src="/social/Youtube.svg" />
                             </div>
                             <div className='cursor-pointer'>
-                                <img src="/social/Linkedin.svg" />
+                                <img src="/social/LinkedIn.svg" />
                             </div>
                             <div className='cursor-pointer'>
                                 <img src="/social/Instagram.svg" />
