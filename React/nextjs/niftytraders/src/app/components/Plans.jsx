@@ -24,9 +24,9 @@ function Plans() {
             <table className='p-10  text-black md:mx-10'>
                 <thead>
                     <tr>
-                        <th className='p-5'>
+                        <th className='p-1 md:p-5'>
                             <div className='flex'>
-                                <div className={`text-sm md:text-lg ${poppins_head.className}`}>
+                                <div className={`text-[10px] md:text-lg ${poppins_head.className}`}>
                                     Compare Plans
                                 </div>
                                 <div className={`border px-1 md:px-3 py-1 rounded-full text-[10px] ms-1 md:ms-5 ${poppins_sub.className}`}>
