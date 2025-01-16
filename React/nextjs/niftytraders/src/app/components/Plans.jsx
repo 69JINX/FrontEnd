@@ -47,7 +47,7 @@ function Plans() {
                                         <div className={`${poppins_head.className} leading-none text-sm md:text-2xl lg:text-4xl`}>{item.price}</div>
                                         <div className={`${poppins_sub.className} ms-2 text-sm leading-6 text-[#999999]`}>{item.duration}</div>
                                     </div>
-                                    <div className='cursor-pointer text-[10px] md:text-lg py-3 mx-1 md:mx-10 px-2 lg:px-16 rounded-md text-white bg-[#236AD4]'>
+                                    <div className='cursor-pointer text-[10px] md:text-lg py-1 sm:py-3 sm:text-sm mx-1 md:mx-10 px-1 sm:px-3 lg:px-16 rounded-md text-white bg-[#236AD4]'>
                                         {item.button}
                                     </div>
                                 </th>
