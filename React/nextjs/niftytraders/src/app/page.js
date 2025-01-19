@@ -14,9 +14,12 @@ import Footer from "./components/Footer";
 
 
 export default function Home() {
+
   useEffect(() => {
     import("flowbite");
   }, []);
+
+
 
   return (
     <div>
