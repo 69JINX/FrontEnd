@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .parent {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        /* .parent>.child {
+            
+        } */
+
+        .child {
+            padding: 20px;
+            background-color: aqua;
+            border: 1px solid black;
+            margin: 0px 3px;
+            flex: 1 0 1;
+            /* flex-basis: 200px; */
+            /* min-width: 200px; */
+        }
+
+        .child:nth-child(2n) {
+            background-color: blue;
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="child">1</div>
+        <div class="child">2</div>
+        <div class="child">3</div>
+        <div class="child content">
+        </div>
+    </div>
+</body>
+<script>
+    let content = document.querySelector('.content');
+    let contentItems = new Array(100).fill(null);
+    contentItems.forEach(() => {
+        content.innerHTML = content.innerHTML + '<div class="child"></div>';
+    })
+</script>
+
+</html>
