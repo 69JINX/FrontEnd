@@ -23,7 +23,7 @@ export default function AuthContext({ children }) {
     }
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => { // explanation : 
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => { // explanation : https://github.com/69JINX/FrontEnd/blob/main/Notes/firebase-explaination-of-onAuthStateChanged.png
             setUser(currentUser);
         })
         return () => {
