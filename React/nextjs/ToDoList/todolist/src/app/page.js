@@ -1,8 +1,7 @@
 'use client'
 
-import React, { createRef, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Items from "./components/Items";
-// import logo from 'logo.png'
 
 export default function Home() {
   const refs = useRef([]);
@@ -22,7 +21,7 @@ export default function Home() {
     if (typeof window !== 'undefined') {
       localStorage.setItem('ToDoListItems', JSON.stringify(items));
     }
-    setnewItems(items);
+    setnewItems(items); 
     refs.current = items.map((_, i) => refs.current[i] || React.createRef());
     setrefslength(refs.current.length);
   }, [items])
