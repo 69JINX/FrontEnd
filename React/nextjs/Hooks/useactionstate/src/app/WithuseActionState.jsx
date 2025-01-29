@@ -7,6 +7,8 @@ function WithuseActionState() {
     // in useActionState, the 1st argument is the function which should run after form submission 
     // and 2nd argument is the initial Value of 'data' State. 
     // In this case we don't want any initial value so it is null
+    // To fully leverage its benefits, you need to use a framework that supports React Server Components (e.g., Next.js).
+    // https://react.dev/reference/react/useActionState read the full documentation to know more features of useActionState
 
     return (
         <>
