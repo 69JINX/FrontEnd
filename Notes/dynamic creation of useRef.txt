@@ -1,0 +1,42 @@
+const AnimalList = () => {
+  const itemsRef = useRef<{ animal: string; node: HTMLLIElement | null }[]>([]);
+  const [animals, setAnimals] = useState(["Dog", "Cat", "Elephant", "Tiger"]);
+
+  useEffect(() => {
+    console.log(';lkj; itemref', itemsRef);
+  }, [itemsRef.current])
+
+  return (
+    <div className="p-4">
+      <h2 className="text-lg font-semibold mb-3">Animal List</h2>
+      <ul className="border p-4 rounded-md bg-gray-100">
+        {animals.map((animal, index) => (
+          <li
+            key={index}
+            className="p-2 bg-white my-1 rounded shadow"
+            ref={(node) => {
+              console.log(';lkj;', node)
+              if (!node) return;
+              const item = { animal, node };
+              itemsRef.current.push(item);
+
+              return () => {
+                // ✅ Cleanup: Remove node reference on unmount
+                itemsRef.current = itemsRef.current.filter((i) => i.node !== node);
+              };
+            }}
+          >
+            {animal}
+          </li>
+        ))}
+      </ul>
+
+      <button
+        onClick={() => setAnimals([...animals, "New Animal"])}
+        className="mt-3 p-2 bg-blue-500 text-white rounded"
+      >
+        Add Animal
+      </button>
+    </div>
+  );
+};
