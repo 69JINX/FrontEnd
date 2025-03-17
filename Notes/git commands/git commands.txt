@@ -1,0 +1,13 @@
+clone from a specific branch using SSH : git clone --branch <branch_name> SSH/url
+
+
+>> push changes from your branch to main 
+git checkout main
+git pull -r // --rebase
+git checkout -
+git rebase main
+// solve conflicts if any
+git add .
+git rebase --continue
+git push origin [your_branch] -f
+// create pull request from GitHub manually
