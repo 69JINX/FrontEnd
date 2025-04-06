@@ -7,6 +7,7 @@ export default function Home() {
   const refs = useRef([]);
   const [refslength, setrefslength] = useState(0);
   const [deletingItemInProgress, setdeletingItemInProgress] = useState(false);
+  const [inputSize, setInputSize] = useState(false);
   const [newItems, setnewItems] = useState([]);
   const [items, setItems] = useState(() => {
     if (typeof window !== "undefined") {
@@ -21,7 +22,7 @@ export default function Home() {
     if (typeof window !== 'undefined') {
       localStorage.setItem('ToDoListItems', JSON.stringify(items));
     }
-    setnewItems(items); 
+    setnewItems(items);
     refs.current = items.map((_, i) => refs.current[i] || React.createRef());
     setrefslength(refs.current.length);
   }, [items])
@@ -50,15 +51,21 @@ export default function Home() {
   }
 
   return (
-    <div className="p-5 md:w-[50%] m-auto">
-      <img className="m-auto my-2" src="/logo1.png" width="50%" />
+    <div className="p-5 w-full m-auto">
+      <img className="m-auto my-2" src="/logo1.png" width="20%" />
       <form className="text-center" onSubmit={addItem}>
         <div className="flex">
-          <input name='item' className="p-2 text-black rounded-s-2xl text-4xl w-[90%] border border-black" />
-          <button className="p-5 ms-2 rounded-e-2xl cursor-pointer bg-red-600 text-4xl"> Add </button>
+          <textarea name='item' className={`p-2 text-black rounded-s-2xl text-xs md:text-4xl ${!inputSize && 'h-[70vh]'} w-[90%] border border-black`} />
+          <button className="p-2 md:p-5 ms-2 rounded-e-2xl cursor-pointer bg-red-600 text-sm md:text-4xl"> Add </button>
         </div>
       </form>
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <button
+          onClick={() => setInputSize(!inputSize)}
+          className="block rounded my-2 text-sm text-right bg-blue-500 p-2 cursor-pointer relative"
+        >
+          {inputSize ? <>&#x1f867;</> : <>&#129125;</>}
+        </button>
         <button
           onClick={() => setItems([])}
           className="block rounded my-2 text-sm text-right bg-red-500 p-2 cursor-pointer relative"
@@ -70,7 +77,10 @@ export default function Home() {
         <ul>
           {
             items.length === refslength && [...items].reverse().map((item, index, arr) => (
-              <Items items={items} newItems={newItems} refs={refs} index={index} item={item} arr={arr} deleteItem={deleteItem} setItems={setItems} setnewItems={setnewItems} deletingItemInProgress={deletingItemInProgress} />
+              <Items key={index}
+                items={items} newItems={newItems} refs={refs} index={index} item={item}
+                arr={arr} deleteItem={deleteItem} setItems={setItems} setnewItems={setnewItems}
+                deletingItemInProgress={deletingItemInProgress} />
             ))
           }
         </ul>
