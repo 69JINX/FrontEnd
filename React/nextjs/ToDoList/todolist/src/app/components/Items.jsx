@@ -74,7 +74,7 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                     <button
                         className="bg-red-500 select-none rounded-ee-xl text-sm md:text-2xl px-2 content-center cursor-pointer bg-gradient-to-b from-red-400 to-red-600 hover:bg-red-600"
                         data-value={(arr.length - index) - 1}
-                        onClick={(!deletingItemInProgress) && deleteItem}
+                        onClick={(!deletingItemInProgress) ? deleteItem : undefined}
                     >
                         &#128465; {/* delete */}
                     </button>
