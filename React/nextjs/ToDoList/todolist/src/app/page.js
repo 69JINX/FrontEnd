@@ -7,7 +7,7 @@ export default function Home() {
   const refs = useRef([]);
   const [refslength, setrefslength] = useState(0);
   const [deletingItemInProgress, setdeletingItemInProgress] = useState(false);
-  const [inputSize, setInputSize] = useState(false);
+  const [inputSize, setInputSize] = useState(true);
   const [newItems, setnewItems] = useState([]);
   const [items, setItems] = useState(() => {
     if (typeof window !== "undefined") {
