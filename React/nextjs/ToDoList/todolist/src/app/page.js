@@ -37,17 +37,17 @@ export default function Home() {
     else {
       alert("Please enter a value");
     }
-
   }
 
   const deleteItem = (e) => {
-    setdeletingItemInProgress(true);
-    refs.current[(refs.current.length - e.target.dataset.value - 1)].current.classList.add('remove-item-animation');
-    setTimeout(() => {
-      setItems(items.filter((_, index) => !(index == e.target.dataset.value)))
-      setdeletingItemInProgress(false);
-    }, 500)
-
+    if (typeof window !== 'undefined' && window?.confirm('Are you sure you want to delete!')) {
+      setdeletingItemInProgress(true);
+      refs.current[(refs.current.length - e.target.dataset.value - 1)].current.classList.add('remove-item-animation');
+      setTimeout(() => {
+        setItems(items.filter((_, index) => !(index == e.target.dataset.value)))
+        setdeletingItemInProgress(false);
+      }, 500)
+    }
   }
 
   return (
@@ -67,7 +67,7 @@ export default function Home() {
           {inputSize ? <>&#x1f867;</> : <>&#129125;</>}
         </button>
         <button
-          onClick={() => setItems([])}
+          onClick={() => typeof window !== 'undefined' && window?.confirm('Are you sure you want to delete!') && setItems([])}
           className="block rounded my-2 text-sm text-right bg-red-500 p-2 cursor-pointer relative"
         >
           Delete All
