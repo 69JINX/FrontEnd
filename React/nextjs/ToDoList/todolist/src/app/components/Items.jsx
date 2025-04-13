@@ -25,14 +25,21 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                 <div className="flex flex-grow" >
                     <div className='flex flex-col'>
                         <div className="content-center grow bg-slate-600 px-2 rounded-ss-xl">{arr.length - index}</div>
-                        <div className='bg-slate-400 grow grid  place-items-center' onClick={() => setSize(!size)}>{!size ? <>&#x1f867;</> : <>&#129125;</>}</div>
+                        <div className='bg-slate-400 grow grid  place-items-center' onClick={() => setSize(!size)}>
+                            {!size ? <>&#x1f867;</> : <>&#129125;</>}
+                        </div>
                     </div>
-                    <textarea
+                    <button
+                        onClick={(e) => {
 
-                        // onKeyDown={(e) => {
-                        //     e.key === 'Escape' ? cancel() : ''
-                        //     e.key === 'Enter' ? save() : ''
-                        // }}
+                            seteditMode(!editMode)
+                            scrollToElement(e);
+                            setSize(true)
+                        }}
+                        className={` ${!editMode ? 'block' : 'hidden'} content-center px-2 cursor-pointer text-s,m md:text-2xl bg-gradient-to-b from-blue-400 to-blue-600 select-none`}>
+                        &#9998; {/* edit */}
+                    </button>
+                    <textarea
                         className={` ${editMode ? 'block' : 'hidden'} p-2 text-black w-[100%] text-xs md:text-base font-semibold h-full overflow-scroll bg-white border border-black`}
                         type="text"
                         onChange={(e) => {
@@ -49,20 +56,12 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                     >
                         {newItems[arr.length - (index + 1)]}
                     </div>
-                    <button
-                        onClick={(e) => {
 
-                            seteditMode(!editMode)
-                            scrollToElement(e);
-                        }}
-                        className={` ${!editMode ? 'block' : 'hidden'} content-center px-2 cursor-pointer text-s,m md:text-2xl bg-gradient-to-b from-blue-400 to-blue-600 select-none`}>
-                        &#9998;
-                    </button>
                 </div>
                 <div className='flex flex-col'>
                     {editMode && <button
                         onClick={save}
-                        className="content-center px-2 cursor-pointer rounded-se-xl text-xl bg-gradient-to-b from-green-400 to-green-600 select-none"
+                        className="content-center grow px-2 cursor-pointer rounded-se-xl text-xl bg-gradient-to-b from-green-400 to-green-600 select-none"
                     >
                         Save
                     </button>}
@@ -73,28 +72,14 @@ function Items({ items, newItems, refs, index, item, arr, deleteItem, setItems, 
                         Cancel
                     </button>}
                     <button
-                        className="bg-red-500 h-full select-none rounded-ee-xl text-sm md:text-2xl px-2 content-center cursor-pointer bg-gradient-to-b from-red-400 to-red-600 hover:bg-red-600"
+                        className="bg-red-500 select-none rounded-ee-xl text-sm md:text-2xl px-2 content-center cursor-pointer bg-gradient-to-b from-red-400 to-red-600 hover:bg-red-600"
                         data-value={(arr.length - index) - 1}
                         onClick={(!deletingItemInProgress) && deleteItem}
                     >
-                        &#128465;
+                        &#128465; {/* delete */}
                     </button>
                 </div>
             </div>
-            {/* <div className={`mx-2 flex ${editMode ? 'block' : 'hidden'}`}>
-                <button
-                    onClick={save}
-                    className="content-center px-2 cursor-pointer rounded-xl my-2 text-xl bg-gradient-to-b from-green-400 to-green-600 select-none"
-                >
-                    Save
-                </button>
-                <button
-                    onClick={cancel}
-                    className="content-center px-2 cursor-pointer rounded-xl m-2 text-xl bg-gradient-to-b from-red-400 to-red-600 select-none"
-                >
-                    Cancel
-                </button>
-            </div> */}
         </li>
     )
 }
