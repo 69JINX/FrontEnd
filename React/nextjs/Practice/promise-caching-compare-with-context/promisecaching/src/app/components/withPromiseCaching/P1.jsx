@@ -13,7 +13,6 @@ function P1() {
   }
   useEffect(() => {
     fetchData();
-    return () => setData(null)
   }, [])
 
   return (
