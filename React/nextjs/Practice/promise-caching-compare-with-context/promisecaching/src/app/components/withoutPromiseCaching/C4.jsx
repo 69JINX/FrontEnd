@@ -13,7 +13,7 @@ function C4() {
   }
   useEffect(() => {
     fetchData();
-    return () => setData(null)
+ 
   }, [])
 
   return (
