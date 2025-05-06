@@ -23,8 +23,10 @@ function WithoutStartTransition() {
                     ))}
                 </ul>
             </div>
+            <compoe />
         </div>
     )
 }
 
 export default WithoutStartTransition
+
