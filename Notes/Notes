@@ -19,13 +19,13 @@ Nodejs Implementation :
 Note : Sometimes, the file doesn't recognize what process.env.VARIABLE is, for that import the dotenv package in that specific file again 
 
 The process object is a Node.js object. It provides information about, and control over, the current Node.js process. It is a global object, meaning it is always available in Node.js applications without requiring an import statement. While Node.js uses JavaScript as its language, the process object itself is not a standard JavaScript object available in browser environments. It's specific to the Node.js runtime environment. 
-more about process object : 
+more about process object : https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/dotenv-and-global-access.png
 
 
-Serve files(assets) from server : 
+Serve files(assets) from server : https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/serve-files-from-server.png
 eg: (https//your-domain.com/files/image.jpg)
 
-Mongoose for MongoDB :
+Mongoose for MongoDB :=
 >> npm i mongoose
 Mongoose is an Object Data Modeling (ODM) library for MongoDB, a NoSQL database. It provides a higher-level abstraction for working with MongoDB, making it easier for developers to interact with the database using JavaScript. Mongoose simplifies data modeling, schema creation, and validation, allowing developers to work with MongoDB in a more structured and intuitive way.
 Here's a more detailed breakdown:
@@ -208,4 +208,4 @@ console.log(user.settings.toObject().theme);
 
 
 
-why map is better than normal object : chatgpt.pic
+why map is better than normal object : https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/map-is-better-than-object.png
