@@ -285,6 +285,13 @@ JWT (jsonwebtocken)
 1. user login with his credentials
 2. authenticate his credentials(email-password) from backend
 3. if authenticated, fetch user data from db and convert that user data to jwt token and send to frontend
+   converting data to jwt token : 
+   > npm i jsonwebtoken
+   const jwt = require('jsonwebtoken')
+   jwt.sign(dataToEncrypt, process.env.JWT_KEY, { expiresIn: '1h' },(error, token)=>{ // ExpiresIn Eg: 60, "2 days", "10h", "7d". A numeric value is interpreted as a seconds count. If you use a string be sure you provide the time units (days, hours, etc), otherwise milliseconds unit is used by default ("120" is equal to "120ms").
+   if(error) return res.status(500).json({message:'try after some time!'}); https://www.npmjs.com/package/jsonwebtoken#:~:text=numeric%20value
+   res.status(200).json({message:'success',token})
+   }) // Eg: 1000, "2 days", "10h", "7d"
 4. frontend get the token and store it in cookies.
 5. backend create a verifyToken api to verify the token
 6. frontend send token in verifyToken api in the headers
