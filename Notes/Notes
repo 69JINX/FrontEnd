@@ -209,3 +209,154 @@ console.log(user.settings.toObject().theme);
 
 
 why map is better than normal object : https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/map-is-better-than-object.png
+
+
+express.json()
+
+app.use(express.json());
+express.json() is a built-in middleware function in Express.js that parses incoming requests with JSON payloads. It handles JSON data sent from clients and makes it accessible within your server-side application. This allows you to easily work with data sent by clients, especially when building RESTful APIs that use JSON. 
+
+Here's a more detailed explanation:
+Parsing JSON:
+When a client sends data to your server in the form of JSON, express.json() parses this JSON data and attaches it to the req.body property of the request object. 
+Accessibility:
+This means you can access the parsed JSON data within your route handlers using req.body. For example, req.body.name would give you access to the 'name' field in the JSON data sent from the client. 
+Middleware Function:
+express.json() is a middleware function, meaning it's a piece of code that can modify the request object or respond to a request. It's typically used with app.use() to apply it globally or with individual routes for more targeted parsing. 
+body-parser Dependency:
+Historically, Express.js relied on the body-parser library for parsing request bodies. However, in newer versions of Express, express.json() is now a direct part of the framework and essentially replaces the need for body-parser when dealing with JSON data. 
+
+const express = require('express');
+const app = express();
+
+// Use express.json() as middleware
+app.use(express.json());
+
+app.post('/api/data', (req, res) => {
+  // req.body now contains the parsed JSON data
+  const jsonData = req.body;
+  console.log(jsonData);  // Output: { name: 'John', age: 30 }
+  res.json({ message: 'Data received successfully' });
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+
+In this example, any request sent to /api/data with a JSON payload will have its data parsed and made available in req.body. This makes it easy to access and work with the data within the route handler. 
+
+
+CORS (cross origin resource sharing)
+It is a security feature built into web browsers that controls how resources on a server can be requested from another domain (or "origin") outside the one the resource originated from.
+CORS is a protocol that uses HTTP headers to tell browsers whether a specific web application running at one origin is allowed to access resources from a different origin.
+Example scenario:
+1. Your frontend is hosted at https://example-frontend.com.
+2. Your backend API is hosted at https://api.example-backend.com.
+3. The browser blocks API requests from frontend to backend unless the backend includes proper CORS headers (e.g., Access-Control-Allow-Origin).
+
+✅ Why do we need CORS in the backend?
+Security: Prevent unauthorized websites from reading sensitive data from your server.
+Controlled Sharing: Only allow access to known and trusted frontend domains.
+Avoid Same-Origin Policy issues: Browsers enforce the Same-Origin Policy, which blocks cross-origin requests by default for security.
+CORS allows safe and secure controlled exceptions to this rule.
+
+app.use(cors()); in Express:
+This line tells your Express.js app to enable CORS (Cross-Origin Resource Sharing) with default settings.
+
+🔍 What it does exactly:
+Allows requests from any origin (Access-Control-Allow-Origin: *)
+Does not allow credentials (like cookies, sessions, or Authorization headers)
+
+Tip : to restrict public usage of your api and only allow defined frontend domain to access your backend APIs : 
+app.use(cors({
+  origin: 'http://your-frontend.com',
+  methods: ['GET', 'HEAD', 'PUT'], // only these methods will be allowed, all the rest methods PATCH, POST, DELETE will be blocked
+}));
+
+When you use: app.use(cors());
+It's shorthand for: 
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'HEAD', 'PUT', PATCH, POST, DELETE'],
+}));
+
+
+JWT (jsonwebtocken)
+1. user login with his credentials
+2. authenticate his credentials(email-password) from backend
+3. if authenticated, fetch user data from db and convert that user data to jwt token and send to frontend
+4. frontend get the token and store it in cookies.
+5. backend create a verifyToken api to verify the token
+6. frontend send token in verifyToken api in the headers
+7. Backed verify the token and send the actual user data.
+8. The actual user data will be saved in the context.
+9. The jwt token is stay till its expiry date in the cookie.
+10. On Every refresh, the verifyToken api is called with the jwt token (to convert token to userdata)
+11. verifyToken :- 
+	Error : After receiving the error(invalid token, expired token), the frontend should log out the user and redirect to login page to generate the jwt again (from step 1)
+	Success : store encrypted userdata in context that was send from verifyToken api
+	
+
+Backend Guide : https://github.com/goldbergyoni/nodebestpractices
+
+
+🧭 Backend concepts you should absolutely learn (beginner → advanced):
+🔹 1. HTTP & REST basics
+Methods (GET, POST, PUT, DELETE)
+
+Status codes (200, 404, 401, 500)
+
+Headers, query params, body
+
+🔹 2. Authentication & Authorization
+JWT (JSON Web Tokens)
+
+Cookie-based sessions
+
+Role-based access control (RBAC)
+
+🔹 3. Middleware & Routing (Express, NestJS, etc.)
+app.use(), req, res
+
+Route-level and global middleware
+
+🔹 4. Database integration
+MongoDB / PostgreSQL / MySQL
+
+ORMs like Prisma or Mongoose
+
+Query optimization
+
+🔹 5. CORS & Cross-origin requests
+
+🔹 6. Error Handling
+Centralized error middleware
+
+Logging (Winston, Pino)
+
+Custom error classes
+
+🔹 7. File Uploads
+Multer (Express)
+
+Cloud storage (S3, Cloudinary)
+
+🔹 8. Security Best Practices
+Input validation
+
+Rate limiting
+
+Helmet / CSRF
+
+🔹 9. Testing APIs
+Postman
+
+Jest / Supertest
+
+🔹 10. API Design Principles
+Versioning
+
+Pagination
+
+REST vs GraphQL
+
