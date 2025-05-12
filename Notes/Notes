@@ -209,3 +209,38 @@ console.log(user.settings.toObject().theme);
 
 
 why map is better than normal object : https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/map-is-better-than-object.png
+
+
+express.json()
+
+app.use(express.json());
+express.json() is a built-in middleware function in Express.js that parses incoming requests with JSON payloads. It handles JSON data sent from clients and makes it accessible within your server-side application. This allows you to easily work with data sent by clients, especially when building RESTful APIs that use JSON. 
+
+Here's a more detailed explanation:
+Parsing JSON:
+When a client sends data to your server in the form of JSON, express.json() parses this JSON data and attaches it to the req.body property of the request object. 
+Accessibility:
+This means you can access the parsed JSON data within your route handlers using req.body. For example, req.body.name would give you access to the 'name' field in the JSON data sent from the client. 
+Middleware Function:
+express.json() is a middleware function, meaning it's a piece of code that can modify the request object or respond to a request. It's typically used with app.use() to apply it globally or with individual routes for more targeted parsing. 
+body-parser Dependency:
+Historically, Express.js relied on the body-parser library for parsing request bodies. However, in newer versions of Express, express.json() is now a direct part of the framework and essentially replaces the need for body-parser when dealing with JSON data. 
+
+const express = require('express');
+const app = express();
+
+// Use express.json() as middleware
+app.use(express.json());
+
+app.post('/api/data', (req, res) => {
+  // req.body now contains the parsed JSON data
+  const jsonData = req.body;
+  console.log(jsonData);  // Output: { name: 'John', age: 30 }
+  res.json({ message: 'Data received successfully' });
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+
+In this example, any request sent to /api/data with a JSON payload will have its data parsed and made available in req.body. This makes it easy to access and work with the data within the route handler. 
