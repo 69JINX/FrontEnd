@@ -280,6 +280,12 @@ app.use(cors({
   methods: ['GET', 'HEAD', 'PUT', PATCH, POST, DELETE'],
 }));
 
+full detailed discussion : https://chatgpt.com/c/6821960c-80d8-8012-8d48-0b5dc3da0684
+https://www.geeksforgeeks.org/cross-origin-resource-sharing-cors/
+https://www.geeksforgeeks.org/http-access-control-cors/
+https://developer.mozilla.org/en-US/docs/Web
+https://www.youtube.com/watch?v=E6jgEtj-UjI
+
 
 JWT (jsonwebtocken)
 1. user login with his credentials
@@ -288,21 +294,63 @@ JWT (jsonwebtocken)
    converting data to jwt token : 
    > npm i jsonwebtoken
    const jwt = require('jsonwebtoken')
-   jwt.sign(dataToEncrypt, process.env.JWT_KEY, { expiresIn: '1h' },(error, token)=>{ // ExpiresIn Eg: 60, "2 days", "10h", "7d". A numeric value is interpreted as a seconds count. If you use a string be sure you provide the time units (days, hours, etc), otherwise milliseconds unit is used by default ("120" is equal to "120ms").
-   if(error) return res.status(500).json({message:'try after some time!'}); https://www.npmjs.com/package/jsonwebtoken#:~:text=numeric%20value
+   jwt.sign(dataToEncrypt, process.env.JWT_KEY, { expiresIn: '7d' },(error, token)=>{ 
+   if(error) return res.status(500).json({message:'try after some time!'});
    res.status(200).json({message:'success',token})
-   }) // Eg: 1000, "2 days", "10h", "7d"
+   })
+   ExpiresIn Eg: 60, "2 days", "10h", "7d". A numeric value is interpreted as a seconds count. If you use a string be sure you provide the time units (days, hours, etc), otherwise milliseconds unit is used by default ("120" is equal to "120ms").
+   https://www.npmjs.com/package/jsonwebtoken#:~:text=numeric%20value
 4. frontend get the token and store it in cookies.
 5. backend create a verifyToken api to verify the token
 6. frontend send token in verifyToken api in the headers
-7. Backed verify the token and send the actual user data.
-8. The actual user data will be saved in the context.
-9. The jwt token is stay till its expiry date in the cookie.
+   const res = await axios.post('https://localhost:4000/verifyToken',{},{
+   headers:{
+   'Authorization':jwtToken
+   }})
+7. Backend verify the token and send the actual user data.
+   jwt.verify(req.headers.authorization, process.env.JWT_KEY,(error, decoded)=>{
+    if(error) res.status(401).json({message:'please login again!'})
+    res.status(200).json({message:'success',data:decoded})
+   })
+   Error : After receiving the error(invalid token, expired token), the frontend should log out the user and redirect to login page and generate the jwt again (from step 1)
+   Success : store encrypted userdata in context that was send from verifyToken api
+8. The actual user data(decoded) will be saved in the context.
+9. The jwt token will stay till its expiry date in the cookie.
 10. On Every refresh, the verifyToken api is called with the jwt token (to convert token to userdata)
-11. verifyToken :- 
-	Error : After receiving the error(invalid token, expired token), the frontend should log out the user and redirect to login page to generate the jwt again (from step 1)
-	Success : store encrypted userdata in context that was send from verifyToken api
 	
+Check authentication on every protected API route in backend with auth middleware, jwt will be send with header/cookie from frontend :
+
+// middleware/auth.js
+const jwt = require('jsonwebtoken');
+
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader?.split(' ')[1]; // Bearer <token>
+
+  if (!token) return res.status(401).json({ message: 'No token provided' });
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: 'Invalid token' });
+
+    req.user = user; // Store user info in req for use in routes
+    next();
+  });
+}
+
+module.exports = authenticateToken;
+
+🧑‍⚖️ Use it in routes:
+const authenticateToken = require('./middleware/auth');
+
+app.get('/api/profile', authenticateToken, (req, res) => {
+  res.json({ message: `Hello ${req.user.name}` });
+});
+
+app.post('/api/update', authenticateToken, (req, res) => {
+  // Only logged-in users can update data
+});
+
+
 
 Backend Guide : https://github.com/goldbergyoni/nodebestpractices
 
@@ -367,3 +415,31 @@ Pagination
 
 REST vs GraphQL
 
+
+Update Local State Instead of Refetching After a Successful Update API Call
+
+When running update api to updating some data in backend, instead of fetching new data to show latest data after update api, just change the old react state if data has been successfully updated. This will save us from calling fetch api after every update api.
+❌ Inefficient Approach (Refetching Data)
+const handleUpdate = async (updatedItem) => {
+  const res = await updateItemAPI(updatedItem);
+  if (res.success) {
+    fetchData(); // Re-fetches all data again — not optimal
+  }
+};
+✅ Recommended Approach (Update Local State)
+const handleUpdate = async (updatedItem) => {
+  const res = await updateItemAPI(updatedItem);
+  if (res.success) {
+    setData((prevData) =>
+      prevData.map((item) =>
+        item.id === updatedItem.id ? { ...item, ...updatedItem } : item
+      )
+    );
+  }
+};
+
+✅ Benefits
+Reduces API load by avoiding unnecessary data fetching
+Improves performance, especially in large data sets
+Provides instant feedback to the user
+Keeps state management within React predictable and efficient
