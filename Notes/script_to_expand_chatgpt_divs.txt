@@ -1,0 +1,11 @@
+document.querySelectorAll('[class*="--thread-content-max-width"]').forEach(el => {
+  const updatedClassList = el.className
+    .split(' ')
+    .filter(cls =>
+      !cls.startsWith('[--thread-content-max-width:') &&
+      !cls.startsWith('@[34rem]:[--thread-content-max-width:') &&
+      !cls.startsWith('@[64rem]:[--thread-content-max-width:')
+    )
+    .join(' ');
+  el.className = updatedClassList;
+});
