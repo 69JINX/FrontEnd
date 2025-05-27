@@ -1,0 +1,37 @@
+ContextAPI
+Context API is a feature (or built-in tool) in React that allows you to share state (data) across the entire component tree without passing props manually at every level. A way to create global state that can be accessed by any component, no matter how deeply nested.
+So, Context API is:
+1. A React concept
+2. Implemented through a set of tools (like createContext, Provider, useContext)
+3. A mechanism to solve the "prop drilling" problem
+
+useContext
+useContext is a React Hook that lets you consume (read/use) a context that was created using the Context API.
+You use it inside a component to access the context value. It replaces the older pattern of <MyContext.Consumer> components.
+Context API is the whole system (create, provide, consume context). useContext is a part of the system — specifically the hook that reads from the context.
+
+Context.jsx
+import { createContext, useState } from 'react'
+export const counterContext = createContext(0); // default value '0' used when there's no matching provider above in the tree.
+
+export function Context({ children }) {
+  const [count, setCount] = useState(0); 
+
+  return (
+    <counterContext.Provider value={{ count, setCount }}> //Wraps part of your component tree and provides a value to all components inside that tree.
+      {children}
+    </counterContext.Provider>
+  );
+}
+
+App.jsx 
+<Context> // wrap the whole app in the created context so all child components can access the context state
+  <App />
+</Context>
+Note : In case of app routing, in the layout.js, wrap the {children} prop in <Context>
+
+Accessing value from context in child components with useContext(MyContext) :
+
+import { useContext } from 'react';
+const { count, setCount } = useContext(counterContext);
+
