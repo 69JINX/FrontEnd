@@ -476,4 +476,10 @@ Select App: Mail
 Device: Other (Custom name) — you can write "Nodemailer"
 
 Google will generate a 16-character password. Use that in your code as process.env.PASS
-    
+
+How to store OTP in backend for multiple user :
+const otpMap = new Map();
+otpMap.set('user@example.com', '123456');
+remove OTP after certain time :
+setTimeout(() => otpMap.delete('user@example.com'), 5 * 60 * 1000); // expires in 5 mins
+A Map is more reliable and better performance for frequent insertion/deletion than an object
