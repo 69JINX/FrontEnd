@@ -1,37 +1,122 @@
-ContextAPI
-Context API is a feature (or built-in tool) in React that allows you to share state (data) across the entire component tree without passing props manually at every level. A way to create global state that can be accessed by any component, no matter how deeply nested.
-So, Context API is:
-1. A React concept
-2. Implemented through a set of tools (like createContext, Provider, useContext)
-3. A mechanism to solve the "prop drilling" problem
+Redux Redux Toolkit
+Redux is a state management library for JavaScript applications (commonly used with React), especially when you have:
+1. A lot of components sharing the same data
+2. Complex or deeply nested state
+3. A need for predictable, centralized state management
 
-useContext
-useContext is a React Hook that lets you consume (read/use) a context that was created using the Context API.
-You use it inside a component to access the context value. It replaces the older pattern of <MyContext.Consumer> components.
-Context API is the whole system (create, provide, consume context). useContext is a part of the system — specifically the hook that reads from the context.
+📦 Redux Toolkit (Simplified Redux)
+Redux Toolkit is now the standard way to use Redux, because it Reduces boilerplate, provides a better developer experience and includes createSlice, configureStore, etc.
 
-Context.jsx
-import { createContext, useState } from 'react'
-export const counterContext = createContext(0); // default value '0' used when there's no matching provider above in the tree.
+Slice
+a slice represents a self-contained piece of the application's state that is managed by a specific reducer. Slices help break down the large, global Redux state object into smaller, more manageable pieces. Each slice typically corresponds to a specific feature or domain of your application. 
 
-export function Context({ children }) {
-  const [count, setCount] = useState(0); 
+Store
+The store is where we include all redux slices
+It is the central container that holds the entire application state(slices). It's a JavaScript object with a few special functions that make it different from a plain global object. The store's main purpose is to manage the state and allow actions to be dispatched to modify it. 
+
+
+>> npm install @reduxjs/toolkit react-redux
+
+counterSlice.js
+
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialValue = {
+    value: 0,
+    loading: false,
+    error: null
+}
+
+export const counterSlice = createSlice({
+    name: 'products', // name of slice
+    initialState: initialValue,
+    reducers: {   	 // Functions will be defined in this reducer object that update the state(initialValue) in response to actions
+        increment: (state, action) => { state.value += 1 },  // action is the parameter which will be send in the dispatch function
+        decrement: (state, action) => { state.value -= 1 },  // state represents the initialValue (updating the value with this function)
+        incrementByAmount: (state, action) => {
+            state.value += action.payload;
+        }
+    }
+})
+export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export default counterSlice.reducer;
+
+In Redux, the only legal way to update the state is through reducers 
+You can’t do this:
+initialValue.value = 10; // ❌ will NOT update Redux state
+But you can do this:
+dispatch({ type: 'incrementByAmount', payload: 10 }); // ✅ Triggers reducer, Classic Redux
+or
+dispatch(incrementByAmount(10)); 
+
+
+Note : the reducer function does not support asynchronous tasks (eg. async-await) so we can't fetch some data from api and update the slice state according to that api data. That's where we need to use Redux Thunk. It support asynchronous tasks like api fetching and etc.
+
+store.js
+import { configureStore } from '@reduxjs/toolkit';
+import counterSlice from './slices/counterSlice';
+
+export const store = configureStore({
+    reducer: {
+        products: counterSlice,
+    },
+});
+
+Wrap the children in layout.js in Redux Provider :
+ import { Provider } from 'react-redux'
+ <Provider store={store}>
+   {children}
+ </Provider>
+ 
+the above code will force you to use 'use client' and remove metadata from layout.js (which is a server component).
+The Redux <Provider> is a Client Component, and when you wrap your RootLayout with it, the whole file becomes a Client Component — which disables: export const metadata & the benefits of server components (streaming, SSR performance, etc.)
+
+To fix this issue & avoid breaking SSR + metadata, you should not wrap the entire RootLayout (layout.js) in Redux <Provider>. Instead leave layout.js as server component & Wrap your main app/page shell (like AppProvider.js) in Redux provider as a Client Component.
+FileStructure :
+app/
+  layout.js              ← server component (no 'use client')
+  page.js                ← still server-rendered
+  providers/
+    redux-provider.js    ← client component
+    
+app/layout.js (Server Component — SSR + metadata safe)
+import ReduxProvider from "./providers/redux-provider";
+ <ReduxProvider>
+    {children}
+ </ReduxProvider>
+ 
+providers/redux-provider.js (Client Component)
+'use client';
+import { Provider } from 'react-redux';
+import { store } from '@/store';
+
+export default function ReduxProvider({ children }) {
+  return <Provider store={store}>{children}</Provider>;
+}
+
+
+Use Redux state in any Component
+App.jsx
+
+'use client'
+import { decrement, increment, incrementByAmount } from '@/slices/counterSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
+
+function App() {
+  const count = useSelector(state => state.products.value);
+  const dispatch = useDispatch();
 
   return (
-    <counterContext.Provider value={{ count, setCount }}> //Wraps part of your component tree and provides a value to all components inside that tree.
-      {children}
-    </counterContext.Provider>
+    <div>
+      <h1>Redux Counter</h1>
+      <h2>{count}</h2>
+      <button onClick={() => dispatch(increment())}>Plus</button>
+      <button onClick={() => dispatch(decrement())}>Minus</button>
+      <button onClick={() => dispatch(incrementByAmount(5))}>Plus by 5</button>
+    </div>
   );
 }
 
-App.jsx 
-<Context> // wrap the whole app in the created context so all child components can access the context state
-  <App />
-</Context>
-Note : In case of app routing, in the layout.js, wrap the {children} prop in <Context>
-
-Accessing value from context in child components with useContext(MyContext) :
-
-import { useContext } from 'react';
-const { count, setCount } = useContext(counterContext);
+export default App
 
