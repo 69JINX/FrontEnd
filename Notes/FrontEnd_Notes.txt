@@ -73,11 +73,12 @@ The Redux <Provider> is a Client Component, and when you wrap your RootLayout wi
 
 To fix this issue & avoid breaking SSR + metadata, you should not wrap the entire RootLayout (layout.js) in Redux <Provider>. Instead leave layout.js as server component & Wrap your main app/page shell (like AppProvider.js) in Redux provider as a Client Component.
 FileStructure :
-app/
-  layout.js              ← server component (no 'use client')
-  page.js                ← still server-rendered
-  providers/
-    redux-provider.js    ← client component
+.
+└── app/
+    ├── layout.js              ← server component (no 'use client')
+    ├── page.js                ← still server-rendered
+    └── providers/
+        └── redux-provider.js    ← client component
     
 app/layout.js (Server Component — SSR + metadata safe)
 import ReduxProvider from "./providers/redux-provider";
@@ -120,3 +121,7 @@ function App() {
 
 export default App
 
+Thunk 
+Redux Thunk is a Redux middleware used to handle asynchronous actions, making it a powerful tool for performing operations like fetching data from an API or any other asynchronous tasks. It allows action creators to return functions that can then be dispatched, enabling asynchronous logic within your Redux application. 
+When working with Thunk, we need to create extraReducers in createSlice. You would use extraReducers when you are dealing with an action that you have already defined somewhere else.
+reducers vs extraReducers : https://stackoverflow.com/questions/66425645/what-is-difference-between-reducers-and-extrareducers-in-redux-toolkit
