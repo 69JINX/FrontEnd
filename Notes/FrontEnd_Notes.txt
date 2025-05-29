@@ -135,7 +135,7 @@ import axios from "axios";
 
 export const generateRandomNumber = createAsyncThunk(
     'products/generateRandomNumber',
-    async (_, thunkApi) => {
+    async (data, thunkApi) => { // data is the parameter which will be send in the generateRandomNumber function as an argument when calling it, eg : generateRandomNumber(10);
         try {
             const response = await axios.get('/api/random-number');
             return response.data; // returning data so builders can access it, this line "state.value = action.payload" won't work if data doesn't return
