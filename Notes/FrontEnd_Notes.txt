@@ -1,4 +1,4 @@
-Redux Redux Toolkit
+Redux
 Redux is a state management library for JavaScript applications (commonly used with React), especially when you have:
 1. A lot of components sharing the same data
 2. Complex or deeply nested state
@@ -38,7 +38,7 @@ export const counterSlice = createSlice({
         }
     }
 })
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { increment, decrement, incrementByAmount } = counterSlice.actions; // export the reducers
 export default counterSlice.reducer;
 
 In Redux, the only legal way to update the state is through reducers 
@@ -100,7 +100,7 @@ Use Redux state in any Component
 App.jsx
 
 'use client'
-import { decrement, increment, incrementByAmount } from '@/slices/counterSlice';
+import { decrement, increment, incrementByAmount } from '@/slices/counterSlice'; 
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -125,3 +125,59 @@ Thunk
 Redux Thunk is a Redux middleware used to handle asynchronous actions, making it a powerful tool for performing operations like fetching data from an API or any other asynchronous tasks. It allows action creators to return functions that can then be dispatched, enabling asynchronous logic within your Redux application. 
 When working with Thunk, we need to create extraReducers in createSlice. You would use extraReducers when you are dealing with an action that you have already defined somewhere else.
 reducers vs extraReducers : https://stackoverflow.com/questions/66425645/what-is-difference-between-reducers-and-extrareducers-in-redux-toolkit
+
+counterSlice.js (with Thunk):
+
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const generateRandomNumber = createAsyncThunk(
+    'products/generateRandomNumber',
+    async (_, thunkApi) => {
+        try {
+            const response = await axios.get('/api/random-number');
+            return response.data; // returning data so builders can access it, this line "state.value = action.payload" won't work if data doesn't return
+        }
+        catch (error) {
+            console.log(error);
+            return thunkApi.rejectWithValue(error.message);
+        }
+    }
+)
+
+const initialValue = {
+    value: 0,
+    loading: false,
+    error: null
+}
+
+export const counterSlice = createSlice({
+    name: 'products', // name of slice
+    initialState: initialValue,
+    reducers: {   	 // Functions will be defined in this reducer object that update the state(initialValue) in response to actions
+        increment: (state, action) => { state.value += 1 },  // action is the parameter which will be send in the dispatch function
+        decrement: (state, action) => { state.value -= 1 },  // state represents the initialValue (updating the value with this function)
+        incrementByAmount: (state, action) => {
+            state.value += action.payload;
+        }
+    },
+    extraReducers: (builder) => {   // extraReducers for Thunk
+        builder
+            .addCase(generateRandomNumber.pending, (state, action) => {     // when api is pending
+                state.loading = true;
+            })
+            .addCase(generateRandomNumber.fulfilled, (state, action) => {   // when api is fulfilled
+                state.loading = false;
+                state.value = action.payload;
+            })
+            .addCase(generateRandomNumber.rejected, (state, action) => {    // when api return error (500,400 etc)
+                state.loading = false;
+                state.error = action.payload
+            })
+    }
+})
+export const { increment, decrement, incrementByAmount } = counterSlice.actions; // export the reducers
+export default counterSlice.reducer;
+
+App.jsx :
+<button onClick={() => dispatch(generateRandomNumber())}>Generate Random Number</button>
