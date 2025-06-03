@@ -1,3 +1,5 @@
+Advanced Javascript Crash Course => https://www.youtube.com/watch?v=R9I85RhI7Cg (Below Notes are created from this video, most of the topic are left like prototype/inheritance/class/iterables & iterators/generators because they are not necessary etc)
+
 Scope
 1. Block scope - variables declared inside a pair of curly braces cannot be accessed from outside
 the block
@@ -183,11 +185,17 @@ globalThis.name = "Ram" // accessible globally across files/modules in the Node.
 this.name = 'Avinash';  // At the top level of a Node.js module, this refers to the module.exports object, not the global object. A local object representing the current CommonJS module
 
 function fun1 (){
-console.log(this.name)  // Output : Ram
-console.log(this) // global object (global functions and keys)
+    console.log(this.name)  // Output : Ram
+    console.log(this) // global object (global functions and keys)
 }
 fun1()
 
 console.log(this.name) // Output : Avinash
 console.log(this) // Output : { name: 'Avinash' }
+explaination of the above code : https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/this%20and%20global%20scope.png
 
+Order of precedence :
+1. New binding
+2. Explicit binding
+3. Implicit binding
+4. Default binding
