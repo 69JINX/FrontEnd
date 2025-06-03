@@ -109,3 +109,85 @@ const errorLogger = curriedLog("ERROR");
 infoLogger("Server started");        // [INFO] Server started
 errorLogger("Something went wrong"); // [ERROR] Something went wrong
 
+
+this
+The JavaScript this keyword which is used in a function, refers to the object it belongs to. It makes functions reusable by letting you decide the object value. this value is determined entirely by how a function is called
+How to determine 'this'?
+1. Implicit binding
+2. Explicit binding
+3. New binding
+4. Default binding
+
+1. Implicit binding : Implicit binding in JavaScript refers to how the this keyword is automatically set within a function based on how the function is called. Specifically, when a function is invoked as a method of an object using dot notation (object.method()), the this keyword inside the function will refer to that object.
+
+const myObject = {
+  value: 10,
+  myMethod: function() {
+    console.log(this.value); // 'this' refers to myObject
+  }
+};
+
+myObject.myMethod();  // Output: 10
+
+2. Explicit binding :
+Explicit binding in JavaScript refers to the ability to manually set the this value within a function, giving you direct control over the execution context. This is particularly useful when you need a function to operate on a specific object, regardless of how it's called. This is achieved using the call(), apply(), or bind() methods, providing direct control over the object that this references.
+
+const person = {
+    name : 'Ram'
+}
+function greet(){
+    console.log(`Hello ${this.name}`); // Output : Hello Ram
+}
+greet.call(person);
+Note : This won't work with arrow functions, because Arrow functions do not have their own this.Instead, they inherit this from the surrounding (lexical) scope.
+
+3. New binding :
+In JavaScript, the new keyword is used to create instances of objects from constructor functions or classes. When a function is invoked with the new keyword, a new object is created and the function is then called with this bound to that new object. This is known as "new binding".
+
+In js, we can invoke a function with the 'new' keyword and in such a scenario, the function is invoked with 'this' keyword referencing an empty object (this = {})
+We are not creating this empty object, the 'new' keyword internally does this when Person function is invoked with 'new' keyword.
+So "When a function is invoked with the 'new' keyword, within the function, 'this' keyword will always reference a new empty object."
+ So consider a function called 'Person', which accepts a name. Within the function, we said this.name = name. With this function we can now create multiple persons or people passing in different names each time.
+
+function Person(name){
+     this.name = name; // this = {} , 'this' represents an empty object
+}			// you can now add properties to this empty object using dot notation
+
+const p1 = new Person('Ram');
+const p2 = new Person('Shyam'); // these functions are called constructor function as we can create multiple persons from the main Person function
+
+console.log(p1.name, p2.name); // Ram Shyam
+
+4. Default Binding : 
+In JavaScript, default binding is one of the ways the 'this' keyword is determined within a function. It occurs when a function is called as a standalone function, without any specific object context.
+Default binding is the fallback mechanism for this binding. Other binding rules, such as implicit binding (when calling a method on an object), explicit binding (using call, apply, or bind), and the new keyword, take precedence over default binding.
+This means that if a function is called without any explicit context, this will refer to the global object (in non-strict mode) or be undefined (in strict mode).
+function myFunction() {
+  console.log(this);
+}
+
+myFunction(); // In non-strict mode, this will log the global object (window in browsers). In strict mode, this will log undefined.
+
+example : 
+console.log(this.name); // Output : undefined
+// js will try to find name in the global scope, if it doesn't find any then it will print undefined. 
+
+let's set name in the global scope :
+// const name = 'Ram'; // since it is node, not a browser so we will define like below
+globalThis.name = 'Ram'; // this will set name in global scrope
+console.log(this.name); // Output : Ram
+
+example : 
+
+globalThis.name = "Ram" // accessible globally across files/modules in the Node.js runtime
+this.name = 'Avinash';  // At the top level of a Node.js module, this refers to the module.exports object, not the global object. A local object representing the current CommonJS module
+
+function fun1 (){
+console.log(this.name)  // Output : Ram
+console.log(this) // global object (global functions and keys)
+}
+fun1()
+
+console.log(this.name) // Output : Avinash
+console.log(this) // Output : { name: 'Avinash' }
+
