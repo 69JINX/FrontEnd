@@ -1,0 +1,271 @@
+👉🏻Nodejs
+Nodejs is the code written in c++ and javascript. Nodejs runtime unlike the browser runtime does not have access to the web APIs, there is no window or document when working with Nodejs
+Node.js is an open-source, cross-platform Javascript runtime environment.
+It is not a language, it is not a framework. It is a runtime environment.
+Capable of executing JS code outside a browser. 
+It can execute not only the standard ECMAScript language but also new features that are made available through C++ bindings using the V8 engine
+It consists of C++ files which form the core features and javascript files which expose common utilities and some of the C++ features for easier consumption
+
+With Nodejs, we can create :
+1. Traditional websites
+2. Backend services like APIs
+3. Real-time applications
+4. Streaming services
+5. CLI tools
+6. Multiplayer games
+
+lets take file system as an example. 
+JavaScript, when run in the browser, cannot access the file system for security reasons(Access to the file system is blocked to protect user privacy and security.). However, Node.js extends JavaScript with modules like fs that allow file system operations, using underlying C++ code to interact with the OS.
+
+this (https://github.com/nodejs/node/blob/main/lib/fs.js) is the nodejs code of fs module that handles file system manipulation with the help of C++, so we don't have to write it from scratch. We just import fs module.
+
+
+👉🏻Check the node version 
+  >> node -v
+👉🏻 Executing Javascript with Node
+   Node REPL
+  1. Read
+  2. Evaluate
+  3. Print
+  4. Loop
+  
+👉🏻Browser vs Node.js
+In the browser, most of the time what you are doing is interacting with the DOM, or other Web Platform APIs like Cookies. In case of Node, we don't have the document, window and all the other objects that are provided by the browser.
+And In the browser, we don't have all the nice APIs that Node.js provides through its modules. For example the filesystem access functionality.
+With Node.js, you control the environment. But with a browser, you are at the mercy of what the users choose
+
+👉🏻Modules
+A module is an encapsulated and reusable chunk of code that has its own context
+In Node.js, each file is treated as a separate module
+Types of Modules
+1. Local modules - Modules that we create in our application
+2. Built-in modules - Modules that Node.js ships with out of the box
+3. Third party modules - Modules written by other developers that we can use in our application
+  
+👉🏻CommonJS
+CommonJS is a standard that states how a module should be structured and shared. Node.js adopted CommonJS when it started out and is what you will see in code bases. Each file is treated as a module
+Variables, functions, classes, etc. are not accessible to other files by default. 
+Explicitly tell the module system which parts of your code should be exported via module.exports or exports
+To import code into a file, use the require() function
+
+👉🏻Import Export Patterns (CommonJS)
+⭐️ Pattern 1 : Exporting an Object All at Once
+math.js
+const add = (a,b)=>{
+   return a + b;
+}
+const subtract = (a,b)=>{
+   return a - b;
+}
+module.exports = {add,subtract}  // short for -> module.exports = {add:add,subtract:subtract}
+
+index.js
+const module = require("./math.js")
+console.log(module.add(1,2));
+console.log(module.subtract(4,7));
+
+⭐️ Pattern 2 : Attaching Properties Directly to module.exports
+math.js
+module.exports.add = (a,b)=>{ 
+   return a + b;
+}
+module.exports.subtract = (a,b)=>{
+   return a - b;
+}
+// exports.add will work too because if you remember, module wrapper iife has a 'exports' parameter too but using exports.add without using precautions will break the reference to that object and throw error, so it is not used. Full explanation : https://www.youtube.com/watch?v=ghUIlSNRru0&list=PLC3y8-rFHvwh8shCMHFA5kWxD9PaPwxaY&index=15
+
+index.js
+const module = require("./math.js")
+console.log(module.add(1,2));
+console.log(module.subtract(4,7));
+
+⭐️ Pattern 3 : Exporting single instances
+math.js
+module.exports = (a,b)=>{
+  return a + b;
+}
+
+index.js
+const x = require("./math");
+console.log(x(2,3)); // Output : 5
+
+👉🏻ES Modules
+At the time Node.js was created, there was no built-in module system in JavaScript
+Node.js defaulted to CommonJS as its module system
+As of ES2015, JavaScript does have a standardized module system as part of the language itself
+That module system is called EcmaScript Modules or ES Modules or ESM for short
+ES Modules is the ECMAScript standard for modules. It was introduced with ES2015. Node. js 14 and above support ES Modules.
+Instead of module.exports, we use the export keyword. The export can be default or named. We import the exported variables or functions using the import keyword
+
+
+👉🏻Import Export Patterns (ECMAScript Module aka ESModule)
+⭐️ Pattern 1 : (default Exports)
+math.mjs
+const add = (a, b) => {  // export default = (a, b) => {  <- this will work too
+  return a + b;
+};
+
+export default add; // there can only be one export marked as `default`.
+
+index.mjs
+import add from “./math.mjs";
+console.log(add(5, 5));
+
+⭐️ Pattern 2 : (default exports more than one variable/function)
+math.mjs
+const add = (a, b)=>{
+   return a + b;
+}
+const subtract = (a, b)=>{
+   return a - b;
+}
+export default {add, subtract}
+
+index.mjs
+import math from "./math.mjs"; // ❌ import {add, subtract} from "./math.mjs"; <- this won't work because this is used for **named exports**, not default exports
+console. log(math.add(5, 5));
+console. log(math.subtract(5, 5));
+
+⭐️ Pattern 3 : (named exports)
+math.mjs
+export const add = (a, b)=>{
+   return a + b;
+}
+export const subtract = (a, b)=>{
+   return a - b;
+}
+// we can also include default export with named exports but there should be only one default export
+
+index.mjs
+import * as maths from "./math.mjs"; // import {add, subtract} from "./math.mjs"; <- this will work too
+console. log(maths.add(5, 5));
+console. log(maths.subtract(5, 5));
+
+Note : 
+If it is a default export, we can assign any name while importing
+If it is a named export, the import name must be the same
+
+👉🏻Module Scope
+Before a module's code is executed, Node.js will wrap it with a function wrapper (IIFE) that provides module scope
+This saves us from having to worry about conflicting variables or functions
+There is proper encapsulation and reusability is unaffected
+(function(){
+  // Module code actually lives in here
+})
+Each loaded module in Node.js is wrapped with an lIFE that provides private
+scoping of code
+
+👉🏻Module Wrapper & Module-scoped variables
+Every module in node.js gets wrapped in an lIFE before being loaded
+IIFE helps keep top-level variables scoped to the module rather than the global object
+The lIFE that wraps every module contains 5 parameters which are pretty important for the functioning of a module
+This wrapper function ensures that myVariable is private to myModule.js and doesn't conflict with other module variable if they are of the same name and that myFunction is exposed through the exports object.
+
+myModule.js
+(function(message) {
+  const superHero = "Batman";
+  console. log (message, superHero);
+})("Hello");
+
+syntax : 
+(function(exports, require, module, __filename, __dirname){ 
+    // Module code goes here
+})()
+Note :  we don't have to wrap the module in iife(the above is just the explanation of how node wrap the module with iife), the node does this automatically. If we try to print these parameters in the iife, we will get undefined because we have overwrote the default wrapper and these have become iife function's local variables. Try to print all these variables without iife and you will get their appropriate values.
+
+1. exports    : A reference to `module.exports`. It's used to export values from a module.
+2. require    : A function to import other modules (CommonJS).
+3. module     : Represents the current module, with info like `module.exports`, `id`, etc.
+4. __filename : The full path to the current file (`index.js` in your case).
+5. __dirname  : The full path to the directory containing the current file.
+
+These are automatically injected by Node into every file you run.
+
+👉🏻Module Caching
+When you require() a module in Node.js, that module is loaded only once and then cached.
+The first time a module is loaded, Node executes it and stores the result in memory.
+Any subsequent require() calls to the same module in any other file/module return the cached version, not a re-executed version.
+This is why changes in module state (like changing variables) are reflected in other files that require it afterward — because they share the same cached instance.
+Example : 
+
+myModule.js : 
+let x = 1;
+function setValue() {
+    x = 2;
+}
+function getValue() {
+    return x;
+}
+
+file1.js
+const {x,setValue,getValue} = require("./myModule"); // First time `myModule` is required -> it's executed and cached
+console.log(x);    // Logs 1 (copied value at export)
+setValue();
+console.log(getValue()); // Logs 2 because it calls the function that accesses internal `x`
+console.log(x); // this x will print the snapshot of the x instead of the actual x which was changed after calling setValue() function, that's why above function getValue() is used to get the updated value.
+// ⚠️ x is exported as a value in myModule.js, so its initial value (1) is copied. But setValue and getValue are functions, and they maintain a live reference to the x inside the module.
+
+file2.js
+const {x,getValue} = require("./myModule"); 
+// `myModule` is NOT re-executed. It is loaded from cache!
+// Therefore, `x` inside the module is already set to 2 (by `file1`)
+console.log(getValue());
+module.exports = {x,setValue,getValue};
+
+index.js
+console.log('file1 :-');
+require("./file1");	  // Loads file1, which loads `myModule`, sets `x = 2`
+console.log('file2 :-');
+require("./file2");	  // Loads file2, reuses cached `myModule`, sees `x = 2`
+
+Output : 
+1  // x from file1 (copied when imported)
+2  // getValue after setValue updated `x`
+2  // getValue from file2 uses shared module state
+
+
+👉🏻Watch Mode
+Watch mode in Node. js allows you to automatically restart your server whenever you make changes to your code, streamlining the development process. This eliminates the need to manually restart the server after every code modification, saving you time and effort. Introduced as an experimental feature in Node
+To turn on watch mode, run the file with below command :
+>> node --watch index.js
+
+
+👉🏻Built-in Modules
+Node.js includes several built-in modules that provide core functionalities without needing external libraries. These modules are part of the Node.js binary distribution and are essential for various tasks. 
+They are also referred to as core modules. It is mandatory to import the module before you can use it
+Some common module are : 
+1. path
+2. events
+3. fs
+4. stream
+5. http
+
+If you are interested in the source code of these build-in modules, they are present in the lib folder of the codebase of nodejs 
+https://github.com/nodejs/node/tree/main/lib
+
+👉🏻Path Module
+The path module provides utilities for working with file and directory paths
+The path module in Node.js is a built-in module that provides utilities for working with file and directory paths. It offers a variety of functions to manipulate, normalize, and resolve paths, ensuring cross-platform compatibility.
+Commonly Used Functions:
+path.join(): Joins path segments.
+path.resolve(): Resolves a sequence of paths to an absolute path.
+path.normalize(): Normalizes a path string.
+path.dirname(): Extracts the directory name.
+path.basename(): Extracts the file name (with or without extension).
+path.extname(): Extracts the file extension.
+path.isAbsolute(): Checks if a path is absolute.
+path.parse(): Parses a path string into an object.
+path.format(): Constructs a path string from an object.
+path.sep: Provides platform-specific separator. 
+
+👉🏻Events Module
+The events module in Node.js is a core module that provides a way to work with events. It allows you to create, emit, and listen for custom events in your application. This module is crucial for building asynchronous and event-driven applications. 
+An event is an action or an occurrence that has happened in our application that we can respond to
+Using the events module, we can dispatch our own custom events and respond to those custom events in a non-blocking manner
+
+Events Module - Scenario
+Let's say you're feeling hungry and head out to Dominos to have pizza
+At the counter, you place your order for a pizza
+When you place the order, the line cook sees the order on the screen and bakes the pizza for you
+Order being placed is the event
+Baking a pizza is a response to that event
