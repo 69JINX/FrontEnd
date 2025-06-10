@@ -269,3 +269,79 @@ At the counter, you place your order for a pizza
 When you place the order, the line cook sees the order on the screen and bakes the pizza for you
 Order being placed is the event
 Baking a pizza is a response to that event
+
+
+👉🏻Streams
+A stream is a sequence of data that is being moved from one point to another overtime
+Ex: a stream of data over the internet being moved from one computer to another
+Ex: a stream of data being transferred from one file to another within the same computer
+Process streams of data in chunks as they arrive instead of waiting for the entire data to be available before processing
+Ex: watching a video on YouTube
+The data arrives in chunks and you watch in chunks while the rest of the data arrives over time
+Ex: transferring file contents from fileA to fileB
+The contents arrive in chunks and you transfer in chunks while the remaining contents arrive over time
+Prevents unnecessary data downwload and memoery usage
+
+👉🏻Buffers
+
+Ex: Imaginge a scenario of rollar coaster with 30 Seating capacity
+Scenario 1
+100 - People arrival
+30 - People accommodated
+70 - People in queue (waiting)
+Scenario 2
+1 - Person arrives (waiting)
+Wait for at least 10
+
+So the Bugger is the area where people wait 
+Node.js cannot control the pace at which data arrives in the stream. It can only decide when is the right time to send the data for processing. 
+If there is data already processed or too little data to process, Node puts the arriving data in a buffer
+It is an intentionally small area that Node maintains in the runtime to process a stream of
+
+Ex: streaming a video online
+If your internet connection is fast enough, the speed of the stream will be fast enough to instantly fill up the buffer and send it out for processing. That will repeat till the stream is finished
+If your connection is slow, after processing the first chunk of data that arrived, the video player will display a loading spinner which indicates it is waiting for more data to arrive
+Once the buffer is filled up and the data is processed, the video player shows the video While the video is playing, more data will continue to arrive and wait in the buffer
+In Node.js, a Buffer is a built-in class used to handle binary data directly in memory. It’s particularly useful when dealing with:
+->File system operations (e.g., reading images, PDFs, etc.)
+->Network protocols (e.g., TCP streams, HTTP responses)
+->Binary streams (e.g., audio, video, or encrypted content)
+Think of a Buffer as a raw storage area in memory — similar to an array of bytes.
+
+JavaScript was originally created to work in the browser and mainly with strings and objects, not binary data. But Node.js is used on the server, where low-level operations like file I/O, TCP sockets, and cryptography are common — all of which involve binary data.
+So Buffer fills that gap by letting JavaScript work with binary data efficiently.
+
+🔧 Common Use Cases
+1. File system reading -> Reading a .jpg or .zip file using fs.readFile
+2. Networking -> Processing TCP or WebSocket data chunks
+3. Encoding conversions -> Converting between UTF-8, ASCII, Base64, etc.
+4. Cryptography -> Hashing or encrypting raw bytes using crypto module
+5. Streaming -> Handling chunks of audio/video data
+
+Ex: 
+
+
+const buffer = new Buffer.from("Avinash"); // the second argument utf-8 is optional becuase it is already utf-8 by-default new Buffer.from("Avinash","utf-8");
+console.log('buffer -> ',buffer);
+console.log('toJSON -> ',buffer.toJSON());
+console.log('toString -> ',buffer.toString());
+buffer.write("Ram");
+console.log('toString -> ',buffer.toString());
+output : 
+buffer ->  <Buffer 41 76 69 6e 61 73 68> // raw binary data of each character that is displayed in Hexadecimal. eg 41 = 101001
+toJSON ->  {
+  type: 'Buffer',
+  data: [
+     65, 118, 105, // These are the ASCII(or UTF-8) representation of each character in "Avinash" as a array 
+    110,  97, 115,
+    104
+  ]
+}
+toString ->  Avinash
+toString ->  Ramnash
+
+Explanation of above code and a Simple program to show the use of Buffer in real case scenarion :
+
+
+
+Character Encodings : (Unicode, ASCII, UTF-8 etc) : https://www.youtube.com/watch?v=ut74oHojxqo
