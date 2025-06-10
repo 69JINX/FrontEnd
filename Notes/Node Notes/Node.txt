@@ -318,9 +318,9 @@ So Buffer fills that gap by letting JavaScript work with binary data efficiently
 4. Cryptography -> Hashing or encrypting raw bytes using crypto module
 5. Streaming -> Handling chunks of audio/video data
 
+Nodejs internally uses Buffers whenever required
+
 Ex: 
-
-
 const buffer = new Buffer.from("Avinash"); // the second argument utf-8 is optional becuase it is already utf-8 by-default new Buffer.from("Avinash","utf-8");
 console.log('buffer -> ',buffer);
 console.log('toJSON -> ',buffer.toJSON());
@@ -341,7 +341,6 @@ toString ->  Avinash
 toString ->  Ramnash
 
 Explanation of above code and a Simple program to show the use of Buffer in real case scenarion :
-
-
+https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/Buffer.png
 
 Character Encodings : (Unicode, ASCII, UTF-8 etc) : https://www.youtube.com/watch?v=ut74oHojxqo
