@@ -275,12 +275,21 @@ Baking a pizza is a response to that event
 A stream is a sequence of data that is being moved from one point to another overtime
 Ex: a stream of data over the internet being moved from one computer to another
 Ex: a stream of data being transferred from one file to another within the same computer
+Work with data in chunks instead of waiting for the entire data to be available at once
 Process streams of data in chunks as they arrive instead of waiting for the entire data to be available before processing
 Ex: watching a video on YouTube
 The data arrives in chunks and you watch in chunks while the rest of the data arrives over time
 Ex: transferring file contents from fileA to fileB
 The contents arrive in chunks and you transfer in chunks while the remaining contents arrive over time
 Prevents unnecessary data downwload and memoery usage
+
+
+
+If you're transferring file contents from fileA to fileB, you don't wait for entire fileA content to be saved in temporary memory before moving it into fileB
+Instead, the content is transferred in chunks over time which prevents unnecessary memory usage
+Stream is infact a built-in node module that inherits from the event emitter class
+
+Other modules internally use stream for their functioning
 
 👉🏻Buffers
 
@@ -293,7 +302,7 @@ Scenario 2
 1 - Person arrives (waiting)
 Wait for at least 10
 
-So the Bugger is the area where people wait 
+So the Buffer is the area where people wait 
 Node.js cannot control the pace at which data arrives in the stream. It can only decide when is the right time to send the data for processing. 
 If there is data already processed or too little data to process, Node puts the arriving data in a buffer
 It is an intentionally small area that Node maintains in the runtime to process a stream of
@@ -340,7 +349,149 @@ toJSON ->  {
 toString ->  Avinash
 toString ->  Ramnash
 
-Explanation of above code and a Simple program to show the use of Buffer in real case scenarion :
+Explanation of above code and a Simple program to show the use of Buffer in real case scenario :
 https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/Buffer.png
 
 Character Encodings : (Unicode, ASCII, UTF-8 etc) : https://www.youtube.com/watch?v=ut74oHojxqo
+
+Asynchronous JavaScript
+JavaScript is a synchronous, blocking, single-threaded language
+
+Synchronous
+If we have two functions which log messages to the console, code executes top down, with only one line executing at any given time
+
+Blocking
+No matter how long a previous process takes, the subsequent processes won't kick off until the former is completed
+Web app runs in a browser and it executes an intensive chunk of code without returning control to the browser, the browser can appear to be frozen
+
+Single-threaded
+A thread is simply a process that your javascript program can use to run a task
+Each thread can only do one task at a time. JavaScript has just the one thread called the main thread for executing any code
+
+function A() {
+  console. log('A")
+}
+
+function B() {
+  console. log('B")
+}
+
+A()
+B()
+
+-> Logs A and then B
+
+
+Problem with synchronous, blocking, single-threaded model of JavaScript
+
+let response = fetchDataFromDB('endpoint')
+displayDataFromDB(response)
+
+fetchDataFromDB('endpoint') could take 1 second or even more. During that time, we can’t run any further code
+JavaScript, if it simply proceeds to the next line without waiting, we have an error because data is not what we expect it to be
+
+Just JavaScript is not enough
+We need new pieces which are outside of JavaScript to help us write asynchronous code For front-end, this is where web browsers come into play. 
+For back-end, this is where Node.js comes into play
+Web browsers and Node.js define functions and APIs that allow us to register functions that should not be executed synchronously, and should instead be invoked asynchronously when some kind of event occurs
+
+For example, that could be the passage of time ( setTimeout or setinterval), the user's
+interaction with the mouse (addEventListener), data being read from a file system or the
+arrival of data over the network (callbacks, Promises, async-await)
+
+You can let your code do several things at the same time without stopping or blocking your main thread
+
+JavaScript is a synchronous, blocking, single-threaded language, This nature however is not beneficial for writing apps. We want non-blocking asynchronous behaviour which is made possible by a browser for FE and Node.js for backend
+This style of programming where we don't block the main JavaScript thread is fundamental to Node.js and is at the heart of how some of the built-in module code is written
+
+fs Module
+The file system (fs) module allows you to work with the file system on your computer
+Ex :
+file.txt
+Hello Avinash
+index.js
+const fs = require("fs");
+
+const file_Buffer = fs.readFileSync("./file.txt")
+const file_Content = fs.readFileSync("./file.txt","utf-8")
+console.log(file_Buffer);
+console.log(file_Content);
+
+output :
+<Buffer 48 65 6c 6c 6f 20 41 76 69 6e 61 73 68 0a>
+Hello Avinash
+
+Sync/Async file read 
+index.js
+const fs = require("fs");
+
+console.log("First");
+const fileContent = fs.readFileSync("./file.txt","utf-8") // Synchronous file read
+console.log(fileContent);
+
+console.log("Second");
+
+fs.readFile("./file.txt","utf-8",(error,data)=>{ // Asynchronous file read. This patter is using callbacks where first argument is the error is called "error first callback pattern"
+   if(error){
+      console.log(error,"Error reading file");
+    }
+    else{
+     console.log(data);
+    }
+});
+
+console.log("Third");
+
+output :
+First
+Hello Avinash
+
+Second
+Third
+Hello Avinash
+
+Becuase of this asynchronous file read, the app will not freeze when multiple users interact with the application
+
+Create files
+index.js
+fs.writeFileSync("./greet1.txt","Hello Avinash");
+fs.writeFile("./greet2.txt","Hello again Avinash",(err)=>{  
+  if(err) return console.log(err);
+  console.log("Content has been written in the greet2.txt file");
+});
+
+The Above write function will overwrite the content if the file already exist. To append to the existing content, add a flag in the object :
+fs.writeFile("./greet2.txt","Hello again Avinash",{flag:'a'},(err)=>{  
+
+fs Promise Module
+The fs/promises API provides asynchronous file system methods that return promises.
+The promise APIs use the underlying Node.js threadpool to perform file system operations off the event loop thread. These operations are not synchronized or threadsafe. Care must be taken when performing multiple concurrent modifications on the same file or data corruption may occur.
+
+const fs = require("fs");
+
+//handling with then-catch
+fs.promises.readFile("./file.txt","utf-8")
+.then((data)=>{
+ console.log(data);
+}).0
+.catch((err)=>{
+ console.log(err);
+})
+
+//handling with async-await
+async function readFile(){
+  try{
+    const data = await fs.promises.readFile("./file.txt","utf-8")
+    console.log(data);
+  }
+  catch(err){
+    console.log(err);  
+  }
+}
+readFile();
+
+Tip : this works too :
+const fs = require("fs/promises");
+fs.readFile("./file.txt","utf-8") // will still return a promise
+
+Note : The callback based version of the fs module api are preferable over the use of promise api when maximum performance is required both in terms of execution time and memory allocation
