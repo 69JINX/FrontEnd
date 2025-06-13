@@ -283,13 +283,77 @@ Ex: transferring file contents from fileA to fileB
 The contents arrive in chunks and you transfer in chunks while the remaining contents arrive over time
 Prevents unnecessary data downwload and memoery usage
 
-
-
 If you're transferring file contents from fileA to fileB, you don't wait for entire fileA content to be saved in temporary memory before moving it into fileB
 Instead, the content is transferred in chunks over time which prevents unnecessary memory usage
 Stream is infact a built-in node module that inherits from the event emitter class
 
-Other modules internally use stream for their functioning
+We rarely use Streams direclty, other modules internally use stream for their functioning
+
+const fs = require("node:fs");
+
+const readableStream = fs.createReadStream("./file1.txt", {  // readable stream to read data in chunks from file1.txt
+   encoding: "utf-8"
+}); 
+
+const writeableStream = fs.createWriteStream("./file2.txt"); // writable stream to write data in chunks to file2.txt
+
+readableStream.on("data", (chunk) => {
+	console.log(chunk) ;
+	writeableStream.write(chunk);
+})
+
+output : Hello Avinash
+
+streams extend from event emitter class. Event emitter allow us to add listeners to events. above, the readableStream emmits the "data" event on which we can listen and we specify a callback function that should be executed on the data event.
+The "data" event is emitted by readable streams (like fs.createReadStream) whenever a chunk of data becomes available to read.
+
+Why Use Stream Instead of fs.readFile/fs.writeFile? (https://www.youtube.com/watch?v=64LJJhT6Ybo)
+Because:
+> It reads large files in small chunks (not all at once)
+> Uses less memory and is non-blocking
+> Ideal for large files, streaming video/audio, etc.
+
+The Buffer that Streams use has a default size of 64kb. We can modify it using "highWaterMark" key :
+const readableStream = fs.createReadStream("./file1.txt", { 
+   encoding: "utf-8",
+   highWaterMark:2  // read data in chunks of 2 bytes
+});
+
+The Event Emmiter readableStream.on will listen on every 2 byte of chunk so the output when printing chunk in the event will be :
+He
+ll
+o
+Av
+in
+as
+h
+
+Types of Streams
+1. Readable streams from which data can be read. Ex: Reading from a file as readable stream
+2. Writable streams to which we can write data. Ex: Writing to a file as writable stream
+3. Duplex streams that are both Readable and Writable. Ex: Sockets as a duplex stream
+4. Transform streams that can modify or transform the data as it is written and read Ex: File compression where you can write compressed data and read de-compressed data to and from a file as a transform stream
+
+
+Chunk Size :
+The Buffer that Streams use has a default size of 64kb.
+and default chunk size in a readable stream depends on the type of stream you're working with:
+1. File Streams (fs.createReadStream)
+Default chunk size: 64 KB → which is 64 * 1024 = 65536 bytes
+This is defined internally by Node as the highWaterMark option.
+const readable = fs.createReadStream('file.txt');
+console.log(readable._readableState.highWaterMark); // 65536 (64 KB)
+You can override it like this:
+fs.createReadStream('file.txt', { highWaterMark: 16 * 1024 }); // 16 KB
+
+2. Network Streams (e.g., HTTP)
+Default chunk size: 16 KB (16384 bytes)
+Example: when reading from a TCP socket or HTTP request/response stream
+
+
+NOTE : HTTP request is a readable stream and HTTP response is a writeable stream
+
+
 
 👉🏻Buffers
 
