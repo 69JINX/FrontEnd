@@ -123,8 +123,8 @@ export default {add, subtract}
 
 index.mjs
 import math from "./math.mjs"; // ❌ import {add, subtract} from "./math.mjs"; <- this won't work because this is used for **named exports**, not default exports
-console. log(math.add(5, 5));
-console. log(math.subtract(5, 5));
+console.log(math.add(5, 5));
+console.log(math.subtract(5, 5));
 
 ⭐️ Pattern 3 : (named exports)
 math.mjs
@@ -138,8 +138,8 @@ export const subtract = (a, b)=>{
 
 index.mjs
 import * as maths from "./math.mjs"; // import {add, subtract} from "./math.mjs"; <- this will work too
-console. log(maths.add(5, 5));
-console. log(maths.subtract(5, 5));
+console.log(maths.add(5, 5));
+console.log(maths.subtract(5, 5));
 
 Note : 
 If it is a default export, we can assign any name while importing
@@ -164,7 +164,7 @@ This wrapper function ensures that myVariable is private to myModule.js and does
 myModule.js
 (function(message) {
   const superHero = "Batman";
-  console. log (message, superHero);
+  console.log(message, superHero);
 })("Hello");
 
 syntax : 
@@ -272,6 +272,8 @@ Baking a pizza is a response to that event
 
 
 👉🏻Streams
+https://nodejs.org/api/stream.html
+https://www.youtube.com/watch?v=FZOEL5nByYg
 A stream is a sequence of data that is being moved from one point to another overtime
 Ex: a stream of data over the internet being moved from one computer to another
 Ex: a stream of data being transferred from one file to another within the same computer
@@ -352,8 +354,78 @@ Example: when reading from a TCP socket or HTTP request/response stream
 
 
 NOTE : HTTP request is a readable stream and HTTP response is a writeable stream
+https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/HTTP-request-response-streams.png
+HTTP Streaming when querying large data from a database. Providing data in chunks to frontend : https://www.loginradius.com/blog/engineering/guest-post/http-streaming-with-nodejs-and-fetch-api
 
+👉🏻Pipes
+https://www.youtube.com/watch?v=5Mosdd3jwgU
+It is used for large data, real-time processing, or when chaining stream operations.
+It connects a readable stream to a writable stream, allowing data to flow automatically between them — chunk by chunk — without manually handling 'data' and 'end' events. .pipe() is a method available on readable streams in Node.js (we cannot use .pipe() method on writable streams).
+Benefits of .pipe()
+- Simplicity -> Shorter and cleaner code
+- Backpressure -> Automatically manages flow so memory doesn’t overflow
+- Error handling -> Can chain .on('error') listeners
+- Streaming efficiency -> Great for large data (files, HTTP responses, etc.)
 
+Pipe Chaining :
+It returns destination streams which enable chaining, but the conditions is that stream has to be readable, duplex or a transform stream
+Pipe chaining in Node.js refers to the process of connecting multiple streams together to create a data processing pipeline. This is achieved using the pipe() method, which is available on readable streams. The pipe() method takes a writable stream as an argument, and it automatically forwards data from the readable stream to the writable stream.
+When chaining pipes, the output of one stream becomes the input of the next stream. This allows for complex data transformations to be performed in a sequential manner. 
+For example, consider the following scenario: reading data from a file, compressing it using gzip, and then writing the compressed data to another file. This can be achieved using pipe chaining as follows:
+
+Pipe chaining offers several benefits:
+Modularity: It allows you to break down complex data processing tasks into smaller, manageable components.
+Readability: It makes code more readable and easier to understand by visually representing the flow of data.
+Efficiency: It avoids loading large amounts of data into memory at once, improving performance and memory usage.
+Flexibility: It allows you to easily combine different types of streams to perform various data transformations.
+
+syntax : readable.pipe(transform1).pipe(transform2).pipe(writable);
+
+const fs = require('fs');
+const zlib = require('zlib');
+
+fs.createReadStream('input.txt')              // readable
+  .pipe(zlib.createGzip())                    // transform (compress)
+  .pipe(fs.createWriteStream('output.txt.gz')) // writable
+Note : What is this output.txt.gz file here ?
+This is a Gzipped (compressed) version of your original file. This Compresses data using the Gzip algorithm. The compressed version of input.txt, smaller and optimized for storage/transmission
+Use Cases:
+Reduce file size to save disk space or bandwidth.
+Send compressed files over HTTP (faster delivery).
+Store backups efficiently.
+Package logs or data for transmission.
+It's not a text file anymore — it's a binary compressed file that needs to be decompressed to view its original content.
+To view the content of the gz or de-compress it :
+-> for windows - use winrar/7zip
+-> for Linux/macOS terminal - gunzip output.txt.gz (gunzip is preinstalled in linux/mac)
+-> In Node.js (to reverse the operation): 
+   fs.createReadStream('output.txt.gz')
+     .pipe(zlib.createGunzip())
+     .pipe(fs.createWriteStream('original.txt'));
+
+How .pipe() handle backpressure :
+Backpressure occurs when a readable stream produces data faster than a writable stream can consume it. Imagine a scenarion where readable stream is 4mb/s and writable stream is 3mb/s. This incosistency of speed in both side will lead to potential memory issues and overwhelm the writable stream which can't handle this much data because of missmatch of the data speed. 
+Here's how pipe() fix this -
+- Automatic Flow Control: The pipe() method automatically manages the flow of data between a readable and a writable stream. It pauses the readable stream when the writable stream's buffer is full, preventing data overload.
+- 'drain' event: When the writable stream is ready to receive more data, it emits a 'drain' event. The pipe() method listens for this event and resumes the readable stream, ensuring a smooth data flow.
+- Simplified Backpressure Management: By using pipe(), you don't have to manually manage pausing and resuming streams. Node.js handles this automatically, making your code cleaner and less error-prone.
+- Error Handling: pipe() also manages errors. If an error occurs in either the readable or writable stream, it propagates the error to the other stream, preventing data loss.
+
+const readableStream = fs.createReadStream("./file1.txt", { 
+   encoding: "utf-8"
+}); 
+const writeableStream = fs.createWriteStream("./file2.txt");
+readableStream.pipe(writeableStream);
+
+using .pipe() eliminates the need to manually use these EventEmitter (but you can still use these while still utilizing .pipe()) : 
+- .on('data', handler)
+- .on('end', handler)
+- .on('error', handler)
+
+Pipe and Streams 
+Streams and pipes are closely related in Node.js.
+- Streams represent a sequence of data that can be read or written over time. They are a fundamental concept for handling data efficiently, especially when dealing with large files or network communication. Node.js offers various stream types, including readable, writable, and transform streams.
+- Pipes provide a mechanism to connect readable streams to writable streams. The pipe() method takes a readable stream and redirects its output to a writable stream. This allows for a streamlined data flow, where data chunks are automatically passed from one stream to another as they become available.
 
 👉🏻Buffers
 
