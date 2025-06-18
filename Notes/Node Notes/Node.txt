@@ -631,3 +631,27 @@ const fs = require("fs/promises");
 fs.readFile("./file.txt","utf-8") // will still return a promise
 
 Note : The callback based version of the fs module api are preferable over the use of promise api when maximum performance is required both in terms of execution time and memory allocation
+
+
+👉🏻 HTTP Module
+
+How the web works
+Computers connected to the internet are called clients and servers
+
+Clients :  are internet-connected devices such as computers or mobile phones along with web-accessing software available on those devices such as a web browser
+Servers : on the other hand are computers that store web pages, sites, or apps
+
+When you type a url in the browser, the client device request access to the webpage. A copy of the webpage is downloaded from the server and send as a response to the client to displayed in the browser. This Model is popularly called Client-Server Model
+Now we understood, the data transfer between client & server, but in what format is that data. What if the request send by the client cannot be understood by the server, or what if the response send by the server cannot be understod by the client, well  that's where the HTTP comes into the picture.
+-> HTTP
+Hypertext Transfer Protocol
+A protocol that defines a format for clients and servers to speak to each other 
+The client sends an HTTP request and the server responds with an HTTP response
+
+-> HTTP and Node
+We can create a web server using Node.js
+Node.js has access to operating system functionality like networking
+Node has an event loop to run tasks asynchronously and is perfect for creating
+web servers that can simultaneously handle large volumes of requests
+The node server we create should still respect the HTTP format
+The HTTP module allows creation of web servers that can transfer data over HTTP
