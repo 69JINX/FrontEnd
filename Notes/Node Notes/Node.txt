@@ -655,3 +655,32 @@ Node has an event loop to run tasks asynchronously and is perfect for creating
 web servers that can simultaneously handle large volumes of requests
 The node server we create should still respect the HTTP format
 The HTTP module allows creation of web servers that can transfer data over HTTP
+
+
+app.get('/getContent', (req, res) => {  
+  res.writeHead(200, { "Content-Type": "text/html" });  // these (writeHead & end) are outdated old http methods. use express methods instead
+  res.end("<i>Hello world</i>");
+}).listen(3000);
+
+if we specified Content-Type as "text/plain" then the response will be treated as a plain text and tag will be shown with text in the browser
+if we specified Content-Type as "text/html" then the response will be treated as html as it will be shown as italic font instead of as plan text with tags in the browser
+
+content-type headers in express and sending response : https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/content-types.png
+
+Sending a html file from backend :
+app.get('/getFile',(req, res) => {
+  res.writeHead(200, { "Content-Type": "text/html" });
+  const html = fs.readFileSync("./index.html", "utf-8") // readFileSync (synchronous) because res.end should't run before reading the file
+res.end(html);
+})
+
+If the html file is big, we can pipe it to make it more performent so user don't have to wait for whole file to load, instead it will load in chunks :
+app.get('/getFile',(req, res) => {
+  res.writeHead(200, { "Content-Type": "text/html" });
+  fs.createReadStream("./index.html").pipe(res);
+})
+
+
+View (MVC -> V (view))
+A view is simply the web page we see. A page that displays the text, images of a website. The case is that the webpage is served from backend instead of being created from frontend. If you build websites with HTML, then every page you create is the view like the homepage, about page, and the contact page.
+https://medium.com/front-end-weekly/what-is-a-view-in-web-application-6a2836eed4eb

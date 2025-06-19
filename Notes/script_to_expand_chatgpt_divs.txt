@@ -11,4 +11,5 @@ document.querySelectorAll('[class*="--thread-content-max-width"]').forEach(el =>
 });
 
 
-// Div which need to put on the top of main => @thread-xl/thread:pt-header-height mt-1.5 flex flex-col text-sm keyboard-open:pb-[calc(var(--composer-height,100px)+var(--screen-keyboard-height,0))] pb-25
+// Div which need to put on the top of main => 
+@thread-xl/thread:pt-header-height mt-1.5 flex flex-col text-sm keyboard-open:pb-[calc(var(--composer-height,100px)+var(--screen-keyboard-height,0))] pb-25
