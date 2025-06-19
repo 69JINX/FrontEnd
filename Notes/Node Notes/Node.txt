@@ -29,6 +29,148 @@ this (https://github.com/nodejs/node/blob/main/lib/fs.js) is the nodejs code of 
   3. Print
   4. Loop
   
+Nodejs Architecture :
+//insert Nodejs-environement.png from /FrontEnd/Notes/Notes_Pic
+
+👉🏻 libuv
+libuv is a cross platform open source library written in C language
+handles asynchronous non-blocking operations in Node.js
+
+How does libuv do that :
+using "Thread pool" & "Event loop"
+
+libuv is the C++ library used by Node.js to provide:
+Asynchronous I/O
+Event loop
+Thread pool
+Timers
+TCP, UDP, Pipes
+File system access
+
+Node.js sits on top of libuv. The thread pool is implemented and managed by libuv, not JavaScript directly.
+
+Libuv is an open-source, cross-platform C library that provides core infrastructure for Node.js's asynchronous, non-blocking I/O operations. It was originally developed specifically for Node.js but is now used in other projects as well.
+Here's a breakdown of its key roles in Node.js:
+Event Loop Management:
+Libuv implements the event loop, which is the central mechanism for handling asynchronous operations in Node.js. It continuously monitors for events (like I/O completion, timers, or network activity) and dispatches them to their corresponding callback functions.
+-> Asynchronous I/O: It provides a consistent, cross-platform API for performing various asynchronous I/O operations, including:
+File system operations (reading, writing, etc.)
+Networking (sockets, TCP/UDP)
+DNS resolution
+Timers
+Child process management
+-> Thread Pool: For operations that are inherently blocking at the operating system level (like some file system operations or computationally intensive tasks), Libuv utilizes a thread pool to offload these tasks. This ensures that the main event loop, which is single-threaded, remains non-blocked and responsive to other events.
+-> Cross-Platform Abstraction: Libuv abstracts away the complexities and differences of various operating system-specific I/O mechanisms (e.g., epoll on Linux, kqueue on macOS, IOCP on Windows), providing a unified and consistent interface for developers.
+
+In essence, Libuv is the engine that enables Node.js to achieve its highly efficient, non-blocking, and event-driven architecture, making it suitable for building scalable and high-performance applications.
+  
+👉🏻 Thread Pool
+In Node.js, the thread pool is a collection of pre-initialized worker threads, managed by the libuv library, that handle computationally intensive or blocking I/O operations. While Node.js itself runs on a single-threaded event loop, the thread pool allows it to offload tasks that would otherwise block the main thread, ensuring non-blocking behavior and responsiveness.
+
+Main thread:
+“Hey libuv, I need to read file contents but that is a time consuming task. | don't
+want to block further code from being executed during this time. Can | offload this
+task to you?”
+
+Libuv:
+“Sure, main thread. Unlike you, who is single threaded, | have a pool of threads
+that | can use to run some of these time consuming tasks. When the task is done,
+the file contents are retrieved and the associated callback function can be run.”  
+
+Managed by libuv:
+The thread pool is not part of Node.js's core JavaScript engine (V8) but rather a feature provided by libuv, a multi-platform asynchronous I/O library that Node.js relies on.
+
+Offloading Heavy Tasks:
+It's used for operations that involve significant CPU usage or blocking I/O, such as:
+File system operations (e.g., fs.readFile, fs.writeFile)
+DNS lookups (e.g., dns.lookup)
+Cryptographic functions (e.g., crypto.pbkdf2)
+Compression/decompression operations (e.g., zlib.gzip)
+
+Configuration:
+
+Worker Threads vs. Thread Pool:
+While the thread pool handles internal Node.js operations, the worker_threads module provides a way for developers to create and manage their own JavaScript worker threads for parallel execution of custom CPU-intensive tasks.
+Ensuring Responsiveness:
+By offloading these demanding tasks to the thread pool, the main Node.js event loop remains free to process other incoming requests and events, preventing delays and ensuring the application remains responsive.
+
+// insert Thread_Pool.png from /FrontEnd/Notes/Notes_Pic
+Libuv's thread pool, as name indicates, its literally a pool of thread that node js uses to offload time consuming tasks and insure that the main thread is not blocked 
+
+Note : Every method in node.js that has the "sync" suffix always runs on the main thread and is blocking
+
+A few async methods like fs.readFile and crypto.pbkdf2 run on a seperate thread in libuv's thread pool. They do run synchronously in their own thread but as far as the main thread is concerned, it appears as if the method is running asynchronously
+
+Imagine a scenario where we need to run 3 tasks, each taking 1 sec. 
+
+If we run synchronously : all 3 tasks will run in main thread simultaneously one by one. Becuase it only has single thread, all 3 will run in the same thread and next one will wait for the previous one to complete, eventually taking 3 seconds to run the whole process. (not in libuv's thread pool)
+ex : 
+const crypto = require("crypto");
+
+const start = Date.now();
+
+const syncCalc = () => {
+  crypto.pbkdf2Sync("password", "salt", 100000, 512, "sha512"); // sync version
+  console.log("Took", Date.now() - start, "milliseconds to calculate");
+}
+
+syncCalc();
+syncCalc();
+syncCalc();
+
+output : 
+Took 529 milliseconds to calculate
+Took 1060 milliseconds to calculate
+Took 1596 milliseconds to calculate
+
+// insert Synchronous_Method_Execution_timeFunctionGraph.png from /FrontEnd/Notes/Notes_Pic
+
+If we run asynchronously : main thread will offboard all 3 tasks to libuv's thread pool and will be run by seperate threads (3 thread for 3 tasks) in libuv's thread pool and the whole process will complete in 1 sec. 
+ex :
+const crypto = require("crypto");
+
+const start = Date.now();
+
+const asyncCalc = () => {
+  crypto.pbkdf2("password", "salt", 100000, 512, "sha512",()=>{  // async version
+  console.log("Took", Date.now() - start, "milliseconds to calculate");  
+  });
+}
+
+asyncCalc();
+asyncCalc();
+asyncCalc();
+
+output :
+Took 535 milliseconds to calculate
+Took 539 milliseconds to calculate
+Took 540 milliseconds to calculate
+
+// insert Asynchronous_Method_Execution_timeFunctionGraph.png from /FrontEnd/Notes/Notes_Pic
+
+What If the Number of Tasks > Number of Threads?
+When more tasks are submitted than threads available, the next task has to wait for any thread to get free. Basically, it turns into synchronous process when thread reaches its limit:
+1. The tasks go into a queue.
+2. libuv assigns the next available thread to the next task in the queue.
+3. Tasks are executed in FIFO order (generally).
+4. Once a thread finishes a task, it picks the next task from the queue.
+So tasks don’t get dropped, they’re just queued until a thread is available. 
+
+Thread Pool Size :
+The thread pool typically has a default size of 4 threads, but this can be configured by setting the UV_THREADPOOL_SIZE environment variable
+in the program : 
+>> process.env.UV_THREADPOOL_SIZE = 8
+or before the Node.js application starts :
+>> UV_THREADPOOL_SIZE=8 node app.js
+The maximum value for UV_THREADPOOL_SIZE in Node.js is 128.
+While some sources might mention 1024, the hardcoded limit within libuv, which Node.js uses for its thread pool, is 128. Attempting to set UV_THREADPOOL_SIZE higher than 128 will result in it being capped at 128.
+It is generally recommended to set UV_THREADPOOL_SIZE to the number of logical cores on the machine where the Node.js application is running, as setting it significantly higher than the available cores can lead to diminished performance due to increased context switching overhead.
+
+in the previous program, we called asyncCalc() 3 times (becuase of 4 default thread, those calls didn't cause any issue and all process took almost same time). But if we tried to call asyncCalc() 5 times, the 5th call will wait for any thread to get free and will take twice the amount of time (5th task become synchronous)
+Tip : increase UV_THREADPOOL_SIZE to run as many task asynchronously and improve the total time taken to run multiple tasks
+
+// insert Thread_pool_reaches_limit.png from /FrontEnd/Notes/Notes_Pic
+
 👉🏻Browser vs Node.js
 In the browser, most of the time what you are doing is interacting with the DOM, or other Web Platform APIs like Cookies. In case of Node, we don't have the document, window and all the other objects that are provided by the browser.
 And In the browser, we don't have all the nice APIs that Node.js provides through its modules. For example the filesystem access functionality.
@@ -681,6 +823,15 @@ app.get('/getFile',(req, res) => {
 })
 
 
-View (MVC -> V (view))
-A view is simply the web page we see. A page that displays the text, images of a website. The case is that the webpage is served from backend instead of being created from frontend. If you build websites with HTML, then every page you create is the view like the homepage, about page, and the contact page.
+👉🏻 View (MVC -> V (view))
+A view is simply the web page we see. A page that displays the text, images of a website. The case is that the webpage(html file) is served from backend with dynamic values instead of being created from frontend. If you build websites with HTML, then every page you create is the view like the homepage, about page, and the contact page.
 https://medium.com/front-end-weekly/what-is-a-view-in-web-application-6a2836eed4eb
+How to create a view : https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/View.png
+
+
+👉🏻 Web Framework
+A framework simply abstracts the lower level code allowing you to focus on the requirements than the code itself
+For example, Angular, React, Vue are all framework/libraries that help you build user interfaces without having to rely on the lower level DOM API in JavaScript
+There are frameworks to build web or mobile applications without having to rely on the HTTP module in node.js
+Ex: express, nest, hapi, koa and sails
+They build on the to of the HTTP module making it easier for you to implement all the features.
