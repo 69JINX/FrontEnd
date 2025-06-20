@@ -161,7 +161,7 @@ The thread pool typically has a default size of 4 threads, but this can be confi
 in the program : 
 >> process.env.UV_THREADPOOL_SIZE = 8
 or before the Node.js application starts :
->> UV_THREADPOOL_SIZE=8 node app.js
+>> UV_THREADPOOL_SIZE=8 node index.js
 The maximum value for UV_THREADPOOL_SIZE in Node.js is 128.
 While some sources might mention 1024, the hardcoded limit within libuv, which Node.js uses for its thread pool, is 128. Attempting to set UV_THREADPOOL_SIZE higher than 128 will result in it being capped at 128.
 It is generally recommended to set UV_THREADPOOL_SIZE to the number of logical cores on the machine where the Node.js application is running, as setting it significantly higher than the available cores can lead to diminished performance due to increased context switching overhead.
@@ -170,6 +170,113 @@ in the previous program, we called asyncCalc() 3 times (becuase of 4 default thr
 Tip : increase UV_THREADPOOL_SIZE to run as many task asynchronously and improve the total time taken to run multiple tasks
 
 // insert Thread_pool_reaches_limit.png from /FrontEnd/Notes/Notes_Pic
+
+When Tasks/ThreadsPoolSize surpasses the amount of cores :
+If we defined UV_THREADPOOL_SIZE to more than number of cpu cores we have, it take double the amount of time to all tasks to complete.
+Increasing the thread pool size can help with performance but that is limited by the number of available CPU cores
+
+Scanario 1 : Imagine we have 6 cpu cores and we defined UV_THREADPOOL_SIZE to 6 and run 6 tasks, the time taken for all 6 tasks will be :
+
+Task 4 Took 560 milliseconds to calculate
+Task 1 Took 563 milliseconds to calculate
+Task 5 Took 570 milliseconds to calculate
+Task 2 Took 572 milliseconds to calculate
+Task 3 Took 577 milliseconds to calculate
+Task 6 Took 581 milliseconds to calculate
+
+// insert 8Tasks_&_8Cors.png from /FrontEnd/Notes/Notes_Pic
+
+Scanario 1 : If we try to run 7 tasks while defining UV_THREADPOOL_SIZE to 7 (without defining this, the process will become synchronous once number of tasks reaches the number of default cpu cores (4) ), the 6th and 7th task will take the more time it took to complete the rest of the tasks. Because we only have 6 cores, Operating System has to provide 2 tasks (any two) to a single thread to juggle 7 tasks to 6 cores. that's why both tasks took more time than other tasks to complete.
+Note : sometimes the 2 cores are left ideal by OS and only rest of cores are used even if we defined all cores to use using UV_THREADPOOL_SIZE
+
+const crypto = require("crypto");
+
+const start = Date.now();
+
+process.env.UV_THREADPOOL_SIZE = 7; 
+
+const asyncCalc = (i) => {
+  crypto.pbkdf2("password", "salt", 100000, 512, "sha512",()=>{
+  console.log(`Task ${i} Took`, Date.now() - start, "milliseconds to calculate");  
+  });
+}
+
+for(let i = 1; i<=7; i++){
+  asyncCalc(i);
+}
+
+output :
+Task 4 Took 560 milliseconds to calculate
+Task 7 Took 563 milliseconds to calculate
+Task 1 Took 570 milliseconds to calculate
+Task 5 Took 572 milliseconds to calculate
+Task 2 Took 577 milliseconds to calculate
+Task 3 Took 779 milliseconds to calculate // took more time than rest
+Task 6 Took 784 milliseconds to calculate // took more time than rest
+
+If we try to complete 16 while defining UV_THREADPOOL_SIZE to 16 in a 8 cores cpu
+// insert 16Tasks_&_8Cors.png from /FrontEnd/Notes/Notes_Pic
+
+👉🏻 Thread Pool vs OS async mechanism
+
+
+OS asyc mechanism :
+Node.js leverages operating system (OS) asynchronous mechanisms to achieve its non-blocking, event-driven architecture, particularly for I/O operations. This allows Node.js to handle a large number of concurrent connections efficiently without creating a new thread for each, unlike traditional thread-per-connection models.
+The core of this mechanism involves:
+Native OS Asynchronous I/O APIs:
+For network I/O and timers, Node.js directly utilizes the asynchronous I/O interfaces provided by the underlying operating system. Examples include epoll on Linux, kqueue on macOS/FreeBSD, and IOCP (I/O Completion Ports) on Windows. These APIs allow the OS to handle the I/O operations in the background and notify Node.js when they are complete, without blocking the main event loop.
+Thread Pool (for certain operations):
+For tasks that the OS might not provide native asynchronous APIs for, such as file system operations or CPU-bound tasks, Node.js utilizes a thread pool managed by libuv. libuv is a C library that provides cross-platform asynchronous I/O. When a file system operation is initiated, it's offloaded to a thread in this pool, allowing the main Node.js event loop to remain non-blocked and continue processing other events. Once the thread completes the operation, it notifies the event loop, which then processes the result.
+This combination of native OS mechanisms and a thread pool enables Node.js to perform I/O operations asynchronously, leading to high scalability and responsiveness, which are key characteristics of its performance.
+
+👉🏻 Nodejs utilize OS async mechanism instead of using thread pool if a specific mechanism is provided by OS
+
+Node.js network requests do not primarily utilize the libuv thread pool because they are handled using native asynchronous I/O mechanisms provided by the operating system.
+Here's why:
+-> Event-Driven, Non-Blocking I/O:
+Node.js's core strength lies in its event-driven, non-blocking I/O model. For network operations, this means that instead of dedicating a thread to each connection and waiting for data, Node.js registers callbacks with the operating system. When network data is ready, the OS notifies Node.js, and the corresponding callback is placed in the event queue to be processed by the single-threaded event loop. This allows Node.js to handle a large number of concurrent connections efficiently without the overhead of creating and managing a thread for each.
+-> Native Asynchronous APIs:
+Modern operating systems offer highly optimized, non-blocking APIs for network operations (e.g., epoll on Linux, kqueue on macOS/FreeBSD, I/O Completion Ports on Windows). Libuv, the underlying C++ library that powers Node.js's asynchronous I/O, leverages these native APIs directly for network requests.
+-> Thread Pool for Blocking Operations:
+The libuv thread pool is primarily used for operations that do not have native asynchronous APIs or are inherently CPU-bound and could block the main event loop if executed directly. Examples include:
+1. File System Operations: Many file system operations are synchronous and blocking at the OS level, so they are offloaded to the thread pool to prevent blocking the main thread.
+2. DNS Resolution (default lookup): While some DNS lookups can be asynchronous, the default system-level DNS resolution often involves blocking calls, thus utilizing the thread pool.
+3. Crypto and Zlib Operations: These are CPU-intensive tasks that are better handled in separate threads to avoid blocking the event loop.
+In essence, Node.js prioritizes the use of native, non-blocking I/O for network requests to maximize concurrency and scalability, reserving the thread pool for tasks that genuinely require offloading to avoid blocking the single-threaded JavaScript execution.
+
+const https = require("https");
+
+const start = Date.now();
+
+const asyncCall = (i) => {
+  https.request("https://www.google.com",(res)=>{
+    res.on("data",()=>{})
+    res.on("end",()=>{
+      console.log(`Request ${i} took ${Date.now()-start}`);
+    });
+  })
+  .end();
+}
+
+for(let i = 1; i<=12; i++){ // 12 call will not utilize thread pool and all calls will take approx same time
+  asyncCall(i);
+}
+
+output : 
+Request 9 took 620
+Request 2 took 675
+Request 12 took 745
+Request 4 took 747
+Request 3 took 749
+Request 10 took 749
+Request 1 took 750
+Request 7 took 763
+Request 11 took 830
+Request 5 took 852
+Request 6 took 860
+Request 8 took 862
+
+// insert libuv_threadpoolVSosAsync.png
 
 👉🏻Browser vs Node.js
 In the browser, most of the time what you are doing is interacting with the DOM, or other Web Platform APIs like Cookies. In case of Node, we don't have the document, window and all the other objects that are provided by the browser.
