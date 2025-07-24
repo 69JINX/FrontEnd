@@ -1,0 +1,397 @@
+👉🏻NPM
+1. Is is the world's largest software library (registry)
+2. It is a software package manager
+
+npm is a Software Library
+A book library contains books written by various authors
+npm is a library or a registry which contains code packages written by various developers
+It is a large public database of JavaScript code that developers from all over the world can use to share and borrow code
+If you author a “code package”, you can publish it to the npm registry for others to use
+If you come across a code package that is authored by someone else and solves the problem you have at hand, you can borrow that code without having to reinvent the wheel
+
+👉🏻package.json
+What?
+package.json is npm's configuration file
+It is a json file that typically lives in the root directory of your package and holds various metadata relevant to the package
+Why?
+package.json is the central place to configure and describe how to interact with and run your package
+It is primarily used by the npm CLI
+
+Node Playlist : https://www.youtube.com/watch?v=4KC-TxNBWsE
+
+👉🏻Versioning 
+Versioning of node packages
+ex: package.json
+"dependencies": {
+  "react-icons": "^5.3.0",
+ }
+ 
+Semantic Versioning
+SemVer - is one of the most widely adopted versioning systems
+A simple set of rules and requirements that dictate how version numbers are assigned and incremented
+It is crucial to keep a semantic and historical track of changes
+Version numbers and the way they change convey meaning about the underlying code and what has been modified from one version to the next
+syntax : X.Y.Z (where x stands for Major version, Y stands for Minor version and Z stands for a Patch)
+
+Versioning Rules :
+
+> When you fix a bug and the code stays backwards-compatible you increment the patch version.
+For example 1.1.1 to 1.1.2
+
+> When you add new functionality but the code still stays backwards-compatible,
+you increment the minor version
+You also reset the patch version to zero
+For example 1.1.1 to 1.2.0
+
+> When you make changes and the code is no more backwards compatible, you
+increment the major version
+You have to reset the minor and patch version to zero
+For example 1.1.1 to 2.0.0.
+
+Semantic versioning always starts with 0.1.0
+0.Y.Z (a major version of zero) is used for initial development
+When the code is production-ready, you increment to version 1.0.0
+Even the simplest of changes has to be done with an increase in the version number
+
+👉🏻Scripts
+An npm script is a convenient way to bundle common commands for use in a project
+They are typically entered in the command line in order to do something with the application
+npm scripts are stored in a project's package.json file, giving access to everyone who has access to the codebase
+They also ensure that everyone is using the same command with the same options
+Common use cases for npm scripts include building your project, starting a development server, compiling CSS, linting, minifying etc
+npm scripts are executed using the command npm run <SCRIPT_NAME>
+
+ex: package.json
+"scripts": {
+  "start": "node index.js",
+ }
+>> npm run start
+or
+>> npm start
+
+npm test, npm start, npm restart, and npm stop are all aliases for npm run xxx.
+For all other scripts you define, you need to use the npm run xxx syntax. (See the docs at https://docs.npmjs.com/cli/commands/npm-run for more information.)
+
+👉🏻Building CLI Tools
+CLI stands for Command Line Interface. A program that you can run from the terminal
+Ex: npm and git
+
+Create a basic CLI tool using node and npm
+Pass options to the CLI
+Add interactivity to the CLI
+
+👉🏻Cluster Module
+Node is single threaded
+No matter how many cores you have, node only uses a single core of your CPU
+This is fine for I/O operations but if the code has long running and CPU intensive operations, your application might struggle from a performance point of view
+The cluster module enables the creation of child processes (also called workers) that run simultaneously
+> The Cluster module allows you to leverage multi-core CPUs by creating multiple worker processes that share a single server port. This enables your Node.js application to handle more concurrent requests and improve performance for CPU-intensive tasks.
+> The Cluster module creates child processes (workers), each running independently and in its own event loop. A master process manages these workers, distributing incoming connections among them.
+> It is essential for scaling Node.js applications that need to handle a high volume of concurrent requests or perform significant CPU-bound computations, allowing them to utilize all available CPU cores effectively.
+
+ex (no_cluster.js) : 
+const express = require('express');
+const app = express();
+
+app.get('/',(req,res)=>{
+  res.end("Home Page");
+});
+
+app.get('/slow-page',(req,res)=>{
+  for(let i = 0; i<6000000000;i++){} // Simulate CPU work 
+  res.end("Slow Page");
+});
+
+app.listen(4000,()=>{
+  console.log('Server is running at port 4000');
+})
+
+If you try to access both pages. In the network tab on the Time column (usually 6th column), you can see the home page took almost 4ms and fetched very quickly, on the other hand the /slow-page page took 6.32s (that is way slower then home page because we have a long running for-loop in the controller)
+
+> Lets observe a little scenario. 
+Try to reload (/slow-page) on a tab. While the slow-page is being load, reload the the home page on a new tab right after reloading the /slow-page. Because of the /slow-page, the home page will be postpond and will wait for the /slow-page to finish loading and it will also take around 5s.
+Why is this happening ?
+Well that is because the single thread of nodejs is blocked with the for-loop and server won't be able to respond to any new request. /slow-page is basically blocking the home page. If 1 user hits /slow-page, Everyone else — even those trying to access, will get stuck waiting.
+The solutions for this scenarion are :
+Use non-blocking code or offload heavy tasks using:
+> Async patterns: e.g., setTimeout, Promise, async/await with non-blocking I/O
+> Worker threads (built-in in Node.js): offload CPU-intensive tasks
+> Child processes (for heavy computation)
+> Cluster mode (multiple Node.js processes via PM2 or native cluster module)
+
+We will be using Cluster Module to solve this issue.
+How cluster module works in nodejs ?
+By default, index.js runs in a single process — and this process does handle all logic: routing, file access, database operations, etc.
+No master/worker separation happens unless you explicitly implement clustering using Node.js’s cluster module.
+Now, if you use the cluster module :
+> When we run index.js (node index.js) in the terminal, the file is treated as a "Cluster Master" and this master is encharge of spawning new workers which runs an instance of our node application.
+> It is very important to note that the Master is only in charge of the workers (starting, stopping, restarting them if they crash etc.) but doesn not execute the application code itself (like handling HTTP requests or running your Express app). It is not incharge of handling incoming request, reading files etc. That is up to indivisual worker instance.
+> Each worker gets its own event loop, memory, and V8 instance and Each worker handles its own incoming requests(like HTTP requests). and doing so we are able to share the workload across different instances without having to block incoming requests
+
+ex : 
+const cluter = require("cluster");
+
+if(cluter.isMaster) console.log(`Master process ${process.pid} is running`);
+else console.log(`Worker ${process.pid} started`);
+
+output :
+Master process 66249 is running
+
+Creating new workers with cluster.fork()
+Now let's focus on what code to run as Master vs Worker. As master we need to create new workers. To do that, we use fork() method on the cluster object. Create multiple workers by calling the fork method on the cluster multiple times.
+cluster.fork(); // Worker 1
+cluster.fork(); // Worker 2
+
+once the workers are created, no incoming requests will be handle by master cluster. every process will be handle by cluster workers. 
+
+ex (creating workers) : 
+const express = require("express");
+const app = express();
+const cluster = require("cluster");
+
+if(cluster.isMaster) {
+  console.log(`Master process ${process.pid} is running`);
+  cluster.fork();
+  cluster.fork();
+}
+else {
+  console.log(`Worker ${process.pid} started`);
+  app.listen(4000,()=>{
+    console.log('Server is running at port 4000');
+  })
+}
+
+output :
+Master process 67409 is running
+Worker 67417 started
+Worker 67416 started
+Server is running at port 4000
+Server is running at port 4000
+
+Flow of the code :
+1. cluster.isMaster is true for the main process: 
+ Logs:
+ Master process 67409 is running
+ Then it forks two worker processes:
+ cluster.fork();
+ cluster.fork();
+2. Each worker process re-runs the entire file: (in this case, 2 clusters = 2 times file running)
+ BUT now cluster.isMaster === false, so both workers start their own Express app on port 4000 so now we have 2 servers to handle more requests and traffic.
+3.Each worker runs independently and listens on the same port — this is allowed because Node.js Cluster lets the kernel handle load balancing between them.
+
+How the worker is choosen to process a specific task ?
+The master process listens on the port behind the scenes.
+When a request comes in, the OS kernel (like Linux) or Node's cluster module:
+ > Picks a worker (usually via round-robin strategy),
+ > And passes the connection to that worker process using IPC (inter-process communication).
+So workers don’t compete — the master dispatches the requests.
+
+Let’s revisit the previous scenario where accessing the /slow-page endpoint caused the entire application to become unresponsive — blocking access to other routes like the home page — until the /slow-page request completed.
+
+With clustering enabled and multiple worker processes spawned, this bottleneck is eliminated. If one worker is occupied handling a high-computation route like /slow-page, incoming requests (such as to /) can now be delegated to an available worker. As a result, the home page remains responsive and loads almost instantly (within 2–3 ms), even while the /slow-page is still processing (which may still take ~4.5 seconds due to CPU-intensive operations).
+
+In essence, clustering leverages multi-core systems by distributing load across separate worker processes, ensuring that a single blocking request does not degrade the responsiveness of the entire application.
+
+example 2 : 
+const express = require("express");
+const cluster = require("cluster");
+const os = require("os");
+
+
+if(cluster.isPrimary) {
+  console.log(`Master process ${process.pid} is running`);
+
+  for(let i=0;i<os.cpus().length;i++) // creating worker as there are no. of cpus cores
+  {
+    cluster.fork();   
+  }
+}
+else {
+  const app = express();
+  
+  app.get('/',(req,res)=>{
+    res.end(`Worker ${process.pid} completed you request`);
+  });
+
+  console.log(`Worker ${process.pid} started`);
+  
+  app.listen(4000,()=>{
+    console.log('Server is running at port 4000');
+  })
+}
+output :
+Master process 14702 is running
+Worker 14709 started
+Worker 14710 started
+Server is running at port 4000
+Worker 14711 started
+Server is running at port 4000
+Worker 14717 started
+Server is running at port 4000
+Server is running at port 4000
+Worker 14719 started
+Server is running at port 4000
+Worker 14727 started
+Server is running at port 4000
+
+Try to access localhost:4000 on different browsers, you will see different workers id as the request was solved by different workers.
+browser 1 : Worker 14709 completed you request
+browser 2 : Worker 14710 completed you request
+
+isMaster vs isPrimary :
+cluster.isMaster is an older, deprecated property.
+cluster.isPrimary is the current, recommended equivalent.
+For new development or when updating existing code, cluster.isPrimary should be used to ensure compatibility with recent Node.js versions and best practices. If supporting older Node.js versions is necessary, a check like if (cluster.isPrimary || cluster.isMaster) can be employed for broader compatibility.
+
+Note : It is very important that you create 2 worker threads minimum. If you create only 1, it is the same as no-cluster scenario. The master will not handle any incoming request, resulting in only 1 node instance responsible for all requests.
+
+Why shouldn't we simply create a large number of workers using cluster.fork()?
+We should only create as many workers as there are CPU cores on the machine the app is running
+If you create more workers than there are logical cores on the computer it can cause an overhead as the system will have to schedule all the created workers with fewer number of cores
+
+How to see number of cores of your system ?
+>> require("os").cpus().length;
+
+You can use packages to run your application as cluster which will also decide the best number of workers to create for your machine. One of those npm packages is "PM2"
+
+PM2 (Process Manager 2)
+PM2, short for Process Manager 2, is a popular production process manager for Node.js applications. It helps developers manage, monitor, and keep Node.js applications running continuously, especially in a production environment.
+
+>> npm install pm2 -g
+PM2 should be installed globally so it can be accessible from anywhere on your system using (CLI) Global installation ensures that pm2 commands like start, stop, restart, and logs are available system-wide, simplifying application management, especially in production environments.  
+for more info, visit : http://pm2.io/
+PM2 quick start : https://pm2.keymetrics.io/docs/usage/quick-start/
+
+
+Key Features and Functions:
+1. Process Management:
+	PM2 allows you to start, stop, restart, and manage your Node.js applications, ensuring they remain online and available. 
+2. Process Monitoring:
+	It provides features to monitor application status, logs, and resource usage (CPU and memory). 
+3. Self-Recovery:
+	PM2 automatically restarts applications if they crash or encounter errors, minimizing downtime. 
+4. Clustering and Load Balancing:
+	PM2 can distribute traffic across multiple instances of an application, enabling scalability and improving performance. 
+5. Hot Reloading:
+	PM2 can reload applications without any downtime when code changes are detected. 
+6. Deployment System:
+	PM2 offers a deployment system that can streamline the process of deploying applications to different environments. 
+7. Configuration Files:
+	You can create configuration files (Ecosystem files) to manage multiple applications and their settings. 
+8. Keymetrics Integration:
+	PM2 integrates with Keymetrics, a monitoring platform, for more advanced application insights. 
+9. Cross-Platform Compatibility:
+	PM2 works on Linux, macOS, and Windows operating systems. 
+10. Supports various languages:
+	While primarily known for Node.js, PM2 can also manage other applications written in languages like Python and Ruby, and even binaries in your PATH. 
+
+How it Works:
+1. Installation:
+	PM2 is installed globally as an npm package. 
+2. Starting Applications:
+	You use the pm2 start app.js command to start your application, which then runs as a daemon (a background process). 
+3. Background Daemon:
+	PM2 runs in the background, continuously monitoring and managing the application. 
+4. Commands for Management:
+	PM2 provides commands like pm2 list (to see running processes), pm2 stop app.js (to stop), pm2 restart app.js (to restart), and pm2 delete app.js (to remove).
+
+Running a app using PM2
+when running our app using pm2, we don't have to import the cluster module. The pm2 automatically create workers.
+to run our index.js using pm2 
+>> pm2 start no_cluster.js -i 0
+To enable the cluster mode, just pass the -i option. the zero indicates we want pm2 to figure out optimum number of workers to create, if you specify the number eg. 2, pm2 will create only 2 workers
+Once the pm2 has registered a process with a certain cpu core, you can restart/stop your app with only id of the process instead of using the full file name.
+
+If you want to stop a certain process/worker, use the id of the process/worker
+>> pm2 stop [id]
+or stop all process
+>> pm2 stop all
+Same command for the "start" command
+
+If you want to unregistered some process from the cpu core, you can use 
+>> pm2 delete [id]  
+or delete unregister all process with
+>> pm2 delete all
+
+Logs :
+All console logs or errors will not be printed directly into the terminal once your app has been started using pm2 start. 
+Instead, to see all console logs of your app in realtime, use the below command.
+>> pm2 logs
+It will also show the worker number associated with the file name (main index file, if there are multipe files) which was used to print that console.
+
+Note : we should spawn only 1 app per core. If you try to run processes than there are no. of cpu cores, the Context switching overhead might increase, Performance may degrade, especially under heavy CPU load, CPU-intensive routes in one worker may still block requests for that worker’s queue.
+
+Running Frontend nextjs app with pm2 (usually on production environment like EC2) :
+
+pm2 start npm --name My-Frontend_production -- start (in production build for 'npm run start'/'npm start')
+pm2 start npm --name My-Frontend_development -- run dev (in development mode for 'npm run dev')
+(if you don't want to give any name to the process, it can be as simple as :
+>> pm2 start npm -- start (production)
+or
+>> pm2 start npm -- run dev  (development)
+
+Breakdown :
+How 'npm start' converted to this long pm2 code from above
+1. pm2 start → tells PM2 to start a process
+2. npm → the executable to run (like server.js for backend)
+3. --name next-app → PM2 name for managing the app
+4. -- → very important — separates PM2’s own arguments from the arguments you want to pass to the script
+5. start → argument passed to npm, making it:
+
+Every item after -- is treated as a space-separated argument to the script (npm/server.js), not to PM2 itself.
+So this: 
+>> pm2 start npm --name next-app -- start
+is like manually running:
+>> npm start
+And PM2 just manages the process.
+
+For example:
+>> pm2 start npm --name next-app -- run start -- --port 3001
+This would translate to:
+>> npm run start -- --port 3001
+(npm run dev ignores args like port after the script name unless they come after a --, so port 3001 will be ignored if we didn't use double dash before --port 3001. This is npm's rule, not PM2's)
+
+✅ General Syntax:
+- PM2 args (like --name) must go before the first --
+- Everything after the first -- goes to the script (like npm start)
+so this won't work :
+>> pm2 start npm -- run dev --name My-Frontend
+but this will :
+>> pm2 start npm --name My-Frontend -- run dev
+
+🧠 Golden Rule for PM2 Command Arguments:
+🔹 All arguments for PM2 go before the first --
+🔹 All arguments for your script (e.g., npm, next, Node.js) go after the first --
+🔹 Environment variables can go either inline+ or in a config file
+
+Syntax:
+pm2 start <command> [PM2 options] -- [script args]
+
+if including env variables in the command, they should come before the pm2 command
+>> PORT=3001 pm2 start server.js
+
+Note : It is recommended to restart your already running frontend instance instead of deleting it and creating new with above script. 
+The above script is usually used to start a nextjs app for the first time with pm2
+>> npm run build (create a new build after code updation)
+>> pm2 restart 0 (use the number/id on whatever id the frontend process is running ["pm2 list" to see all running processes and their ids])
+(incase of scenario where frontend is not reflecting changed even after restarting, then it is adviced to delete the already running process (with 'pm2 delete pid' and start a new one)
+
+✅ Alternative with ecosystem file (recommended for production):
+Create ecosystem.config.js:
+module.exports = {
+  apps: [
+    {
+      name: "next-app",
+      script: "npm",
+      args: "start",
+      env: {
+        NODE_ENV: "production",
+        PORT: 3000
+      }
+    }
+  ]
+};
+Start it with:
+pm2 start ecosystem.config.js
+
+NODE_ENV : NODE_ENV is an environment variable in Node.js that specifies the environment in which the application is running, typically either "development", "production", or "test". It allows applications to behave differently based on the environment they are in, enabling configurations, optimizations, and behaviors specific to each environment.
