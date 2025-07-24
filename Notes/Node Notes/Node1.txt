@@ -68,6 +68,10 @@ Node.js Event Loop Phases (Simplified)
 Between each phase, microtasks run:
   -> process.nextTick
   -> Promise.then, queueMicrotask
+  
+Microtasks are Priority : (Imp)
+Microtasks (nextTick and Promise queues) are executed in between each queue and between each callback. After each individual callback inside a macrotask, Node.js drain process.nextTick and Promise microtasks, before moving on to the next callback in that same macrotask queue.
+This ensures microtasks are always given priority over the next macrotask — a behavior similar to how the browser event loop handles Promises.
 
 Microtask vs Macrotask
 microtasks and macrotasks represent different categories of asynchronous operations with distinct priorities and execution orders.
@@ -458,4 +462,116 @@ Since setImmediate() was waiting in the Check Phase, Node said:
 
 Inference : I/O events are polled and callback functions are added to the I/O queue only after the I/O is complete
 
-In Check queue :
+In Check queue : The check queue is a specific phase where callbacks scheduled with setImmediate() are executed.
+Purpose:
+The check queue is designed to execute callbacks immediately after the "poll" phase of the event loop has completed. This provides a way to schedule tasks that should run as soon as possible, but not necessarily in the same tick of the event loop as microtasks (like Promises or process.nextTick).
+Event Loop Flow:
+> The event loop continuously cycles through various phases.
+> After the "poll" phase (which handles I/O events and can potentially block), if the poll phase becomes idle and there are callbacks in the check queue, the event loop will proceed to the check phase to execute those setImmediate() callbacks.
+> This allows setImmediate() to execute before any pending setTimeout() callbacks in the timer queue, even if the setTimeout() has a 0ms delay.
+In essence, the check queue provides a specific point in the Node.js event loop cycle for executing setImmediate() callbacks, ensuring they run promptly after I/O operations and before other timer-based tasks.
+
+Experiment 10 : Check queue callbacks are executed after microtask queues callbacks, Timer queue callbacks and I/O queue callbacks are executed
+
+const fs = require("fs");
+fs.readFile(__filename, () => {
+   console.log("this is readFile 1");
+   setImmediate(() => console.log("this is inner setInmediate inside readFile"));
+});
+process.nextTick(() => console.log("this is process.nextTick 1"));
+Promise.resolve().then(() => console.log("this is Promise.resolve 1"));
+setTimeout(() => console.log("this is setTimeout 1"), 0);
+
+output :
+this is process.nextTick 1
+this is Promise.resolve 1
+this is setTimeout 1
+this is readFile 1
+this is inner setInmediate inside readFile
+
+Experiment 11 : Microtask queues callbacks are executed after I/O callbacks and before check queue callbacks
+
+const fs = require("fs");
+fs.readFile(__filename, () => {
+   console.log("this is readFile 1");
+   setImmediate(() => console.log("this is inner setInmediate inside readFile"));
+   process.nextTick(()=>{
+   	console.log("this is inner process.nextTick inside readFile");
+   })
+   Promise.resolve().then(()=>{
+   	console.log("this is inner Promise.resolve inside readFile");
+   })
+});
+process.nextTick(() => console.log("this is process.nextTick 1"));
+Promise.resolve().then(() => console.log("this is Promise.resolve 1"));
+setTimeout(() => console.log("this is setTimeout 1"), 0);
+
+output :
+this is process.nextTick 1
+this is Promise.resolve 1
+this is setTimeout 1
+this is readFile 1
+this is inner process.nextTick inside readFile
+this is inner Promise.resolve inside readFile
+this is inner setInmediate inside readFile
+
+Experiment 12 : Microtask queues callbacks are executed in between check queue callbacks. After every single callback in check queue, it will check for microtask queue for any pending callbacks.
+
+setImmediate(() => console.log("this is setImmediate 1"));
+setImmediate(() => {
+	console.log("this is setImmediate 2");
+	process.nextTick(() => console. log("this is process.nextTick 1"));
+	Promise.resolve().then(() => console.log("this is Promise.resolve 1"));
+});
+setImmediate(() => console.log("this is setImmediate 3"));
+
+output :
+this is setImmediate 1
+this is setImmediate 2
+this is process.nextTick 1
+this is Promise.resolve 1
+this is setImmediate 3
+
+Experiment 13 : When running setTimout with delay 0ms and setImmediate method, the order of execution can never be guaranteed cause it can vary slightly depending on the system's state and how fast the code before them executes.
+
+setTimeout(() => console.log("this is setTimeout 1"), 0);
+setImmediate(() => console.log("this is setImmediate 1"));
+
+In Close queue :
+The "close queue" is a specific phase within the Node.js event loop, dedicated to handling callbacks associated with the close event of various resources. It is the final phase of a single iteration (or "tick") of the Node.js event loop.
+Key aspects of the close queue:
+1. Purpose:
+It holds callback functions that are registered to execute when a resource, such as a stream, socket, or HTTP server, is closed.
+2. Triggering:
+Callbacks are added to the close queue when the close() method is called on a resource, leading to the emission of a close event.
+3. Execution Order:
+Callbacks in the close queue are executed after all other types of callbacks in the event loop's main phases, including timers, I/O, and check phases.
+4. Example:
+If you have a net.Server or http.Server and call server.close(), any callbacks attached to the 'close' event of that server will be placed in the close queue and executed during this phase.
+
+In essence, the close queue ensures that cleanup operations and final actions related to closed resources are handled in an orderly manner at the very end of an event loop cycle.
+
+Experiment 14 : Close queue callbacks are executed after all other queues callbacks in a given itaration of the event loop
+const fs = require("fs");
+
+const readableStream = fs.createReadStream(__filename);
+readableStream.close();
+
+readableStream.on("close", () => { // this callback gets queued and invoked in the close callbacks phase.
+    console. log("this is from readableStream close event callback");
+})
+
+setImmediate(() => console.log("this is setImmediate 1"));
+setTimeout(() => console.log("this is setTimeout 1"), 0);
+
+Promise.resolve().then(() => console.log("this is Promise.resolve 1"));
+process.nextTick(() => console.log("this is process.nextTick 1"));
+
+output :
+this is process.nextTick 1
+this is Promise.resolve 1
+this is setTimeout 1
+this is setImmediate 1
+this is from readableStream close event callback
+
+
