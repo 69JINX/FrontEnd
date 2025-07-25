@@ -77,6 +77,15 @@ Libuv:
 that | can use to run some of these time consuming tasks. When the task is done,
 the file contents are retrieved and the associated callback function can be run.”  
 
+Network I/O operations on node.js runs on the main thread. it's handled by the main thread using non-blocking I/O, which is what makes Node.js fast and efficient.
+
+Yes, node.js spawns four threads in addition to the main thread but none of them are used for network I/O such as database operations. The threads are:
+
+1. DNS resolver (since some OSes don’t support async DNS natively)
+2. File system API (because this is messy to do asynchronously cross-platform, reading/writing files)
+3. Crypto (Because this uses the CPU, like password hashing)
+4. Zlib (zlib operations like zipping files)
+
 Managed by libuv:
 The thread pool is not part of Node.js's core JavaScript engine (V8) but rather a feature provided by libuv, a multi-platform asynchronous I/O library that Node.js relies on.
 
