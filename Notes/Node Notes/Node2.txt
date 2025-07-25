@@ -395,3 +395,70 @@ Start it with:
 pm2 start ecosystem.config.js
 
 NODE_ENV : NODE_ENV is an environment variable in Node.js that specifies the environment in which the application is running, typically either "development", "production", or "test". It allows applications to behave differently based on the environment they are in, enabling configurations, optimizations, and behaviors specific to each environment.
+
+👉🏻Worker Thread
+https://jubaget.com/ads/MzgwNDg3MQ==/Mg==
+
+let's revisit some facts about js and nodejs :
+
+How JS single threaded and can still handle asynchronous tasks ?
+JavaScript is fundamentally a single-threaded language. This means it has one call stack and one memory heap, and it executes code sequentially, one instruction at a time. It must complete the execution of a piece of code before moving on to the next.
+
+However, JavaScript achieves asynchronous behavior and appears to handle multiple tasks concurrently through mechanisms like the event loop and Web APIs (in browsers) or the libuv library (in Node.js). This allows for non-blocking operations, such as handling network requests or I/O operations, without freezing the main execution thread.
+
+While JavaScript itself is single-threaded, environments like browsers and Node.js provide features like Web Workers (in browsers) that allow for true multi-threading by running scripts in separate background threads, enabling the execution of computationally intensive tasks without impacting the main thread's responsiveness.
+
+How Nodejs is single threaded and can still handle asynchronous tasks ?
+
+Node.js handles asynchronous tasks despite being single-threaded primarily through its event loop and the underlying libuv library, which manages a thread pool for I/O operations. 
+
+The event loop continuously checks for completed async operations and runs their callbacks without blocking the main thread. When an I/O task (like file or network access) is triggered, it's offloaded to the OS or libuv’s thread pool. Once done, the callback is queued and executed when the call stack is clear.
+
+libuv enables non-blocking I/O by handling heavy I/O work in background threads, allowing the main thread to stay responsive. This design lets Node.js manage many concurrent connections efficiently. However, CPU-intensive tasks can still block the event loop. For such cases, Node.js provides Worker Threads—a way to run CPU-heavy JavaScript code in parallel threads, enabling true multithreading without affecting the main thread’s performance.
+
+also revisit the Thread Pool topic from previous
+
+Network I/O operations on node.js runs on the main thread. it's handled by the main thread using non-blocking I/O, which is what makes Node.js fast and efficient.
+
+Yes, node.js spawns four threads in addition to the main thread but none of them are used for network I/O such as database operations. The threads are:
+
+1. DNS resolver (since some OSes don’t support async DNS natively)
+2. File system API (because this is messy to do asynchronously cross-platform, reading/writing files	)
+3. Crypto (Because this uses the CPU, like password hashing)
+4. Zlib (zlib operations like zipping files)
+
+❓ Why is Node.js fast if it's single-threaded?
+Most I/O operations (like calling a database) don’t use the CPU much. They mostly involve waiting for a response from another machine. Node.js takes advantage of this by not blocking the main thread while waiting. Instead:
+
+When a request (like a DB query) is sent, Node.js moves on to handle other tasks.
+
+When the response comes back, Node.js runs the callback function that handles the result.
+
+This is called non-blocking I/O, and it allows Node.js to handle many requests at the same time, even with just one main thread.
+
+🧵 What if you want to use multiple CPU cores?
+If you have CPU-heavy tasks (like image processing or math), they can block the main thread. In such cases, you can:
+
+>> Use worker_threads to run that logic in separate threads.
+>> Use the cluster module or a process manager like PM2 to run multiple Node.js processes on different CPU cores.
+
+Node.js manages thread pools through two primary mechanisms:
+1. Libuv's Thread Pool:
+> Node.js leverages the libuv library, which provides a default thread pool of four threads.
+> This pool is automatically used for offloading I/O-bound and CPU-intensive operations that would otherwise block the main event loop. Examples include file system operations (e.g., fs.readFile), DNS lookups, and cryptographic functions (e.g., crypto.pbkdf2).
+> The size of this thread pool can be adjusted using the UV_THREADPOOL_SIZE environment variable, though increasing it beyond the number of logical CPU cores may not always yield performance benefits.
+2. Worker Threads Module:
+> Introduced in Node.js 10.5.0, the worker_threads module allows developers to create and manage their own threads explicitly.
+> These worker threads run in separate execution contexts, similar to child processes, but within the same Node.js process. This enables parallel execution of CPU-bound tasks without blocking the main event loop, while still allowing for efficient data sharing through mechanisms like SharedArrayBuffer and MessagePort.
+>These are separate, independent threads of execution, each with its own memory space and V8 instance. They are useful for CPU-intensive tasks that would otherwise block the main thread. 
+> Developers are responsible for managing the lifecycle of these worker threads, including creation, communication, and termination.
+
+Difference:
+Worker threads are for CPU-bound tasks that need true parallelism, while the libuv thread pool handles I/O-bound tasks in a non-blocking way. 
+
+In essence, Node.js provides both an automatic, behind-the-scenes thread pool for common asynchronous operations via libuv, and a more explicit, developer-managed mechanism for parallelizing custom CPU-intensive tasks using the worker_threads module. when you need to perform a CPU-intensive task in Node.js, you would use a worker_thread to create a separate thread to handle it, rather than relying on the libuv thread pool. 
+
+worker_threads in Node.js do not directly utilize the libuv thread pool. They are a separate mechanism for achieving true parallelism by creating new operating system threads, each with its own V8 instance and event loop. The libuv thread pool is primarily used for handling I/O-bound operations in the main event loop. 
+
+
+
