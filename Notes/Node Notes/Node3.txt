@@ -1,0 +1,232 @@
+👉🏻Express
+Below are the Response methods that are provided by ExpressJS
+
+1. res.send([body]) : Sends a generic response. It can send strings, objects, arrays, or buffers, and automatically sets the appropriate Content-Type header based on the data type and ends the response process.
+
+Key functionalities of res.send():
+i) Sends diverse data types:
+It can send plain text, HTML, JSON objects, arrays, and Buffer objects as the response body.
+ii) Automatic Content-Type handling:
+res.send() intelligently determines and sets the Content-Type header based on the type of data being sent. For instance, if sending a JavaScript object, it will set Content-Type to application/json.
+iii) Ends the response:
+After sending the data, res.send() effectively terminates the response cycle, preventing further processing in the current request-response chain. ex : 
+res.send('hello from 1st response');
+res.send('hello from 2nd response'); 
+The 2nd response will never reach to the client because of the 1st response that has already terminated the response process
+iv) Optional status code:
+You can chain res.status() before res.send() to explicitly set the HTTP status code for the response (e.g., res.status(404).send('Not Found')). If no status code is specified, it defaults to 200 (OK). ex: 
+res.status(404).send('Sorry, the requested resource was not found.');
+
+2. res.json([body]): Sends a JSON response. It is similar to res.send() but specifically formats the response as JSON.
+
+3.sendFile :
+Sends a file at the given path to the client. It automatically sets the Content-Type header based on the file's extension. 
+res.sendFile(path [, options] [, callback]);
+ex : 
+app.get('/view-pdf',(req,res)=>{
+  res.sendFile(process.cwd() + '/sample.pdf');
+});
+
+4. download :
+Prompts the client to download a file. It sets the Content-Disposition header to trigger a download.
+res.download(path [, filename] [, options] [, callback]);
+ex : 
+app.get('/download-pdf',(req,res)=>{
+  res.download(process.cwd() + '/sample.pdf','Testing.pdf');
+});
+
+5. render : Renders a view template (e.g., Pug, EJS, Handlebars) with a set of locals (data) and sends the resulting HTML to the client.
+res.render(view [, locals] [, callback])
+
+6. redirect : Redirects the client to a new URL. The status code defaults to 302 (Found).
+res.redirect([status,] path)
+
+7. status : Sets the HTTP status code for the response. This method is often chained with other methods like send() or json().
+res.status(code)
+ex :
+app.get('/test',(req,res)=>{
+  res.status(401);
+  res.send("Hello"); // this will still set 401 status on this send response
+});
+
+8. end :
+Concludes the response process without sending any data. It is derived from Node.js's http.ServerResponse.end() method. It does not automatically set Content-Type headers or handle data formatting.
+res.end([data] [, encoding])
+ex :
+res.end("Ended the process!"); // the text will be send but no information related to response will be send
+
+9. cookie : In Express.js, res.cookie() is a method used to set a cookie in the client's browser as part of the HTTP response. This allows the server to store small pieces of data on the client-side, which can then be sent back to the server with subsequent requests.
+res.cookie(name, value, [options])
+
+app.get('/test',(req,res)=>{
+  res.cookie('user_id', '12345', { maxAge: 3600000}); // Sets a cookie named 'user_id' with a value, expiring in 1 hour 
+  res.send('Cookie set successfully!');
+});
+
+10. clearCookie : Clears a cookie with the specified name and optional options.
+res.clearCookie(name [, options])
+
+11. set/header : Sets an HTTP response header field.
+res.set(field [, value]) / res.header(field [, value])
+app.get('/example', (req, res) => {
+   res.set('Content-Type', 'application/json');
+   res.set('Cache-Control', 'no-cache');
+   res.send({ message: 'Hello' });
+});
+You can also pass an object to set multiple headers at once:
+res.set({
+    'Content-Type': 'text/html',
+    'X-Powered-By': 'Express'
+});
+
+Using Middleware for Global Headers:
+To set headers for all or a group of routes, use middleware. Place the middleware before your route handlers.
+
+app.use((req, res, next) => {
+   res.set('X-Custom-Header', 'My App');
+   next(); // Pass control to the next middleware or route handler
+});
+
+app.get('/', (req, res) => {
+   res.send('Home page');
+});
+
+res.header is an alias for res.set();
+deep dive into headers : https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers
+
+12. res.headersSent : This boolean property indicates whether the HTTP headers for the response have already been sent to the client. Once true, you cannot set or modify headers.
+ex :
+app.get('/test',(req,res)=>{
+   console.log(res.headersSent); // false
+   res.set('Content-Type', 'application/json');
+   console.log(res.headersSent); // false
+   res.send({ message: 'Hello' });
+   console.log(res.headersSent); // true
+});
+
+13. append : Appends the specified value to the HTTP response header field. If the header is not already set, it creates it. 
+res.append(field, value)
+difference :
+> res.set() overwrites: existing header values.
+> res.append() adds to: existing header values if they support multiple values, like 'Set-Cookie' or 'Vary' (or creates them if they don't exist).
+
+13. locals : An object that holds response local variables specific to the current request. These variables can be accessed within view templates.
+Unlike app.locals (which holds application-wide local variables), res.locals is unique to each incoming request. This means that data stored in res.locals for one request will not be accessible to other concurrent requests.
+Variables defined on res.locals become directly accessible within your view templates (e.g., EJS, Pug, Handlebars) when you render them using res.render().
+
+const middleware = (req,res,next)=>{
+ res.locals.user = 'Avinash';
+ next();
+}
+
+app.get('/',middleware,(req,res)=>{
+  res.json(res.locals);
+});
+
+output :
+{"user":"Avinash"}
+
+
+👉🏻ExpressJs Middlewares
+1. Application-Level Middleware
+2. Router-Level Middleware
+3. Route-Specific Middleware
+4. Chaining Multiple Middleware Functions
+5. Error-Handling Middleware
+6. Third-party middleware
+
+1. Application-Level Middleware:
+> Applied globally to all incoming requests using app.use().
+> Examples include logging, body parsing (e.g., express.json(), express.urlencoded()), and static file serving (express.static()).
+
+const express = require('express');
+const app = express();
+
+// Global logging middleware
+app.use((req, res, next) => {
+  console.log(`Time: ${Date.now()}`);
+  next();
+});
+
+// Body parsing middleware
+app.use(express.json());
+
+2. Router-Level Middleware:
+> Applied to specific routes or a group of routes defined within an Express Router instance using router.use() or router.METHOD().
+> Useful for organizing middleware related to specific feature areas or API endpoints.
+
+const express = require('express');
+const router = express.Router();
+const { getUsers, createUser } = require('./controllers')
+
+// Middleware specific to this router
+router.use((req, res, next) => {
+    console.log('Router-Level middleware executed');
+    next();
+});
+
+router.get('/users', getUsers);
+router.post('/user-create', createUser);
+
+module.exports = router; // import and use app.use('/api', router)
+
+3. Route-Specific Middleware:
+> Applied directly to individual route handlers using app.METHOD().
+> Allows for fine-grained control over which middleware runs for a particular route.
+
+const express = require('express');
+const router = express.Router();
+const { getUsers, createUser } = require('./controllers')
+
+// Middleware specific to this router
+const middleware = (req, res, next) => {
+    console.log('Router-Specific middleware executed');
+    next();
+};
+
+router.get('/users', middleware, getUsers);
+router.post('/user-create', createUser);
+
+module.exports = router;
+
+4. Chaining Multiple Middleware Functions:
+> Multiple middleware functions can be chained together for a single route or app.use() call.
+> They execute in the order they are defined, with each calling next() to pass control to the subsequent function.
+
+const express = require('express');
+const app = express();
+
+const middleware1 = (req, res, next) => { console.log('Middleware 1'); next(); };
+const middleware2 = (req, res, next) => { console.log('Middleware 2'); next(); };
+
+app.get('/chained', middleware1, middleware2, (req, res) => {
+    res.send('Chained middleware executed');
+});
+
+5. Error-Handling Middleware:
+> Defined with four arguments (err, req, res, next) and placed at the end of the middleware stack.
+> Catches and handles errors that occur during the any above route, request-response cycle.
+
+const express = require('express');
+const app = express();
+
+// ... other middleware and routes ...
+
+// Error-handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+
+6. Third-party middleware
+Use third-party middleware to add functionality to Express apps.
+Install the Node.js module for the required functionality, then load it in your app at the application level or at the router level.
+The following example illustrates installing and loading the cookie-parsing middleware function cookie-parser.
+>> npm install cookie-parser
+
+const express = require('express')
+const app = express()
+const cookieParser = require('cookie-parser')
+
+// load the cookie-parsing middleware
+app.use(cookieParser())
