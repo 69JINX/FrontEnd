@@ -377,7 +377,7 @@ Securing a Node.js API involves implementing various measures to protect against
 2. CSRF Token (scurf)
 3. Password Hashing (Bcrypt)
 4. JWT Authentication (jsonwebtoken)
-5. Rate limiting
+5. Rate limiting (npm i express-rate-limit)
 6. Helmet (HTTP Security Headers)
 7. CORS Policy
 8. XSS Protection
@@ -385,15 +385,18 @@ Securing a Node.js API involves implementing various measures to protect against
 10. SQL/NoSQL Injection Defense
 11. File Upload Security (using Multer)
 12. HTTPS Enforcement
-13. Role-Based Access Control (RBAC)
-14. Dependency Security (scan and detect security vulnerabilities in Node. js modules ex: npm audit)
-15. Disable Express Fingerprinting (app.disable('x-powered-by');)
-16. Payload Size Limit (app.use(express.json({ limit: '1mb' }));)
-17. Logging & Monitoring
+13. Passport.js (node library for local strategy, OAuth etc.) // docs: https://www.passportjs.org/
+14. Role-Based Access Control (RBAC)
+15. Dependency Security (scan and detect security vulnerabilities in Node. js modules ex: npm audit)
+16. Disable Express Fingerprinting (app.disable('x-powered-by');)
+17. Payload Size Limit (app.use(express.json({ limit: '1mb' }));)
+18. Logging & Monitoring
 
 If you follow these points, your API will cover most OWASP Top 10 risks for backend apps.
+
+OWASP(Open Web Application Security Project) : https://www.cloudflare.com/en-gb/learning/security/threats/owasp-top-10/
 
 Details and example code about each point : https://github.com/69JINX/FrontEnd/blob/main/Notes/Notes_Pic/Api_Securities.png
 
 single security.js middleware file that you just app.use() in your Express app to enable most of these protections in one place :
-security.js : 
+security.js : https://github.com/69JINX/FrontEnd/blob/main/Notes/Node%20Notes/practice/api_security/security.js 
