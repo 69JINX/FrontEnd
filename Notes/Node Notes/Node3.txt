@@ -370,3 +370,25 @@ Matching Specific Subsets:
 Wildcards can also be used to match specific subsets of URLs, such as /posts/* to match all paths within the /posts/ directory.
 Accessing Matched Parameters:
 When using a wildcard like /root/*, the matched part of the URL (e.g., foo/bar from /root/foo/bar) can be accessed via req.params[0].
+
+👉🏻API Security
+Securing a Node.js API involves implementing various measures to protect against common vulnerabilities and threats. Key aspects of Node.js API security include:
+1. Form Validation (express-validator)
+2. CSRF Token (scurf)
+3. Password Hashing (Bcrypt)
+4. JWT Authentication (jsonwebtoken)
+5. Rate limiting
+6. Helmet (HTTP Security Headers)
+7. CORS Policy
+8. XSS Protection
+9. Prevent Parameter Pollution
+10. SQL/NoSQL Injection Defense
+11. File Upload Security (using Multer)
+12. HTTPS Enforcement
+13. Role-Based Access Control (RBAC)
+14. Dependency Security (scan and detect security vulnerabilities in Node. js modules ex: npm audit)
+15. Disable Express Fingerprinting (app.disable('x-powered-by');)
+16. Payload Size Limit (app.use(express.json({ limit: '1mb' }));)
+17. Logging & Monitoring
+
+Details and example code about each point : 
