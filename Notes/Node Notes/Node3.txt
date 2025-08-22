@@ -400,3 +400,200 @@ Details and example code about each point : https://github.com/69JINX/FrontEnd/b
 
 single security.js middleware file that you just app.use() in your Express app to enable most of these protections in one place :
 security.js : https://github.com/69JINX/FrontEnd/blob/main/Notes/Node%20Notes/practice/api_security/security.js 
+
+
+👉🏻Application Settings and Configuration
+app.set()/app.get(key) :
+The app.set() function in Express.js is used to assign a setting name to a value. While it can store any type of value, there are specific predefined settings that configure the behavior of the Express application. These settings are accessible using app.get().
+
+
+app.set('port', 3000); 
+const port = app.get('port'); // 3000
+
+what about the app.get we use to define a route :
+app.get('/', (req, res) => { 
+  res.send("welcome to home page"); 
+});
+
+Even though both are app.get, their meanings differ depending on arguments:
+> One argument → retrieve a setting.
+> Two arguments (path, handler) → register a route.
+
+
+Quick Summary
+> app.set(key, value) → configure application settings.
+> app.get(key) → fetch a setting.
+> app.get(path, handler) → define a route handler.
+
+to retrieve a setting inside any controller :
+const port = req.app.get('port')
+
+to retrive a setting in other modules, export the 'app' from server.js and import the app in any other module to retrieve a setting
+
+Common Predefined Settings:
+env: Represents the application's environment (e.g., 'development', 'production'). It defaults to process.env.NODE_ENV.
+etag: Controls ETag generation for responses. Can be 'weak', 'strong', false, or a function.
+etag fn: You can pass your own function for generating ETags.
+jsonp callback name: Specifies the default JSONP callback name.
+json escape: Enables JSON escaping for responses.
+json replacer: A replacer function for JSON.stringify() in JSON responses.
+json spaces: The number of spaces to use for pretty-printing JSON responses.
+case sensitive routing: Enables case-sensitive routing.
+strict routing: Enables strict routing (trailing slashes matter).
+trust proxy: Indicates if the application is behind a front-facing proxy and should use X-Forwarded-* headers. 
+views: The directory or array of directories for the application's views (templates). 
+view cache: Enables view template compilation caching.
+view engine: The default engine extension to use when omitting the extension in res.render().
+x-powered-by: Controls the X-Powered-By: Express HTTP header.
+subdomain offset: Controls which part of hostname is the subdomain.
+
+Custom Settings:
+Beyond the predefined settings, app.set() can be used to store any custom data or configuration that needs to be accessible throughout the application. For example:
+app.set('title', 'My Awesome App');
+app.set('port', 3000);
+app.set('databaseUrl', 'mongodb://localhost/mydb');
+
+Shorthand Methods:
+app.enable(name): shorthand for boolean settings. Sets a boolean setting name to true. Equivalent to app.set(name, true).
+app.disable(name): shorthand for boolean settings. Sets a boolean setting name to false. Equivalent to app.set(name, false).
+app.enabled(name): check if enabled
+app.disabled(name): check if disabled
+
+X-Powered-By :
+The X-Powered-By header is an optional and non-standard HTTP response header that indicates the technology stack or framework used by the web server to generate the HTTP response. It is often included by popular server software and scripting languages to identify the name and version number of the software used. 
+
+Where you can see x-powered-by:
+If you inspect your webpage and go into the network tab, you can see this property in the Headers tab of any api call under the Response Headers section. (If you still can't find it, go into network tab and press ctrl+f and type x-powered-by, you will see all the APIs that have x-powered-by propery in the Response headers.
+
+
+Identification:
+The primary purpose is to identify the underlying technologies, such as the specific version of PHP, ASP.NET, Node.js, or a particular web application framework.
+Debugging and Development:
+For developers, this header can be useful during debugging and development by providing quick insights into the server environment and configuration.
+Security Implications:
+While potentially useful for development, the X-Powered-By header can also pose a security risk by revealing sensitive information about the server's technology stack to potential attackers. This information can be used for:
+Reconnaissance:
+Attackers can use this header to identify the software and versions running on the server.
+Targeted Attacks:
+Knowing the technology stack allows attackers to research known vulnerabilities associated with that specific software and version, enabling them to launch more targeted and effective attacks.
+Mitigation:
+Due to the security implications, it is generally recommended to remove or modify the X-Powered-By header in production environments to avoid disclosing unnecessary information. This can typically be achieved by configuring the web server or application framework to either disable or customize this header.
+
+Disable X-Powered-By :
+In backend >
+To disable this property from appearing under the Response headers of your api call in frontend so attackers can't identify your backend technology stack, you can disable it from backend using :
+const express = require('express');
+const app = express();
+app.disable('x-powered-by')
+
+In frontend >
+To remove the X-Powered-By header in Next.js :
+Inside next.config.js, add or modify the poweredByHeader property within the module.exports object and set its value to false.
+// next.config.js
+module.exports = {
+ poweredByHeader: false,
+};
+
+👉🏻 Accessing cookies in backend
+
+Cookies can be accessed in the backend in a controller by :
+1. req.headers.cookie // token=eyJhbGciOiJI
+2. req.cookies // if you are using cookie-parser middleware. app.use(cookieParser()); { token : "eyJhbGciOiJI" }
+
+The benefit of cookie-parser middleware is that is provides cookies name and their values in an object as key-value pairs instead of as a string.
+Allow backend to accept cookies :
+app.use(cors({
+  origin: 'http://localhost:3000', // your frontend port
+  credentials: true
+}));
+
+Note : origin have to be specific when allowing credentials true
+origin: '*' + credentials: true doesn’t work
+By design, the CORS spec does not allow Access-Control-Allow-Origin: * if you also send Access-Control-Allow-Credentials: true.
+Why?
+Because cookies, HTTP auth, and TLS client certs are sensitive. If browsers allowed "*" with credentials, then any site on the internet could make authenticated requests on behalf of your users — a huge security hole.
+So browsers enforce this rule:
+If credentials: true → Access-Control-Allow-Origin must be a specific origin, not *.
+
+sending cookies from frontend :
+1. fetch :
+const response = await fetch('http://localhost:8000/api/receive-cookie', {
+        method: 'POST', // or 'POST', 'PUT', etc.
+        credentials: 'include', // This is crucial for sending cookies
+})
+
+2. axios :
+const response = await axios.post('http://localhost:8000/api/receive-cookie', {}, { withCredentials: true }) 
+// withCredentials to allow sending cookies
+
+👉🏻 Compression middleware
+Compression middleware in Node.js, often implemented using packages like compression for Express.js, serves to compress outgoing HTTP responses before they are sent to the client. This process reduces the size of the data payload, leading to several benefits for your backend and the overall application performance.
+
+Use of Compression Middleware:
+Reduces Data Transfer Size:
+It applies compression algorithms, such as Gzip or Brotli, to the response body, significantly shrinking the amount of data that needs to be sent over the network.
+Improved Load Times:
+Smaller data payloads translate directly to faster download times for clients, especially beneficial for users on slower networks or mobile devices.
+Reduced Bandwidth Usage:
+By minimizing the data transferred, it conserves bandwidth for both your server and the client, potentially lowering hosting costs and improving user experience.
+Better Performance on Slow Networks:
+Users with limited bandwidth or high latency connections experience a more responsive application due to the reduced data transfer.
+Automatic Content Negotiation:
+Compression middleware can automatically detect if the client supports compression (via the Accept-Encoding header) and only compress responses when supported.
+
+Benefits for Your Backend:
+Reduced Server Load:
+While compression itself consumes some CPU cycles, the reduction in network I/O often outweighs this, leading to a net decrease in server load, especially under high traffic.
+Optimized Resource Utilization:
+By reducing bandwidth consumption, your backend can serve more requests with the same network resources, improving scalability.
+Enhanced User Experience:
+Faster load times and improved responsiveness directly contribute to a better user experience, which can lead to increased engagement and satisfaction.
+In essence, compression middleware is a low-effort, high-impact optimization that can significantly enhance the performance and efficiency of your Node.js backend.
+
+const compression = require('compression');
+app.use(compression());
+
+Without using compression middleware :
+insert img > FrontEnd/Notes/Notes_Pic/without_compression.png
+
+When using compression middleware :
+insert img > FrontEnd/Notes/Notes_Pic/with_compression.png
+
+Note : 
+If the response size is already too small, compression will actually add more size to it. This is due to extra header that compression adds. It needs extra header to let browser know that this data was compressed and browser needs to decompress it. If you look into response headers, for compression enabled this is extra header => 
+> Content-Encoding: gzip (or deflate/br depending on algorithm) → tells browser how to decode it.
+> Vary: Accept-Encoding → tells caches that the response may differ depending on the client’s supported encoding.
+Due to the fact that data is already small, compression library decided not to use any compression algorithm, or algorithm itself decided not to change anything, since in some cases extra compression overhead is not worth it.
+
+By default, Express’s compression middleware skips responses under 1KB.
+If you force compression using the below command, then small responses may end up slightly larger due to the added Content-Encoding header and compression framing.
+app.use(compression({ threshold: 0 })); // compress everything, even small responses
+
+if you force compression on very small responses (by setting threshold: 0), response size will increase:
+> Original: 150 bytes
+> Compressed: ~200 bytes (due to compression headers + gzip framing overhead).
+That’s why the default threshold is 1KB.
+it’s not only about the Vary header, but mainly because of the gzip framing overhead + headers. The library is smart enough to skip compressing tiny payloads.
+
+👉🏻 ORM vs ODM
+
+ORM and ODM are both techniques used in software development to interact with databases using object-oriented programming concepts, abstracting away the complexities of raw database queries. The key difference lies in the type of database they are designed to work with:
+
+ORM (Object-Relational Mapping):
+Purpose: ORMs are used with relational databases like PostgreSQL, MySQL, SQL Server, etc. They map objects in your code to tables and rows in a relational database.
+Data Model: They operate on a structured, predefined schema where data is organized into tables with fixed columns and relationships.
+Examples: Hibernate (Java), Entity Framework (.NET), SQLAlchemy (Python), Sequelize (Node.js -> npm i sequelize).
+
+ODM (Object-Document Mapping):
+Purpose: ODMs are used with document-based NoSQL databases like MongoDB, Couchbase, etc. They map objects in your code to documents in a document database collection.
+Data Model: They are designed for flexible, semi-structured data where documents can have varying fields and nested structures. While they can support schema definitions for validation, they are more adaptable to evolving data models.
+Examples: Mongoose (Node.js for MongoDB -> npm i mongoose), MongoEngine (Python for MongoDB). 
+
+In essence:
+Choose ORM
+when working with relational databases and require strong schema enforcement, complex joins, and transactions.
+Choose ODM
+when working with document databases and need flexibility in data structure, scalability, and ease of handling semi-structured data.
+
+👉🏻 Backend Roadmap :
+https://roadmap.sh/backend
