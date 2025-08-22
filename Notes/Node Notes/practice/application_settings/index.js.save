@@ -1,0 +1,8 @@
+const express = require('express');
+cosnt app = express();
+
+app.get('/home',()=>{
+
+
+ res.send('welcome to home page');
+});
