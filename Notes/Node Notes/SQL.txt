@@ -1,0 +1,3 @@
+👉🏻 create database :
+create database db_name;
+

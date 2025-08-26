@@ -1,0 +1,9 @@
+👉🏻 global vs globalThis:
+In Node.js, both global and globalThis refer to the global object, which provides access to variables and functions available throughout the entire runtime environment. The key difference lies in their scope of applicability across different JavaScript environments:
+
+global:
+This is the specific name for the global object within the Node.js environment. It is a Node.js-specific construct and will not work in other JavaScript environments like web browsers.
+globalThis:
+This is a standardized global property introduced in ECMAScript 2020 (ES11) that provides a universal way to access the global object regardless of the JavaScript environment. In Node.js, globalThis points to the same object as global. In a web browser, globalThis would refer to the window object, and in a web worker, it would refer to self. 
+
+While global is specific to Node.js, globalThis offers a cross-environment, standardized way to access the global object. Therefore, using globalThis promotes more portable code that can run consistently across various JavaScript runtimes without requiring environment-specific checks.
