@@ -1,0 +1,249 @@
+👉🏻 How javascript works & Execution context
+Everything in Javascript happens inside an Execution Context.
+
+In JavaScript, an execution context is an abstract concept that defines the environment in which JavaScript code is executed. It's essentially a container that holds all the necessary information for the current code to run, including variables, functions, and the scope chain. 
+Every time JavaScript code is run, it runs within an execution context. There are two primary types of execution contexts:
+1.) Global Execution Context (GEC):
+This is the base execution context and is created when the JavaScript engine first starts up and loads a script.
+It represents the global scope, meaning any variables or functions declared outside of any function are part of the GEC.
+There is only one GEC for a given JavaScript program.
+2.) Function Execution Context (FEC):
+A new FEC is created every time a function is called.
+Each FEC has its own scope, variables, and arguments specific to that function call.
+When a function finishes executing, its FEC is typically popped off the call stack and destroyed.
+Key Components of an Execution Context:
+
+Each execution context is composed of two main phases:
+1.) Creation Phase:
+Variable Environment (Memory Component): This is where variables and function declarations within that context are stored. During this phase, memory is allocated, and initial values (like undefined for variables) are assigned. This is also where hoisting happens.
+Scope Chain: This defines the hierarchical order in which variables and functions are looked up. It determines which variables and functions are accessible from the current context.
+this Binding: The this keyword is assigned a value based on how the function was called.
+2.) Execution Phase (Thread of Execution):
+During this phase, the JavaScript engine executes the code line by line within the established environment, assigning actual values to variables and running the function logic.
+
+How it Works (Simplified):
+When JavaScript encounters a function call, a new FEC is created and pushed onto the call stack (also known as the execution stack). The JavaScript engine then executes the code within that FEC. Once the function completes, its FEC is popped off the call stack, and control returns to the previous execution context. This process allows JavaScript to manage the flow of execution and maintain proper scope for variables and functions.
+
+👉🏻 Non-Writable property in object
+In JavaScript, a "non-writable" property refers to an object property whose writable attribute in its property descriptor is set to false. This means that the value of that property cannot be reassigned or changed through a direct assignment operation.
+Here's a breakdown:
+
+Property Descriptors:
+Every property in a JavaScript object has a set of attributes defined in its "property descriptor." These attributes include value, writable, enumerable, and configurable.
+
+writable: false:
+When the writable attribute is set to false, any attempt to change the property's value using the assignment operator (=) will not succeed.
+
+Strict Mode Behavior:
+In strict mode, attempting to write to a non-writable property will result in a TypeError.
+In non-strict mode, the assignment will be silently ignored, and the property's value will remain unchanged.
+
+Creating Non-Writable Properties:
+Object.defineProperty(): You can explicitly define a property as non-writable when creating it or modifying an existing property using Object.defineProperty().
+Object.freeze(): This method makes an entire object immutable, meaning all its existing properties become non-writable, non-configurable, and their values cannot be changed.
+
+const myObject = {};
+
+// Define 'a' as a non-writable property
+Object.defineProperty(myObject, 'a', {
+  value: 10,
+  writable: false // This makes 'a' non-writable
+});
+
+console.log(myObject.a); // Output: 10
+
+// Attempt to change 'a'
+myObject.a = 20; // In strict mode, this would throw a TypeError; in non-strict mode, it's ignored.
+
+console.log(myObject.a); // Output: 10 (value remains unchanged)
+
+Object.freeze():
+const myImmutableObject = { key1: "value1" };
+Object.freeze(myImmutableObject);
+
+// myImmutableObject.key1 = "newValue"; // This will not work (and throws an error in strict mode)
+// myImmutableObject.newKey = "anotherValue"; // This will not work (and throws an error in strict mode)
+
+👉🏻 Strict Mode
+Strict mode in JavaScript is a feature introduced in ECMAScript 5 (ES5) that allows developers to opt into a restricted variant of the language. It enforces stricter parsing and error handling, making the code more robust and secure by eliminating some "silent errors" and preventing "unsafe" actions.
+
+How to enable strict mode:
+You can enable strict mode by adding the string literal "use strict"; (or 'use strict';) at the beginning of a JavaScript file or at the beginning of a function body. 
+
+// Strict mode for the entire script
+"use strict";
+// All code in this file will run in strict mode
+
+function myFunction() {
+  // Strict mode for this function only
+  "use strict";
+  // Code within this function will run in strict mode
+}
+// Code outside this function runs in normal (sloppy) mode
+
+Key characteristics and effects of strict mode:
+Eliminates silent errors:
+It converts certain errors that would silently fail in "sloppy mode" (non-strict mode) into thrown errors. For example, assigning a value to an undeclared variable, which would create a global variable in sloppy mode, throws an error in strict mode.
+Fixes mistakes hindering optimizations:
+It addresses issues that make it difficult for JavaScript engines to perform optimizations, potentially leading to faster code execution.
+Prohibits certain syntax:
+It disallows certain syntax that is likely to be defined in future versions of ECMAScript or is considered problematic. Examples include using with statements and octal literals.
+Enhances security:
+It prevents certain "unsafe" actions, such as referencing the global window or document objects with this inside a function (it returns undefined instead).
+Enforces stricter rules:
+It introduces rules like disallowing duplicate parameter names in functions and preventing deletion of undeletable properties.
+
+Examples of Strict Mode Enforcement:
+this in Non-Method Functions: In strict mode, this is undefined in functions called without an explicit object context (e.g., simple function calls), preventing accidental global variable creation.
+"use strict";
+function logThis() {
+  // Logs undefined
+  console.log(this);
+}
+logThis();
+Undeclared Variables: Strict mode throws a ReferenceError if you try to assign a value to an undeclared variable.
+"use strict";
+// This will cause a ReferenceError
+undeclaredVar = "hello";
+In JavaScript, a variable defined without let, const, or var in non-strict mode outside of any function automatically becomes a global variable. This means it is added as a property to the global object.(e.g., window in a browser environment or global in Node.js).
+window.undeclaredVar // in browser environment
+global.undeclaredVar // in Node.js
+Deleting Variables, Functions, or Arguments: Deleting plain names (variables, functions, or arguments) is forbidden and results in a SyntaxError in strict mode.
+"use strict";
+let myVar = 5;
+// This will cause a SyntaxError
+delete myVar;
+Duplicate Parameter Names: Functions with duplicate parameter names are not allowed and will throw a SyntaxError.
+"use strict";
+// This will cause a SyntaxError
+function sum(a, a) {
+  return a + a;
+}
+Octal Literals: Using a leading zero for octal numbers (e.g., 010) is a SyntaxError in strict mode. Use the 0o prefix for octal literals (e.g., 0o10).
+"use strict";
+// This will cause a SyntaxError
+let octalNum = 010;
+with Statement: The with statement is completely forbidden and results in a SyntaxError.
+"use strict";
+// This will cause a SyntaxError
+with (obj) {
+  // ...
+}
+Writing to Read-Only or Get-Only Properties: Attempting to assign a value to a non-writable or get-only property will throw a TypeError.
+"use strict";
+const obj = {};
+Object.defineProperty(obj, 'prop', { value: 42, writable: false });
+// This will cause a TypeError
+obj.prop = 10;
+
+Advanced Javascript Crash Course => https://www.youtube.com/watch?v=R9I85RhI7Cg (Below Notes are created from this video, most of the topic are left like prototype/inheritance/class/iterables & iterators/generators because they are not necessary etc)
+
+Scope
+1. Block scope - variables declared inside a pair of curly braces cannot be accessed from outside
+the block
+2. Function scope - variables declared inside a function cannot not be accessed from outside the
+function
+3. Global scope - globally scoped variables can be accessed inside a block or function
+
+eg. Block Scope :
+{
+  const x = 123;
+  console.log(x); // 123
+}
+console.log(x) // Error : 'x' is not defined
+
+
+Closure
+In JavaScript, when we return a function from another function, we are effectively returning a combination of the function definition along with the function's scope. This would let the function definition have an associated persistent memory which could hold on to live data between executions. That combination of the function and its scope chain is what is called a closure in JavaScript.
+
+scenario 1 :
+const outer = ()=>{
+    let counter = 0;
+    const inner =()=>{
+        counter++;
+        console.log(counter);
+    }
+    inner();
+}
+
+outer();// counter set to 0
+outer();// counter set to 0 again and increased by 1 by inner() function, because it was only called one time in the outer function.
+
+Output : 
+1
+1
+
+scenario 2 (Closure) :
+// Define a function `outer` which declares a local variable `counter`
+const outer = () => {
+    let counter = 0; // `counter` is scoped to the `outer` function
+
+    // Define an inner function that increments and logs `counter`
+    const inner = () => {
+        counter++;               // Increase the value of counter
+        console.log(counter);    // Print the updated value
+    }
+
+    // Return the `inner` function from `outer`
+    return inner; // This forms a closure: `inner` "remembers" `counter`
+}
+
+// Call `outer` and store its return value (which is the `inner` function) in `fun1`
+const fun1 = outer(); // Here, `counter` is initialized to 0 and `fun1` holds reference to `inner`
+
+fun1(); // Logs: 1
+// - `counter` is incremented from 0 to 1
+// - Because `inner` still "remembers" its outer `counter`, the state persists
+
+fun1(); // Logs: 2
+// - `counter` is now incremented again (1 → 2)
+// - The same closure is being used, so the same `counter` variable is being updated
+
+// Note:
+// Even though `outer` has finished execution, `counter` isn't garbage collected
+// because the returned `inner` function (stored in `fun1`) still has access to it.
+// This behavior is called a "closure" — where a function remembers its lexical scope.
+
+// both fun1 are still running inside the outer function and counter never convereted to 0 again, which caused the counter to increased two times
+
+Output : 
+1
+2
+
+
+Function Currying
+Currying is a process in functional programming in which we transform a function with multiple arguments into a sequence of nesting functions that take one argument at a time.
+Currying in JavaScript transforms a function with multiple arguments into a sequence of functions, each taking a single argument. This technique offers several benefits:
+1. Code Reusability: Curried functions can be reused in various contexts. By partially applying arguments, new functions can be derived from existing ones, reducing code duplication.
+2. Improved Readability: Breaking down complex logic into smaller, manageable pieces makes the code easier to understand and maintain.
+3. Enhanced Flexibility: Currying enables more flexible function composition. Functions can be combined and reused in different ways, adapting to changing requirements. 
+4. Partial Application: Currying facilitates partial application, allowing you to create specialized functions by fixing some arguments of a more general function.
+5. Functional Programming: Currying promotes functional programming practices, leading to more robust and maintainable code.
+6. Simplified Function Calls: By pre-filling some arguments, function calls can be simplified, making code more concise.
+7. Avoid Repetition: Currying helps avoid repeating the same arguments multiple times, making code more streamlined.
+8. Higher-Order Functions: Currying enables the creation of higher-order functions, enhancing the flexibility and power of your code.
+function f(a,b,c) is transformed to f(a)(b)(c)
+
+1. Without Currying
+function logMessage(prefix, message) {
+  console.log(`[${prefix}] ${message}`);
+}
+
+// Usage
+logMessage("INFO", "Server started");
+logMessage("ERROR", "Something went wrong");
+You have to repeat "INFO" or "ERROR" every time you call it — no reusability.
+
+2. With Currying
+function curriedLog(prefix) {
+  return function(message) {
+    console.log(`[${prefix}] ${message}`);
+  }
+}
+
+// Usage
+const infoLogger = curriedLog("INFO");
+const errorLogger = curriedLog("ERROR");
+
+infoLogger("Server started");        // [INFO] Server started
+errorLogger("Something went wrong"); // [ERROR] Something went wrong
