@@ -24,6 +24,81 @@ During this phase, the JavaScript engine executes the code line by line within t
 How it Works (Simplified):
 When JavaScript encounters a function call, a new FEC is created and pushed onto the call stack (also known as the execution stack). The JavaScript engine then executes the code within that FEC. Once the function completes, its FEC is popped off the call stack, and control returns to the previous execution context. This process allows JavaScript to manage the flow of execution and maintain proper scope for variables and functions.
 
+Program flow with an example :
+var n = 2;
+function square (num){
+    var ans = num * num;
+    return ans;
+}
+
+var square1 = square(n);
+var square2 = square(4);
+
+When you run a javascript program, a 'Global Execution Context' is created. 
+The execution context for will go through 2 main faces (creation & execution phase) for every single FEC present in the program.
+Insert Image >> /FrontEnd/Notes/Notes_Pic/JS_EC_0.png
+
+1. Creation phase: in this phase, js will allocate memory to all the variables and function present in the program, stores the variables with values as undefined and function references. So in the above program, variables & functions will be stores in the memory like :
+Insert Image >> /FrontEnd/Notes/Notes_Pic/JS_EC_1.png
+
+After this creation phase, the execution context will move to the code execution phase.
+
+2. Execution Phase : Now, in this phase, it starts going through the entire code line by line from top to bottom. As soon as it encounters n = 5, it assigns the value 5 to 'n' in memory. Until now, the value of 'n' was undefined by default.
+Then we get to the 'square' function. As the function has been allocated in memory, it directly jumps into the line var square1 = square(n);. square() will be invoked and JavaScript once again will create a new FEC (function execution context). Whenever a new function is encountered in the program, it will create a new FEC in the call stack. 
+Nested Function Execution Contexts (FECs) are created during the execution phase of the parent execution context, specifically when a nested function is invoked.
+Insert Image >> /FrontEnd/Notes/Notes_Pic/JS_EC_2.png
+Once the calculation is done, it assigns the value of square in the 'ans' variable that was undefined before. The function will return the value, and the FEC (function execution context) will be destroyed.
+
+The returned value from square() will be assigned on square1. This happens for square2 also. Once the entire code execution is done completely, the global context will look like this and it will be destroyed also.
+Insert Image >> /FrontEnd/Notes/Notes_Pic/JS_EC_3.png
+
+Call Stack
+To keep the track of all the contexts, including global and functional, the JavaScript engine uses a call stack. A call stack is also known as an 'Execution Context Stack', 'Runtime Stack', or 'Machine Stack'.
+
+It uses the LIFO principle (Last-In-First-Out). When the engine first starts executing the script, it creates a global context and pushes it on the stack. Whenever a function is invoked, similarly, the JS engine creates a function stack context for the function and pushes it to the top of the call stack and starts executing it.
+
+When execution of the current function is complete, then the JavaScript engine will automatically remove the context from the call stack and it goes back to its parent.
+
+Let's see the following example:
+
+function funcA(m,n) {
+    return m * n;
+}
+
+function funcB(m,n) {
+    return funcA(m,n);
+}
+
+function getResult(num1, num2) {
+    return funcB(num1, num2)
+}
+
+var res = getResult(5,6);
+
+console.log(res); // 30
+
+In this example, the JS engine creates a global execution context that enters the creation phase.
+
+First it allocates memory for funcA, funcB, the getResult function, and the res variable. Then it invokes getResult(), which will be pushed on the call stack.
+
+Then getResult() will call funcB(). At this point, funcB's context will be stored on the top of the stack. Then it will start executing and call another function funcA(). Similarly, funcA's context will be pushed.
+
+Once execution of each function is done, it will be removed from the call stack. The following picture depicts the entire process of the execution:
+Insert Image >> /FrontEnd/Notes/Notes_Pic/JS_EC_4.png
+
+The call stack has its own fixed size depending on the system or browser. If the number of contexts exceeds the limit, then a stack overflow error will occur. This happens with a recursive function that has no base condition.
+
+function display() {
+    display();
+}
+
+display();
+
+C:\Users\rwiteshbera\Desktop\Javascript\n.js:2
+    display();
+    ^
+RangeError: Maximum call stack size exceeded
+
 👉🏻 Non-Writable property in object
 In JavaScript, a "non-writable" property refers to an object property whose writable attribute in its property descriptor is set to false. This means that the value of that property cannot be reassigned or changed through a direct assignment operation.
 Here's a breakdown:
@@ -138,7 +213,7 @@ obj.prop = 10;
 
 Advanced Javascript Crash Course => https://www.youtube.com/watch?v=R9I85RhI7Cg (Below Notes are created from this video, most of the topic are left like prototype/inheritance/class/iterables & iterators/generators because they are not necessary etc)
 
-Scope
+👉🏻 Scope
 1. Block scope - variables declared inside a pair of curly braces cannot be accessed from outside
 the block
 2. Function scope - variables declared inside a function cannot not be accessed from outside the
@@ -153,7 +228,7 @@ eg. Block Scope :
 console.log(x) // Error : 'x' is not defined
 
 
-Closure
+👉🏻 Closure
 In JavaScript, when we return a function from another function, we are effectively returning a combination of the function definition along with the function's scope. This would let the function definition have an associated persistent memory which could hold on to live data between executions. That combination of the function and its scope chain is what is called a closure in JavaScript.
 
 scenario 1 :
@@ -211,7 +286,7 @@ Output :
 2
 
 
-Function Currying
+👉🏻 Function Currying
 Currying is a process in functional programming in which we transform a function with multiple arguments into a sequence of nesting functions that take one argument at a time.
 Currying in JavaScript transforms a function with multiple arguments into a sequence of functions, each taking a single argument. This technique offers several benefits:
 1. Code Reusability: Curried functions can be reused in various contexts. By partially applying arguments, new functions can be derived from existing ones, reducing code duplication.
@@ -247,3 +322,5 @@ const errorLogger = curriedLog("ERROR");
 
 infoLogger("Server started");        // [INFO] Server started
 errorLogger("Something went wrong"); // [ERROR] Something went wrong
+
+
