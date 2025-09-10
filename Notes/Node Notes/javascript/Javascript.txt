@@ -1,6 +1,10 @@
 👉🏻 How javascript works & Execution context
 Everything in Javascript happens inside an Execution Context.
 
+ref :
+https://www.freecodecamp.org/news/how-javascript-works-behind-the-scene-javascript-execution-context/
+https://www.youtube.com/watch?v=iLWTnMzWtj4&list=PLlasXeu85E9cQ32gLCvAvr9vNaUccPVNP
+
 In JavaScript, an execution context is an abstract concept that defines the environment in which JavaScript code is executed. It's essentially a container that holds all the necessary information for the current code to run, including variables, functions, and the scope chain. 
 Every time JavaScript code is run, it runs within an execution context. There are two primary types of execution contexts:
 1.) Global Execution Context (GEC):
@@ -14,7 +18,7 @@ When a function finishes executing, its FEC is typically popped off the call sta
 Key Components of an Execution Context:
 
 Each execution context is composed of two main phases:
-1.) Creation Phase:
+1.) Memory Creation Phase:
 Variable Environment (Memory Component): This is where variables and function declarations within that context are stored. During this phase, memory is allocated, and initial values (like undefined for variables) are assigned. This is also where hoisting happens.
 Scope Chain: This defines the hierarchical order in which variables and functions are looked up. It determines which variables and functions are accessible from the current context.
 this Binding: The this keyword is assigned a value based on how the function was called.
@@ -38,10 +42,10 @@ When you run a javascript program, a 'Global Execution Context' is created.
 The execution context for will go through 2 main faces (creation & execution phase) for every single FEC present in the program.
 Insert Image >> /FrontEnd/Notes/Notes_Pic/JS_EC_0.png
 
-1. Creation phase: in this phase, js will allocate memory to all the variables and function present in the program, stores the variables with values as undefined and function references. So in the above program, variables & functions will be stores in the memory like :
+1. Memory Creation phase: in this phase, js will allocate memory to all the variables and function present in the program, stores the variables (defined with var) with values as undefined and function references. So in the above program, variables & functions will be stores in the memory like :
 Insert Image >> /FrontEnd/Notes/Notes_Pic/JS_EC_1.png
 
-After this creation phase, the execution context will move to the code execution phase.
+After this Memory creation phase, the execution context will move to the code execution phase.
 
 2. Execution Phase : Now, in this phase, it starts going through the entire code line by line from top to bottom. As soon as it encounters n = 5, it assigns the value 5 to 'n' in memory. Until now, the value of 'n' was undefined by default.
 Then we get to the 'square' function. As the function has been allocated in memory, it directly jumps into the line var square1 = square(n);. square() will be invoked and JavaScript once again will create a new FEC (function execution context). Whenever a new function is encountered in the program, it will create a new FEC in the call stack. 
@@ -77,7 +81,7 @@ var res = getResult(5,6);
 
 console.log(res); // 30
 
-In this example, the JS engine creates a global execution context that enters the creation phase.
+In this example, the JS engine creates a global execution context that enters the Memory creation phase.
 
 First it allocates memory for funcA, funcB, the getResult function, and the res variable. Then it invokes getResult(), which will be pushed on the call stack.
 
@@ -98,6 +102,198 @@ C:\Users\rwiteshbera\Desktop\Javascript\n.js:2
     display();
     ^
 RangeError: Maximum call stack size exceeded
+
+👉🏻 Hoisting
+ref : https://www.youtube.com/watch?v=Fnlnw8uY6jo&list=PLlasXeu85E9cQ32gLCvAvr9vNaUccPVNP&index=4
+Hoisting in JavaScript refers to the mechanism where the JavaScript interpreter appears to move the declarations of variables, functions, and classes to the top of their respective scopes before the code is executed. This means that you can use a variable or call a function before it is explicitly declared in your code, without encountering a "not defined" error.
+
+Key aspects of Hoisting:
+Declarations are hoisted, initializations are not:
+Only the declaration part of a variable or function is moved to the top of the scope, not its assignment or definition.
+
+1. var variables:
+When var is used, the variable declaration is hoisted to the top of its function or global scope, and it is initialized with undefined.
+console.log(myVar); // Output: undefined
+var myVar = 10;
+console.log(myVar); // Output: 10
+
+2. let and const variables: Declarations with let and const are also hoisted, but they are not initialized with undefined. Instead, they enter a "Temporal Dead Zone" (TDZ) until their declaration line is reached.
+This means that while the variable name is technically hoisted, it cannot be accessed or used before its initialization line is reached in the code. Attempting to do so will result in a ReferenceError.
+ 
+// console.log(myLet); // Throws ReferenceError: Cannot access 'myLet' before initialization
+let myLet = 20;  // initialization line
+console.log(myLet); // Output: 20
+
+3. Function declarations: Function declarations are fully hoisted, meaning both the function's name and its definition are moved to the top of their scope. This allows you to call a function before its declaration in the code.
+myFunction(); // Output: Hello from myFunction!
+function myFunction() {
+   console.log("Hello from myFunction!");
+}
+
+4. Function expressions: Function expressions (e.g., const myFunc = function() {}) are treated like variable declarations. Their variable name is hoisted, but the function's definition is not.
+// myFuncExpression(); // Throws TypeError: myFuncExpression is not a function
+const myFuncExpression = function() {
+   console.log("Hello from myFuncExpression!");
+};
+myFuncExpression(); // Output: Hello from myFuncExpression!
+
+5. Arrow functions: If an arrow function is declared using var, the variable declaration is hoisted, but its initial value is undefined. Therefore, attempting to call the arrow function before its actual assignment will lead to a TypeError because you are trying to invoke undefined as a function. 
+Declared with let or const, arrow functions are subject to the Temporal Dead Zone (TDZ).
+fun();  // TypeError: fun is not a function
+
+var fun = () => {
+  console.log("hello");
+}
+
+fun();  // ReferenceError: Cannot access 'fun' before initialization
+
+const fun = () => {
+  console.log("hello");
+}
+
+Understanding hoisting is crucial for avoiding unexpected behavior in your JavaScript code, especially when working with var and accessing variables before their explicit declaration. Using let and const for variable declarations is generally recommended as it helps in preventing common hoisting-related issues due to the Temporal Dead Zone.
+
+Hoisting in JavaScript is a direct consequence of the memory creation phase of the execution context:
+
+During the Memory creation phase of an execution context, the JavaScript engine performs the following actions before any code is actually executed:
+a) Memory Allocation for Variables and Functions:
+	1. For var declarations, memory is allocated, and the variable is initialized with undefined.
+	2. For let and const declarations, memory is allocated, but the variables remain uninitialized (they are in a "temporal dead zone") until their declaration line is reached during the execution phase.
+	3. For function declarations, the entire function body is placed into memory.
+b) Scope Setup: The engine determines the scope chain for the current execution context.
+
+This pre-processing step, where declarations are "moved" into memory before execution, is what allows you to access var variables (as undefined) and function declarations even before their physical appearance in the code. While let and const declarations are also "hoisted" in the sense that memory is allocated during the Memory creation phase, their uninitialized state in the temporal dead zone prevents early access and results in a ReferenceError if attempted.
+
+getName();
+console.log("x1:", x);
+
+var x = 7;
+
+function getName(){
+  console.log("hello");
+  console.log("x2:", x);
+}
+
+In most programming languages, this will result out to be an error because you cannot access variables before you have initialized it, but in javascript if we try to run this code, we will get this output :
+hello
+x2: undefined
+x1: undefined
+This happened because in the Memory creation phase of the execution context, js will allocate memory to all the variables and function present in the program, stores the variables (defined with var) with values as undefined and function references. So when we try to run the getName() function even though it has been defined after the call, the function is invoked perfectly.
+
+Accessing variables before/without defining :
+
+1. scenario 1:
+var =>
+console.log(x); // undefined
+var x = 10; 
+console.log(x); // 10
+The variable is stored in the memory as undefined
+
+2. scenario 2:
+let/const =>
+console.log(x); // ReferenceError: Cannot access 'x' before initialization [because it is in TDZ]
+let x = 10;
+The varialbe is marked as 'uninitialized binding' because it is in TDZ. Js knows about the variable but is not initialized yet because it it defined with let/const.
+
+3. scenario 3:
+console.log(x); // ReferenceError: x is not defined
+Js doesn't even know about the variable because there wasn't any space reserved in the memory space for the variable x because it never entered in the memory creation phase(because of never defining the variable) and directly ran in the execution phase., so js couldn't get the track of the variable.
+
+visual representation in browser's debugger of
+1. hoisting & execution context : https://www.youtube.com/watch?v=Fnlnw8uY6jo&t=05m20s
+2. nested call stack : https://www.youtube.com/watch?v=Fnlnw8uY6jo&t=15m03s
+
+👉🏻 Temporal Dead Zone (TDZ)
+The Temporal Dead Zone is the time between when a variable is hoisted into memory (during the Memory creation phase) and when it is actually initialized (during the execution phase).
+It refers to the period of time between the beginning of a scope and the actual declaration/initialization of a variable declared with let or const. During this period, the variable exists within the scope but is in an "uninitialized" state, making any attempt to access it result in a ReferenceError. 
+
+In this window of time, the variable exists in memory, but cannot be accessed — if you try, you’ll get a ReferenceError.
+Key characteristics of the TDZ:
+Applies to let and const:
+Unlike var declarations, which are hoisted to the top of the global scope and initialized with undefined by default, let and const declarations are also hoisted to the top of the global scope but remain uninitialized in the TDZ. In other words, javascript knows about let and const variables but does not initialized them.
+Scope-based:
+The TDZ begins when the code execution enters the block or scope where the let or const variable is declared.
+Ends at declaration:
+The TDZ for a specific variable ends when the JavaScript engine reaches the line of code where that variable is declared and, if applicable, initialized with a value.
+Prevents early access:
+The primary purpose of the TDZ is to prevent developers from using variables declared with let or const before they are explicitly declared and potentially assigned a value, thus promoting more predictable and less error-prone code.
+
+let/const =>
+// TDZ starts here for 'y'
+console.log(y); // ReferenceError: Cannot access 'y' before initialization [because it is in TDZ]
+let y = "Hello"; 
+// TDZ ends here for 'y'
+
+var =>
+console.log(x); // undefined
+var y = 10; 
+console.log(x); // 10
+
+TDZ is not a separate physical location in memory. Instead, it’s a state of a variable binding inside the scope’s environment record (the internal data structure JavaScript uses to manage variables). TDZ is more of a rule / state in the language spec than a literal "box in memory."
+
+Flow -
+When a variable is hoisted, an entry for it is created in the environment record.
+For var, that entry is initialized with undefined.
+For let/const/class, that entry is marked as uninitialized.
+Accessing an uninitialized binding → ReferenceError.
+Once execution reaches the declaration line, the binding is initialized with the given value, and TDZ ends.
+
+// At this point, x exists in memory but is uninitialized
+// (engine marks x as "TDZ" in the Memory creation phase, TDZ -> {x})
+let x = 10; // x is now initialized so it as unmarked from TDZ, (TDZ - {})
+
+If a varialbe is accessed while it is marked as TDZ, it will throw ReferencenError 
+
+Think of TDZ as a "Do Not Touch" sign on a variable:
+The variable is already listed in the scope (so the engine knows about it).
+But until the declaration line runs, trying to touch it will throw an error.
+Once initialized, the sign is removed.
+
+How JavaScript Handles Variables (ECMAScript Spec Level)
+When code runs, JS creates an Execution Context with an Environment Record (basically a hidden object that stores variables and functions for that scope).
+There are two main record types:
+1. Declarative Environment Record → used for let, const, class, and parameters.
+2. Object Environment Record → used for var (and global scope tied to window/globalThis).
+
+ref : https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-declarative-environment-records
+
+How phases are worked with TDZ ?
+
+Example :
+console.log(a); // ❌ ReferenceError
+let a = 5;
+
+Flow of above program :
+1. Memory Creation Phase (Hoisting Step)
+The scope’s environment record is created.
+For let a:
+	The record has an entry for a.
+	That entry is marked as "uninitialized" (spec literally says: "uninitialized binding")
+This “uninitialized” state is what we call the Temporal Dead Zone (TDZ).
+
+So in memory (conceptually):
+Environment Record:
+  a → <uninitialized>
+
+2. Execution Phase
+
+1. console.log(a)
+Engine looks up a.
+Sees it exists but is uninitialized.
+Throws ReferenceError.
+
+2. Line let a = 5
+Engine assigns 5 to a.
+Now the record becomes:
+a → 5
+
+3. From here, a is usable.
+
+In the ECMAScript spec, you’ll see steps like:
+> CreateMutableBinding → reserve a slot for the variable in the environment record (hoisting step).
+> SetMutableBinding → assign a value to it (execution step).
+> If you try to access before initialization → spec says: "If the binding is uninitialized, throw a ReferenceError" → this is the TDZ rule.
+
 
 👉🏻 Non-Writable property in object
 In JavaScript, a "non-writable" property refers to an object property whose writable attribute in its property descriptor is set to false. This means that the value of that property cannot be reassigned or changed through a direct assignment operation.
