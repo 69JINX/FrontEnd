@@ -199,9 +199,72 @@ The varialbe is marked as 'uninitialized binding' because it is in TDZ. Js knows
 console.log(x); // ReferenceError: x is not defined
 Js doesn't even know about the variable because there wasn't any space reserved in the memory space for the variable x because it never entered in the memory creation phase(because of never defining the variable) and directly ran in the execution phase., so js couldn't get the track of the variable.
 
+4. normal functions and callback function are treated differently :
+fun1(); // hello
+fun2(); // ReferenceError : Cannot access 'fun2' before initialization
+
+function fun1 (){
+    console.log('hello')
+}
+
+const fun2 = ()=>{
+    console.log('hello')
+}
+
+The fun1 can be accessed before initialization because both the name (fun1) and the function body are moved to the top of the scope before execution but a arrow function is treated as a variable, not as a function so it works just like other variables in hoisting.
+
 visual representation in browser's debugger of
 1. hoisting & execution context : https://www.youtube.com/watch?v=Fnlnw8uY6jo&t=05m20s
 2. nested call stack : https://www.youtube.com/watch?v=Fnlnw8uY6jo&t=15m03s
+
+👉🏻 Global execution context & window object :
+whenever a javascript program is run, a Global execution context is created. 
+Window is an global object which is created along with the global execution context. this windows object provide so many methods to work with. this functionality is given by javascript engine.
+Whenever any javascript program is run, a global object and a global execution context is created. In case of browsers, this global object is called 'window'.
+Javascript doesn't just run on browsers, it also runs on servers(thanks to nodejs) and any other devices. where ever the javascript is running, there must be a javascript engine. in case of chrome, it's V8. mozilla has its own, safari has its own interenet explorere has its own. 
+So all these javascript engines has the responsibility to create this 'global object'. Even if you run a empty javascript code, a global object will still be created. At the global level, 'this' is equal to 'window'
+>> this === window // true
+Where ever you create a execution context, a this is created along with it, even for the functional execution context and even for the global execution object. At the global level, this points to global object. 
+Global execution context :
+A global space/exeuction context is nothing but any code you write inside javascript which is not inside a function. any variable created with var, gets added as a property to the global object (window)
+
+rule 1 : only varialbes that are defined in the global execution context are added to global object
+var x = 1;  // this will be added to the global object because it's in the global execution context
+function fun(){
+ var y = 2; // this will not be added to the global object because it's in the functional execution context
+}
+console.log(y); // ReferenceError : y is not defined [because it wasn't added to the global object]
+
+rule 2 : only varialbes defined with 'var' are added to global object.
+ex:
+var x = 1;
+let y = 2;
+const z = 3;
+
+console.log(x); // 1
+console.log(y); // 2
+console.log(z); // 3
+console.log(window.x); // 1
+console.log(window.y); // undefined
+console.log(window.z); // undefined
+
+1. var declarations → become properties of the global object (window)
+In browsers, the global object is window.
+When you write:
+var a = 20;
+The engine does two things:
+a) Declares a variable a in the global scope.
+b) Also creates a property window.a pointing to the same value.
+
+2. let and const → stay in block scope, not on window
+- ES6 introduced block-scoped bindings (let, const, class).
+- These do not create a property on the global object.
+- They are stored in a separate "Declarative Environment Record" managed by the JS engine.
+
+- This is also why people say: “Don’t use var anymore.”
+Because var pollutes the global object and can cause name collisions, while let and const keep things scoped properly.
+
+
 
 👉🏻 Temporal Dead Zone (TDZ)
 The Temporal Dead Zone is the time between when a variable is hoisted into memory (during the Memory creation phase) and when it is actually initialized (during the execution phase).
