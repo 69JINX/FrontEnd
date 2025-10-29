@@ -1,3 +1,7 @@
+👉🏻 Event loop visualizer
+https://jsflow.info/
+
+
 👉🏻 How javascript works & Execution context
 Everything in Javascript happens inside an Execution Context.
 
@@ -103,6 +107,30 @@ C:\Users\rwiteshbera\Desktop\Javascript\n.js:2
     ^
 RangeError: Maximum call stack size exceeded
 
+👉🏻 undefined 
+In JavaScript, undefined serves as a primitive value that signifies the absence of an assigned value. Its usage arises in several scenarios:
+1. Uninitialized Variables: When a variable is declared but no value is explicitly assigned to it, JavaScript automatically assigns undefined as its default value.
+2. Missing Function Arguments: If a function is called and an expected argument is not provided, the corresponding parameter inside the function will have the value undefined.
+3. Functions Without Explicit Return Values: Functions that do not explicitly return a value (or have a return; statement without a value) implicitly return undefined.
+4. Accessing Non-Existent Object Properties: Attempting to access a property that does not exist on an object will result in undefined.
+5. Array Elements Beyond Bounds: Accessing an array element at an index that is outside the array's defined length will yield undefined.
+
+👉🏻 undefined vs null
+In JavaScript, undefined and null both represent the absence of a value, but they convey different meanings and are handled distinctly. 
+-> undefined :
+  - It is the default value of variables that are not initialized. It indicates that a variable has been declared but has not yet been assigned a value. 
+  - typeof undefined returns 'undefined'
+-> null :
+  - represents the intentional absence of any object value. It is a primitive value that explicitly signifies "no value" or "empty."
+  - It is a value that a developer assigns to a variable to indicate that it currently holds no meaningful value.
+  - typeof null returns 'object', which is a historical quirk in JavaScript and not an accurate reflection of its primitive nature. While typeof null returns 'object', this does not mean null is stored as a full-fledged object in memory. It is a special primitive value with this unique typeof behavior.
+  
+Both undefined and null are primitive values in JavaScript. They are not objects and occupy memory space but do not occupy significant memory like objects.
+
+while undefined & null signifies the absence of an assigned value, it still occupies a specific memory location associated with the declared variable. It is a distinct value, like any other data type (numbers, strings, booleans), and as such, it requires memory to represent itself. The exact memory footprint can vary depending on the JavaScript engine implementation, but the principle of memory allocation for undefined & null remains consistent.
+
+While JavaScript automatically assigns undefined in certain scenarios, null is always a result of explicit assignment by a developer.
+
 👉🏻 Hoisting
 ref : https://www.youtube.com/watch?v=Fnlnw8uY6jo&list=PLlasXeu85E9cQ32gLCvAvr9vNaUccPVNP&index=4
 Hoisting in JavaScript refers to the mechanism where the JavaScript interpreter appears to move the declarations of variables, functions, and classes to the top of their respective scopes before the code is executed. This means that you can use a variable or call a function before it is explicitly declared in your code, without encountering a "not defined" error.
@@ -118,7 +146,7 @@ var myVar = 10;
 console.log(myVar); // Output: 10
 
 2. let and const variables: Declarations with let and const are also hoisted, but they are not initialized with undefined. Instead, they enter a "Temporal Dead Zone" (TDZ) until their declaration line is reached.
-This means that while the variable name is technically hoisted, it cannot be accessed or used before its initialization line is reached in the code. Attempting to do so will result in a ReferenceError.
+This means that while the variable name is technically hoisted, it cannot be accessed or used before its initialization line is reached in the code. Attempting to do so will result in a ReferenceError. TDZ is discussed in further topic.
  
 // console.log(myLet); // Throws ReferenceError: Cannot access 'myLet' before initialization
 let myLet = 20;  // initialization line
@@ -236,6 +264,8 @@ function fun(){
 console.log(y); // ReferenceError : y is not defined [because it wasn't added to the global object]
 
 rule 2 : only varialbes defined with 'var' are added to global object.
+var is accessible on the window object when declared in the global scope(not inside a function) because it creates a global property, but let and const are not because they are block-scoped, not global properties. let and const are limited to the nearest enclosing block (like a function or curly braces), so they are not attached to the global window object, even when declared at the top level of a script because their scope is confined to the script's top-level block. 
+
 ex:
 var x = 1;
 let y = 2;
@@ -247,6 +277,13 @@ console.log(z); // 3
 console.log(window.x); // 1
 console.log(window.y); // undefined
 console.log(window.z); // undefined
+console.log(Object.keys(window)); // will show 'x' at the last index, as a key of windows object but won't show 'y' & 'z'.
+
+note : y and z are still accessible globally, but only through the lexical environment, not as window properties.
+
+In the ECMAScript spec:
+- var and function declarations create “GlobalObject environment bindings.”
+- let, const, and class declarations create “Declarative environment bindings.”
 
 1. var declarations → become properties of the global object (window)
 In browsers, the global object is window.
@@ -260,15 +297,18 @@ b) Also creates a property window.a pointing to the same value.
 - ES6 introduced block-scoped bindings (let, const, class).
 - These do not create a property on the global object.
 - They are stored in a separate "Declarative Environment Record" managed by the JS engine.
-
 - This is also why people say: “Don’t use var anymore.”
-Because var pollutes the global object and can cause name collisions, while let and const keep things scoped properly.
+Because var pollutes the global object and can cause name collisions, while let and const keep things scoped properly. 
 
+👉🏻 Environment records & their types 
+https://www.reddit.com/r/learnjavascript/comments/1auj4pr/comment/krai8o1/
+https://www.reddit.com/r/learnjavascript/comments/1ba0jro/what_the_heck_are_types_of_environment_records/
+https://stackoverflow.com/questions/20139050/what-really-is-a-declarative-environment-record-and-how-does-it-differ-from-an-a
 
 
 👉🏻 Temporal Dead Zone (TDZ)
 The Temporal Dead Zone is the time between when a variable is hoisted into memory (during the Memory creation phase) and when it is actually initialized (during the execution phase).
-It refers to the period of time between the beginning of a scope and the actual declaration/initialization of a variable declared with let or const. During this period, the variable exists within the scope but is in an "uninitialized" state, making any attempt to access it result in a ReferenceError. 
+It refers to the period of time between the beginning of a scope and the actual declaration/initialization of a variable declared with let or const. During this period, the variable exists within the scope but is in an "uninitialized" state, making any attempt to access it result in a ReferenceError.
 
 In this window of time, the variable exists in memory, but cannot be accessed — if you try, you’ll get a ReferenceError.
 Key characteristics of the TDZ:
@@ -286,6 +326,7 @@ let/const =>
 console.log(y); // ReferenceError: Cannot access 'y' before initialization [because it is in TDZ]
 let y = "Hello"; 
 // TDZ ends here for 'y'
+
 
 var =>
 console.log(x); // undefined
@@ -472,28 +513,44 @@ obj.prop = 10;
 
 Advanced Javascript Crash Course => https://www.youtube.com/watch?v=R9I85RhI7Cg (Below Notes are created from this video, most of the topic are left like prototype/inheritance/class/iterables & iterators/generators because they are not necessary etc)
 
-👉🏻 Scope
-1. Block scope - variables declared inside a pair of curly braces cannot be accessed from outside
-the block
-2. Function scope - variables declared inside a function cannot not be accessed from outside the
-function
-3. Global scope - globally scoped variables can be accessed inside a block or function
 
-eg. Block Scope :
-{
-  const x = 123;
-  console.log(x); // 123
-}
-console.log(x) // Error : 'x' is not defined
 
 
 👉🏻 Closure
-In JavaScript, when we return a function from another function, we are effectively returning a combination of the function definition along with the function's scope. This would let the function definition have an associated persistent memory which could hold on to live data between executions. That combination of the function and its scope chain is what is called a closure in JavaScript.
+simple defination : function along with it's lexical scope, bundled together is a closure.
+A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). In other words, a closure gives a function access to its outer scope. In JavaScript, closures are created every time a function is created, at function creation time.
+
+A closure in JavaScript is a function that remembers and can access variables from its outer (enclosing) scope, even after the outer function has finished executing. This means that the inner function "closes over" the variables of its parent function, creating a persistent connection to that lexical environment. 
+In JavaScript, when we return a function from another function, we are effectively returning a combination of the function definition along with the function's scope. This would let the function definition have an associated persistent memory which could hold on to live data between executions.
+
+key characteristics:
+- Inner Function: A closure is always an inner function defined within another function.
+- Access to Outer Scope: The inner function maintains access to the variables and parameters of its outer function, even if the outer function has already returned.
+- Lexical Environment: Closures work because functions in JavaScript capture their lexical environment (the scope in which they were defined) at the time of their creation. This environment includes all the variables and functions available in the parent scope.
+Data Privacy and Encapsulation: Closures are commonly used to create private variables and achieve data encapsulation, as the outer function's variables are not directly accessible from outside the inner function, but the inner function can still interact with them.
+- State Preservation: They can be used to preserve state between multiple calls to a function, as the inner function retains its connection to the outer function's variables.
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures
+
+Uses of Closures :
+- Module Design Pattern
+- Currying
+- Functions like 'once'
+- memoize
+- maintaining state in async world
+- setTimeouts
+- Iterators
+- and many more...
+
+Global Function(Empty Closure) :
+function globalFunction(){
+  console.log('Hello from Global Function!');
+}
 
 scenario 1 :
-const outer = ()=>{
+const outer = () => {
     let counter = 0;
-    const inner =()=>{
+    const inner = () => {
         counter++;
         console.log(counter);
     }
@@ -532,18 +589,70 @@ fun1(); // Logs: 1
 fun1(); // Logs: 2
 // - `counter` is now incremented again (1 → 2)
 // - The same closure is being used, so the same `counter` variable is being updated
-
-// Note:
-// Even though `outer` has finished execution, `counter` isn't garbage collected
-// because the returned `inner` function (stored in `fun1`) still has access to it.
-// This behavior is called a "closure" — where a function remembers its lexical scope.
-
 // both fun1 are still running inside the outer function and counter never convereted to 0 again, which caused the counter to increased two times
 
 Output : 
 1
 2
 
+Note:
+> Even though `outer` has finished execution, `counter` isn't garbage collected or destroyed. 
+In JavaScript, when a function finishes executing, its local variables and parameters are generally destroyed. This is because they are part of the function's execution context, which is removed from the call stack once the function returns.
+However, there is an important exception to this: closures.
+A closure occurs when an inner function retains access to the variables of its outer (enclosing) function, even after the outer function has finished executing. In such cases, the variables that are "closed over" by the inner function are not destroyed and remain accessible to the inner function as long as a reference to that inner function exists. 
+- Local variables and parameters: Typically destroyed when the function finishes.
+- Variables involved in closures: Preserved as long as the inner function that forms the closure is still accessible.
+
+This behavior is called a "closure" — where a function remembers its lexical scope.
+
+more example :
+function createCounter() {
+  let count = 0; // This 'count' variable is in the outer scope
+
+  return function increment() {  // The inner function is returned
+    count++; // The inner function accesses and modifies 'count'
+    console.log(count);
+  }
+}
+
+const counter1 = createCounter(); // 'counter1' is now a closure
+counter1(); // Output: 1
+counter1(); // Output: 2
+
+const counter2 = createCounter(); // 'counter2' is a new closure with its own 'count'
+counter2(); // Output: 1
+
+Empty closures :
+In JavaScript, closures are technically created every time a function is created, but if a function does not reference any outer variables, the closure remains empty and is optimized away by the engine.
+detailed discussion (must read) : https://medium.com/@priyasharma_49934/did-you-know-in-javascript-closures-are-created-every-time-a-function-is-created-f7444d3e9062
+
+A simple/empty closure :
+function x(){
+ let a = 7;
+   function y(){ // Closure exists temporarily during x execution, Ends when x ends
+    console.log(a); 
+   }
+   y(); //
+}
+x();
+
+A actual closure that persist value outside it's lexical environment:
+function x() {
+  let a = 7;
+  function y() {
+    console.log(a);
+  }
+  return y; // Closure persists as long as returned function is referenced
+}
+
+const z = x(); // Closure (x) always shown when inspecting z
+z(); // logs 7 
+
+you can see here in the chrome dev tool, the closure (x) has it's property a = 7
+https://www.youtube.com/watch?v=qikxEIxsXco&t=02m03s
+>Closure (x)
+  a: 7
+The function y itself doesn’t create a closure with its own variables because it doesn’t declare any. Chrome DevTools shows only closures of outer lexical scopes that the current function has access to — here, that’s the closure from x containing a.
 
 👉🏻 Function Currying
 Currying is a process in functional programming in which we transform a function with multiple arguments into a sequence of nesting functions that take one argument at a time.
@@ -582,4 +691,533 @@ const errorLogger = curriedLog("ERROR");
 infoLogger("Server started");        // [INFO] Server started
 errorLogger("Something went wrong"); // [ERROR] Something went wrong
 
+👉🏻 Scope
+Scope means where you can access a special variable in a code
+1. Block scope - variables declared inside a pair of curly braces cannot be accessed from outside
+the block
+2. Function scope - variables declared inside a function cannot not be accessed from outside the
+function
+3. Global scope - globally scoped variables can be accessed inside a block or function
 
+eg. Block Scope :
+{
+  const x = 123;
+  console.log(x); // 123
+}
+console.log(x) // Error : 'x' is not defined
+
+👉🏻 Lexical Environment & Scope Chain
+In JavaScript, a Lexical Environment is an internal, hidden object created automatically by the JavaScript engine whenever an execution context is created (e.g., for the global scope, a function call, or a block of code). It's crucial for understanding how variables and functions are resolved and accessed within your code.
+
+Whenevenr a execution context is created, a lexical environment is created. Lexical environment is the local memory, along with the lexical environment of its parent.
+In a execution context, along with memory space, you also get the reference to the lexical environment of its parent and it keeps happening to the top of the execution context untill it reaches the Global execution context.
+Meaning of lexical is closely related to "hierarchy".
+
+How it works:
+- When a variable or function is accessed within a scope, the JavaScript engine first looks for it in the current Lexical Environment's Environment Record.
+- If the identifier is not found there, the engine follows the Outer Lexical Environment Reference to the parent's Lexical Environment and searches its Environment Record.
+- This process continues up the Scope Chain until the identifier is found or the global Lexical Environment is reached. If the identifier is not found even in the global environment, a ReferenceError occurs.
+
+Let's understand the Lexical environment with below example :
+
+function a() {
+   var b =10;
+   c();
+   function c(){
+    
+    }
+}
+
+a();
+
+console. log(b); // ReferenceError because lexical environment of global execution context don't have access to the lexical environment of a
+
+In the above program, there are 3 execution context (c's execution context, a's execution context & Glbal execution context) and each contain there own lexical environment. 
+c's execution context have access to it's own defined entities & it's parent's lexical environment which are a and global, that means in the c's execution context, we can access entities(variables/methods) defined in a and global. 
+Just like that, a's execution context have access to it's own defined entities & entities defined in global execution context (but it can't access entities defined in c's execution context because a lexical environment have only access to all of it's parents, not childs)
+this hierarchy form the scope chain. 
+
+The lexical environment of an execution context in JavaScript has access to all of its parent lexical environments, forming a "scope chain" or "lexical environment chain" that extends up to the global lexical environment.
+The lexical environment of the global execution context points to null because it has no parent scope
+
+c -> c, a, global
+a -> a, global
+global -> global
+
+
+
+let globalVar = "I'm global";
+
+function outerFunction() {
+  let outerVar = "I'm in outerFunction";
+
+  function innerFunction() {
+    let innerVar = "I'm in innerFunction";
+    console.log(globalVar); // Accesses globalVar from the global Lexical Environment
+    console.log(outerVar);  // Accesses outerVar from outerFunction's Lexical Environment
+    console.log(innerVar);  // Accesses innerVar from innerFunction's Lexical Environment
+  }
+
+  innerFunction();
+}
+
+outerFunction();
+
+In this example, innerFunction can access outerVar because outerFunction's Lexical Environment is its parent, and it can access globalVar because the global Lexical Environment is further up the Scope Chain.
+
+visual representation:
+https://www.youtube.com/watch?v=uH-tVP8MUs8&t=15m27s
+
+
+👉🏻 Error Types
+
+Main Frequent Javascript Errors
+1. Reference Error
+2. TypeError
+3. SyntaxError
+Other Common JavaScript Errors
+4. RangeError
+5. EvalError
+6. URIError
+7. AggregateError
+8. InternalError (non-standard)
+
+1. Reference Error = A ReferenceError occurs when you reference a variable or function that hasn’t been declared in the current scope or is in the TDZ.
+
+2. TypeError = You tried to do something with a value of the wrong type. A TypeError happens when a value exists, but you’re trying to use it incorrectly — like calling a non-function, accessing a property on undefined, etc.
+let x = 5;
+x(); // ❌ TypeError: x is not a function
+
+let obj = null;
+console.log(obj.name); // ❌ TypeError: Cannot read properties of null
+
+
+3. SyntaxError = Your code is grammatically wrong — JavaScript can’t even parse it. A SyntaxError happens before the code runs — during parsing. JavaScript can’t even understand the code enough to execute it.
+if (true { // ❌ SyntaxError: missing ) after condition
+  console.log("Hi");
+}
+
+4. RangeError = A value is outside an allowed range. eg : (1234).toFixed(200)
+5. EvalError = Error related to the eval() function (rare now). eg : throw new EvalError("Bad eval!")
+6. URIError = Bad URI encoding or decoding. eg : decodeURIComponent('%')
+7. AggregateError = Multiple errors wrapped together (Promise.any / Promise.allSettled). eg : Thrown by Promise.any() when all promises fail.
+8. InternalError (non-standard) = Engine-level issue (like stack overflow). eg : Recursive function without base case.
+
+👉🏻 Block Scope
+In JavaScript, a block refers to a group of zero or more statements enclosed within a pair of curly braces {}. It is also known as a block statement or compound statement.
+key characteristics and uses of blocks in JavaScript:
+1. Grouping Statements: Blocks allow you to treat multiple javascript statements into a group. This is particularly useful in control flow structures like if, for, while, and switch statements, where the block defines the code to be executed based on a condition or during iteration.
+We need to group these statements together so that we can use multiple statements in a place where javascript expect only on statement.
+
+if(true) console.log('hello'); // if statement expect utlist one statement.
+
+If you want to use multiple statments, we can only do that by group them together. We will use curly brances/block to group these statements together for that if statement.
+
+if(true){
+ console.log('hello');
+ console.log('world');
+}
+
+2. Defining Scope (Block Scope): With the introduction of let and const in ES6, blocks create a new lexical scope, known as block scope. Variables declared with let or const inside a block are only accessible within that block and its nested blocks. This prevents variable hoisting and unintended side effects, unlike var which has function scope or global scope.
+{
+ let x = 10; // x is block-scoped
+ const y = 20; // y is block-scoped
+ var z = 30; // z is function/global-scoped
+}
+// console.log(x); // ReferenceError: x is not defined
+// console.log(y); // ReferenceError: y is not defined
+console.log(z); // 30
+
+In summary, blocks are a fundamental construct in JavaScript for organizing code, controlling execution flow, and managing variable scope effectively.
+
+👉🏻 Shadowing
+Shadowing in JavaScript occurs when a variable declared in an inner scope has the same name as a variable in an outer scope. The inner variable "shadows" or hides the outer variable within its specific scope. This means that within the inner scope, any reference to that variable name will refer to the inner variable, not the outer one. 
+
+Key points about shadowing:
+- Scope matters: Shadowing is fundamentally linked to JavaScript's scope rules (global, function, and block scope).
+Inner variable takes precedence: When a variable in an inner scope shares a name with an outer scope variable, the inner variable's value and definition are used within that inner scope.
+- Outer variable remains unaffected: The outer variable still exists and retains its value outside of the shadowed scope.
+let and const enable block-level shadowing: Variables declared with let and const are block-scoped, allowing for shadowing within if statements, for loops, and other blocks.
+- var behaves differently: var is function-scoped (or global if not within a function). If you declare a var variable inside a block that's within a function, and it has the same name as a var variable in the outer function scope, it will re-declare and overwrite the outer variable within that function's scope, rather than just shadowing it in the block. 
+
+let x = 10; // Global variable
+
+if (true) {
+  let x = 20; // This `x` shadows the global one
+  console.log(x); // Outputs: 20
+}
+
+console.log(x); // Outputs: 10 (The global `x` is not affected)
+
+Illegal shadowing :
+Illegal shadowing in JavaScript occurs when there's an attempt to declare a variable using var within a block scope, where an outer scope variable with the same name has already been declared using let or const. This leads to a SyntaxError: Identifier 'variableName' has already been declared.
+Because var is function-scoped (or globally-scoped) and let/const are block-scoped, attempting to declare a var with the same name as an already declared let/const in an enclosing scope results in an error, as the var declaration would effectively try to re-declare the identifier in the same scope where the let/const already exists.
+let a = 10; // Declared with let in the global scope
+{
+  var a = 100; // Attempting to declare 'a' with var inside a block
+}
+// This will throw: Uncaught SyntaxError: Identifier 'a' has already been declared
+
+The SyntaxError occurs because, despite var being inside a block, its scope is either the entire function or the global scope. When var a is encountered, JavaScript tries to declare a in the same scope where let a already exists, leading to a re-declaration error. This is a safety mechanism to prevent potential confusion and bugs arising from var's hoisting behavior and its broader scope compared to let and const.
+
+
+👉🏻 Function scope, Block scope & Script scope
+In JavaScript, scope defines the accessibility of variables and functions within different parts of your code. Function scope and block scope are two distinct types of scope that determine where a declared variable can be accessed.
+
+1. Function Scope:
+Function scope dictates that variables declared inside a function are only accessible within that function. This means that a variable defined within a function is local to that function and cannot be accessed from outside of it.
+i) var - contained
+ii) let - contained
+iii) const - contained
+
+Variables declared with the var keyword are only accessible within the function where they are defined. They are not accessible outside that function, even if declared within a nested block inside the function.
+
+example 1 :
+function fun(){
+    var a = 100;
+}
+console.log(a); // ReferenceError: a is not defined
+
+example 2 : A function creates a new local scope for variables declared with var. So the 'a' declared inside fun() is not the same as the global a.
+var a = 10;
+function fun(){
+    var a = 20;
+    console.log(a); // 20
+}
+fun();
+console.log(a); // 10
+
+
+2. Block Scope:
+Block scope means that variables declared with let and const are only accessible within the specific block (enclosed by curly braces {}) where they are defined. This includes if statements, for loops, while loops, and any other code block.
+i) var - not contained ('var' is function-scoped, not block-scoped)
+ii) let - contained
+iii) const - contained
+ 
+'var' declarations do not respect block scope (e.g., if statements, for loops, while loops, or simple curly braces {}). Variables, declared with 'var' , are either function-scoped or global-scoped.
+A 'var' declared inside such a block within a function will still be accessible throughout that entire function. If declared in a block in the global scope, it will be accessible globally.
+
+- with var: Block scope (e.g., within an if statement or for loop) does not create a new local scope for variables declared with var. These variables are function-scoped or global-scoped, meaning they are accessible throughout the entire function they are declared in (or globally if declared outside any function), regardless of blocks.	
+- with let & const: Block scope does create a new local scope for variables declared with let and const. These variables are confined to the block in which they are declared and are not accessible from outside that block. This is a key feature introduced in ES6 (ECMAScript 2015) to address issues with var's function-scoping behavior.
+
+In summary:
+- var is function-scoped (or global-scoped).
+- let and const are block-scoped.
+Therefore, whether a block creates a new local scope depends on the keyword used to declare the variable.
+
+In contrast, let and const keywords, introduced in ES6, provide true block scope. Variables declared with let or const inside any block (including if, for, while, or simple {}) are only accessible within that specific block.
+Because of these improvements, it is now best practice to use let or const instead of var in modern JavaScript. 
+
+example 1 :
+{
+    var a = 100; // declared as a global variable because of block scope
+}
+console.log(a); // 10
+
+example 2 :
+if(true){
+    var a = 10;
+}
+
+console.log(a) // 10
+
+example 3 :
+
+{
+    let a = 100;
+}
+console.log(a); // ReferenceError: a is not defined 
+
+example 4 :
+var a = 10;
+{
+    var a = 20; // overwritten the global 'a' because var doesn't have a block scope
+    console.log(a); // 20
+}
+
+console.log(a); // 20
+
+3. Script Scope / Script lexical environment:
+In JavaScript, "script scope" specifically refers to the top-level scope of a JavaScript file or script, particularly when dealing with let and const declarations. It's a distinct scope that sits between the global scope (like the window object in browsers) and any function or block scopes within that script.
+
+- Variables declared with var at the top level of a script: These become properties of the global object (e.g., window in a browser) and are accessible from anywhere in the global scope.
+- Variables declared with let or const at the top level of a script: These reside in the "script scope." They are not attached to the global object, but they are accessible throughout all code within that specific script file. They are not directly accessible from other script files unless explicitly exposed (e.g., through a global object or module export in a module system).
+- Unlike var, - let and const declarations at the top level of a script do not create properties on the global object (window in browsers).
+- Variables declared with let or const inside any function or block will not be included in the script scope because they are no longer in the top-level scope.
+- The entire script is parsed first, and one lexical environment is created to hold all top-level bindings.
+
+let b = 100;
+{
+ var a = 10;
+ let b = 20;
+ const c = 30;
+ console.log(a); // 10 
+ console.log(b); // 20
+ console.log(c); // 30
+}
+console.log(b); // 100
+
+Block >
+  b: 20
+  c: 30
+Script >
+  b: 100
+Global >
+  a: 10
+
+2 ways to see script scope variables :
+
+1) using breakpoint debugger:
+
+run the below program in the console tab of DevTool :  
+const a = 10;
+function fun(){
+ var b = 20;
+ const c = 30;
+ debugger;
+}
+fun();
+you will see the below scopes and their variables :
+⌄Local
+  ﹥this:window
+    b: 20
+    c: 30
+⌄Script
+    a: 10
+  
+2)in dev-tool's console tab:
+run the below program :
+
+const myVar = 10;
+function fun(){
+    const myVar1 = 20;
+    function fun1(){
+        const myVar2 = 30;
+    }
+    console.dir(fun1);
+}
+fun();
+console.dir(fun);
+const myVar3 = 40;
+  
+output:
+>fun1();
+>fun();
+
+expand these above functions and you will see the 'myVar' listed in the Script scope property of the function property.
+
+⌄fun1();
+  ⌄[[Scopes]]:Scopes[2]
+         ﹥ 0: Script {myVar:10, myVar3:40}
+         ﹥ 1: Global {0: Window, 1: Window, window: Window, self: Window, document: document, name: '', location: Location, …}
+⌄fun();
+  ⌄[[Scopes]]:Scopes[2]
+         ﹥ 0: Script {myVar:10, myVar3:40}
+         ﹥ 1: Global {0: Window, 1: Window, window: Window, self: Window, document: document, name: '', location: Location, …}
+         
+myVar1 & myVar2 are not added to Script scope because they are not in the top-level of the script/file. Even for the fun1, the myVar1 is not listed in the script scope because of fun1 the myVar1 is still inside a function.
+
+simeple example :
+const a = 1;
+function f() {}
+const b = 2;
+console.dir(f);
+
+⌄f();
+  ⌄[[Scopes]]:Scopes[2]
+         ﹥ 0: Script {a:1, b:2}
+         ﹥ 1: Global {0: Window, 1: Window, window: Window, self: Window, document: document, name: '', location: Location, …}
+         
+         
+👉🏻 Function abbreviations
+1. Function Statement aka Function Declaration
+2. Function Expression & First Class Functions
+3. Anonymous Function
+
+1. Function Statement : A function statement is a programming construct that declares a function, defining its name, parameters, and the code it executes.
+function xyz(){
+ console.log("hello world");
+}
+
+2. Function Expression & First Class Functions :
+In JavaScript, a function expression defines a function within the context of an expression, meaning it can be assigned to a variable, passed as an argument to another function, or returned from a function. This contrasts with a function declaration, which defines a standalone function.
+Types :
+i) Anonymous Function Expressions: These are the most common type and omit the function name.
+const greet = function(name) {
+  return `Hello, ${name}!`;
+};
+ii) Named Function Expressions: These include a function name, which can be useful for debugging and recursion. However, the name is only accessible within the function's own scope.
+const factorial = function fact(n) {
+  if (n <= 1) return 1;
+  return n * fact(n - 1);
+};
+In this example, fact can be used for recursive calls within the function, but fact is not accessible outside of it.
+
+callback function :
+example :
+function a(fun){
+    fun();
+}
+
+a(function(){  // a(function b(){ | this will work too
+    console.log('Hello World');
+})
+
+setTimeout(function(){
+ console.log('this is a callback function');
+},3000);
+
+Characteristics:
+- No Hoisting: Unlike function declarations, function expressions are not hoisted. This means they cannot be called before they are defined in the code.
+- Callbacks: Function expressions are frequently used as callback functions in asynchronous operations (e.g., setTimeout, addEventListener).
+- Immediately Invoked Function Expressions (IIFEs): These are anonymous function expressions that are immediately executed after their definition, creating a private scope.
+- Higher-Order Functions: When passing functions as arguments to other functions or returning functions from other functions.
+- Closures: Function expressions are fundamental to creating closures, which allow inner functions to access variables from their outer (enclosing) scope.
+
+First-class functions refer to a characteristic of a programming language where functions are treated as "first-class citizens" or "first-class values." This means functions can be:
+- Assigned to variables: Like numbers or strings, functions can be stored in variables.
+- Passed as arguments to other functions: This enables higher-order functions.
+- Returned as values from other functions: This allows for closures and function factories.
+- Stored in data structures: Functions can be elements of arrays or properties of objects.
+
+first-class functions describe a property of the language (JavaScript) itself, while function expressions are a specific syntax for creating functions that leverage this property.
+In essence, function expressions are a tool you use to create functions, and the fact that you can use them in such flexible ways (assigning to variables, passing as arguments) is a direct consequence of JavaScript treating functions as first-class citizens.
+
+Difference between Function Statement & Function Expression :
+The main difference is hoisting. 
+- Function Statement are hoisted (because they are pure functions)
+- Function Expressions are not hoisted (because they are just variable, storing the whole function as a definition).
+If you try to call a function expression before the line where it is assigned, the variable will exist (due to hoisting), but its value will be undefined (if declared with var) or a ReferenceError will occur (if declared with let or const and accessed before initialization). Attempting to call undefined as a function results in a TypeError.
+
+3. Anonymous Function : In JavaScript, an anonymous function is a function that is not assigned a name or identifier during its definition. Unlike named functions, which are declared with a specific name and can be referenced by that name, anonymous functions are typically created as function expressions and are used in situations where a function is needed for a specific, often one-time, purpose.
+
+Anonymous functions are defined using the function keyword, followed by parentheses for parameters and curly braces for the function body, but without a name after function.
+// Anonymous function assigned to a variable
+const greet = function() {
+  console.log("Hello!");
+};
+
+// Anonymous function passed as an argument (callback)
+setTimeout(function() {
+  console.log("This runs after 2 seconds.");
+}, 2000);
+
+// Immediately Invoked Function Expression (IIFE)
+(function() {
+  console.log("This runs immediately.");
+})();
+
+All arrow functions in JavaScript are inherently anonymous. They provide a more concise syntax for defining functions, especially for simple, single-expression functions.
+// Anonymous arrow function assigned to a variable
+const add = (a, b) => a + b;
+
+// Anonymous arrow function as a callback for array.map
+const numbers = [1, 2, 3];
+const doubledNumbers = numbers.map(num => num * 2); // doubledNumbers will be [2, 4, 6]
+
+👉🏻 Create Your Own Custom Array Method with Array.prototype
+Array.prototype in JavaScript is a special object that serves as the blueprint for all array instances. It contains all the built-in methods and properties that are available to every array you create, such as map(), filter(), push(), pop(), etc. When you create an array, it inherits these methods and properties from Array.prototype through the prototype chain.
+
+Creating Your Own Custom Array Method
+You can extend the functionality of all arrays by adding your own custom methods to Array.prototype. This allows you to create reusable functions that can be called on any array instance.
+Here's how to create a custom array method:
+- Access Array.prototype: You directly access the Array.prototype object.
+- Assign a function: Assign a new function as a property of Array.prototype. The name of this property will be the name of your custom method.
+- Use this keyword: Inside the custom method, the this keyword will refer to the array instance on which the method is called.
+
+// Adding a custom method called 'sum' to Array.prototype
+Array.prototype.sum = function() {
+  let total = 0;
+  for (let i = 0; i < this.length; i++) {
+    total += this[i];
+  }
+  return total;
+};
+
+// Now you can use the 'sum' method on any array
+const numbers = [1, 2, 3, 4, 5];
+console.log(numbers.sum()); // Output: 15
+
+Considerations:
+- Namespace Collisions: While convenient, directly modifying built-in prototypes like Array.prototype can sometimes lead to potential conflicts with other libraries or future JavaScript versions if the method names clash. For more isolated or specific functionality, consider creating utility functions that accept arrays as arguments instead of extending the prototype.
+- Performance: While powerful, adding methods to Array.prototype can sometimes have minor performance implications, especially in highly performance-critical applications.
+- Maintainability: Ensure your custom methods are well-documented and easy to understand for maintainability.
+
+
+Edit into FRONTEND.docx at 29) Higher Order Functions :
+
+returning function as their result :
+function createGreeter(greeting) {
+  return function greeter(name) {
+    console.log(`${greeting}, ${name}!`);
+  };
+}
+
+const sayHello = createGreeter("Hello");
+const sayHi = createGreeter("Hi");
+
+sayHello("Alice"); // Output: Hello, Alice!
+sayHi("Bob");     // Output: Hi, Bob!
+
+// We can also call it directly without assigning to a variable
+createGreeter("Greetings")("World"); // Output: Greetings, World!
+
+
+Array methods passes arguments to callback automatically :
+
+const arr = [1,2,3,4,5];
+const double = (x) => {
+ return x * 2;
+}
+console.log(arr.map((i)=>double(i))); // 2,4,6,8,10
+console.log(arr.map(double)); // this will work too, output: 2,4,6,8,10
+
+Why does arr.map(double) work even though we didn’t “pass” anything?
+Because .map() automatically calls the callback function with up to three arguments:
+callback(currentValue, index, array)
+
+So this line: arr.map(double)
+is equivalent to: arr.map((value, index, array) => double(value, index, array))
+
+This behavior works with all array methods that take a callback.
+
+filter :
+ Creates a new array containing only the elements from the original array if the returned condition from the callback function is true.
+const numbers = [1, 2, 3, 4, 5];
+const evenNumbers = numbers.filter(num => num > 3); // [4, 5]
+OR
+const evenNumbers = numbers.filter((num) =>{ 
+    return num > 3
+}); // [4, 5]
+
+reduce :
+ Executes a reducer function (provided callback) on each element of the array, resulting in a single output value. It takes an accumulator and the current value.
+array.reduce(callbackFn, initialValue)
+eg: program to calculate sum of all array items 
+const numbers = [1, 2, 3, 4, 5];
+const sum = numbers.reduce((acc,crr) =>{ 
+ acc = acc + crr;
+ return acc;    
+},0);
+console.log(sum)
+
+eg: Program to Count How Many Users Have the Same Age
+
+const users = [
+{ firstName: "akshay", lastName: "saini", age: 26 },
+{ firstName: "donald", lastName: "trump", age: 75 },
+{ firstName: "elon", lastName: "musk", age: 50 },
+{ firstName: "deepika", lastName: "padukone", age: 26 },
+]
+
+const arr = users.reduce((acc,crr)=>{
+    if(acc[crr.age]){ // OR if(acc.hasOwnProperty(crr.age))
+        acc[crr.age] = acc[crr.age] + 1 // OR acc[crr.age] = ++ acc[crr.age]
+    }
+    else{
+        acc[crr.age] = 1
+    }
+    return acc;
+},{})
+
+console.log(arr); // { 26:2, 75:1, 50:1 }
