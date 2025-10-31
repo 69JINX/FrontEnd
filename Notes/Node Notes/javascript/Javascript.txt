@@ -1221,3 +1221,97 @@ const arr = users.reduce((acc,crr)=>{
 },{})
 
 console.log(arr); // { 26:2, 75:1, 50:1 }
+
+👉🏻 Polyfills :
+A polyfill is a piece of JavaScript code that provides modern functionality to older web browsers that lack native support for that feature. It fills in the compatibility "gaps" so developers can write modern code that works consistently across different browsers. 
+
+eg: if older web browsers doesn't support the modern Array includes() method then we can create our own includes() method so our code doesn't break when running in a older web browsers.
+Here’s an example that demonstrates how a polyfill works by adding the missing includes method to the Array prototype:
+if (!Array.prototype.includes) {
+  // Polyfill for the 'includes' method
+  Array.prototype.includes = function (element) {
+    for (let i = 0; i < this.length; i++) { // 'this' represents the whole array on which the method was called
+      if (this[i] === element) {
+        return true;
+      }
+    }
+    return false;
+  };
+}
+
+const arr = [1, 2, 3, 4];
+console.log(arr.includes(3)); // true
+console.log(arr.includes(5)); // false
+
+https://www.greatfrontend.com/questions/quiz/what-are-javascript-polyfills-for
+
+👉🏻 Function.prototype
+In JavaScript, Function.prototype is a built-in object that serves as the prototype for all function objects. This means that methods and properties defined on Function.prototype are inherited by all functions, making them available for use on any function instance.
+creating a custom method that can be available are inherited by all functions.
+if(!Function.prototype.greet){ // first check if the greet method doesn't exist already.
+  Function.prototype.greet = function (name){
+    console.log("how are you " + name);
+  }
+}
+
+function fun(){
+    console.log('this is a function');
+}
+
+fun.greet('avinash'); // how are you avinash
+
+Here are some key methods available on Function.prototype:
+1. call()
+2. apply()
+3. bind()
+These methods are fundamental for controlling the execution context ('this' value) and passing arguments to functions in various scenarios, particularly in object-oriented programming patterns and callback functions.
+
+In JavaScript, call, apply, and bind are methods used to control the execution context (this value) of a function and how arguments are passed to it.
+1. call()
+Calls a function immediately with a specified 'this' value and arguments provided individually.
+function.call(thisArg, arg1, arg2, ...);
+
+const person = {
+  firstName: "John",
+  lastName: "Doe"
+};
+
+function greet(city, country) {
+  console.log(`Hello, ${this.firstName} ${this.lastName} from ${city}, ${country}.`);
+}
+
+greet.call(person, "New York", "USA"); // Output: Hello, John Doe from New York, USA.
+
+2. apply()
+Calls a function immediately with a specified this value and arguments provided as an array (or an array-like object).
+function.apply(thisArg, [argsArray])
+const person = {
+  firstName: "John",
+  lastName: "Doe"
+};
+
+function greet(city, country) {
+  console.log(`Hello, ${this.firstName} ${this.lastName} from ${city}, ${country}.`);
+}
+
+greet.apply(person, ["New York", "USA"]); // Output: Hello, John Doe from New York, USA.
+
+3. bind()
+Creates a new function that, when called, has its this keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called. It does not execute the function immediately.
+function.bind(thisArg, arg1, arg2, ...)
+const person = {
+  firstName: "John",
+  lastName: "Doe"
+};
+
+function greet(city, country) {
+  console.log(`Hello, ${this.firstName} ${this.lastName} from ${city}, ${country}.`);
+}
+
+const boundIntroduce = greet.bind(person, "New York", "USA");  // or the bind can be called right here : greet.bind(person, "New York", "USA")();
+boundIntroduce();  // Output: Hello, John Doe from New York, USA.
+
+Key Differences:
+- call() and apply() execute the function immediately, while bind() returns a new function that can be executed later.
+- call() accepts arguments individually, while apply() accepts arguments as an array.
+- bind() can also be used for partial function application, where you pre-set some arguments for the new function.
