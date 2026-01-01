@@ -1,0 +1,44 @@
+SQL Operators =>
+1. Arithmetic : +, -, *, /, %
+2. Comparison : =, !=, >, >=, <, <=
+3. Logical : AND, OR, NOT, IN, BETWEEN, ALL, LIKE, ANY
+4. Bitwise : &(Bitwise AND), | (Bitwise OR)
+
+ex : 
+SELECT * FROM students where marks+10 > 100;
+SELECT * FROM students where markes BETWEEN 80 AND 90;
+SELECT * FROM students where city IN ("Delhi", "Mumbai");
+SELECT * FROM students where city NOT IN ("Delhi", "Mumbai"); // NOT can be put on any condition to revert it
+
+LIMIT Clause =>
+sets an upper limit on number of (tuples) rows to be returned.
+SELECT * FROM students LIMIT 3;
+
+ORDER BY Clause =>
+SELECT * FROM students ORDER BY city ASC;
+
+get latest 3 students data if there are thousands of students based on auto-increament column 'id':
+SELECT * FROM students ORDER BY id ASC LIMIT 3;
+get top 3 students marks :
+SELECT * FROM students ORDER BY marks ASC LIMIT 3;
+
+
+Aggregate Functions =>
+Aggregate functions perform a calculation on a set of values, and return a single value.
+1. COUNT()
+2. MAX()
+3. MIN()
+4. SUM()
+5. AVG()
+
+get maximum marks :
+SELECT MAX(marks) FROM students;
+
+GROUP BY Clause =>
+Groups rows that have the same values into summary rows. It collects data from multiple records and groups the result by one or more column.
+* Generally we use group by with some aggregation function.
+
+Count number of students in each city.
+SELECT city, count(name) 
+FROM student 
+GROUP BY city;
