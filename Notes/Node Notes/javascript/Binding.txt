@@ -1,6 +1,3 @@
-
-
-
 this
 The JavaScript this keyword which is used in a function, refers to the object it belongs to. It makes functions reusable by letting you decide the object value. this value is determined entirely by how a function is called
 How to determine 'this'?
