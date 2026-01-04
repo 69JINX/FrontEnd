@@ -10,6 +10,15 @@ SELECT * FROM students where markes BETWEEN 80 AND 90;
 SELECT * FROM students where city IN ("Delhi", "Mumbai");
 SELECT * FROM students where city NOT IN ("Delhi", "Mumbai"); // NOT can be put on any condition to revert it
 
+Creating a table :
+CREATE TABLE table_name(
+  column_name1 datatype constraint,
+  column_name2 datatype constraint
+);
+
+Inserting data :
+INERT INTO student VALUES(value1, value2);
+
 LIMIT Clause =>
 sets an upper limit on number of (tuples) rows to be returned.
 SELECT * FROM students LIMIT 3;
@@ -141,3 +150,128 @@ CREATE TABLE student (
 
 if id in course table get updated then the id of that course will be auto updated in the students table (courseID will auto update) and if course get deleted then all the students that belong to that course will be auto deleted based on courseID
 
+ALTER COMMAND :
+The ALTER command in SQL is a Data Definition Language (DDL) command used to modify the structure of existing database objects, such as tables, views, indexes, stored procedures, and functions. It does not modify the data within the objects, but rather the schema itself. 
+
+The most common use is with the ALTER TABLE statement, which offers several options to modify a table's structure without data loss. 
+
+1. ADD :
+Adds a new column to the table.
+ALTER TABLE table_name ADD column_name datatype [constraints];
+
+2. DROP COLUMN
+Removes an existing column and its data.
+ALTER TABLE table_name DROP COLUMN column_name;
+
+3. MODIFY or ALTER COLUMN
+Changes the data type, size, or constraints of an existing column.
+ALTER TABLE table_name MODIFY COLUMN column_name new_datatype; (MySQL/Oracle)
+ALTER TABLE table_name ALTER COLUMN column_name new_datatype; (SQL Server/PostgreSQL)
+
+4. RENAME COLUMN
+Changes the name of an existing column.
+ALTER TABLE table_name RENAME COLUMN old_name TO new_name; (PostgreSQL/Oracle)
+ALTER TABLE table_name CHANGE old_name new_name datatype; (MySQL)
+EXEC sp_rename 'table_name.old_name', 'new_name', 'COLUMN'; (SQL Server)
+
+5. ADD CONSTRAINT
+Adds a constraint (like PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, NOT NULL, or DEFAULT) to a table.
+ALTER TABLE table_name ADD CONSTRAINT constraint_name constraint_definition;
+
+6. DROP CONSTRAINT
+Removes an existing constraint from a table.
+ALTER TABLE table_name DROP CONSTRAINT constraint_name;
+
+7. RENAME TO
+Changes the name of the entire table.
+ALTER TABLE old_table_name RENAME TO new_table_name;
+
+DROP vs TRUNCATE =>
+DROP removes the entire table (structure & data) from the database, while TRUNCATE deletes all rows but keeps the table structure.
+DROP TABLE table_name;
+TRUNCATE TABLE table_name;
+
+SQL Sub Queries :
+A subquery (also known as an inner query or nested query) is an SQL query nested inside another SQL statement, such as SELECT, INSERT, UPDATE, or DELETE. It is used to perform operations in multiple steps, where the inner query's result is used by the outer query to filter data, perform calculations, or provide a temporary table source
+It involves 2 select statements.
+
+SELECT employee_name, salary
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
+
+DELETE FROM orders WHERE order_id IN (SELECT order_id FROM order_details WHERE product_id = 5);
+
+Derived Table =>
+A derived table in SQL is a temporary, virtual result set created by a SELECT statement (a subquery) within the FROM clause of another query. It functions like a regular, named table for the duration of the outer query's execution but is not stored physically in the database.
+They allow for temporary logic without needing to create a permanent view or physical temporary table in the database schema. 
+
+Key Characteristics
+1. Temporary Scope: The derived table exists only while the main (outer) query is running and is discarded afterward.
+Location: It is always defined within the FROM clause of the outer SELECT statement.
+2. Mandatory Alias: Every derived table must be assigned a unique table alias, which is then used by the outer query to reference it.
+3. Functionality: It can perform complex operations such as aggregations (SUM, AVG, COUNT), filtering, and joins before the outer query processes the data.
+4. Alternatives: Common Table Expressions (CTEs) and temporary tables offer similar functionality, with CTEs often preferred for better readability in complex, multi-step logic
+
+Ex :
+-- Select all columns from the derived table 'ExpensiveProducts'
+SELECT *
+FROM
+    (
+        -- Inner query (the derived table definition)
+        SELECT ProductName, Price, Category
+        FROM Products
+        WHERE Price > 10
+    ) AS ExpensiveProducts; -- Alias for the derived table is mandatory
+
+The query inside the parentheses is executed first to create a temporary result set/table. This result set is the derived table.
+The outer "SELECT * FROM ExpensiveProducts" then treats the derived table as a real table to retrieve its data. 
+
+SELECT
+    AVG(TotalOrders) AS AverageOrdersPerCustomer
+FROM
+    (
+        -- This is the derived table (inner query)
+        SELECT
+            CustomerID,
+            COUNT(OrderID) AS TotalOrders
+        FROM
+            Orders
+        WHERE
+            YEAR(OrderDate) = 1996
+        GROUP BY
+            CustomerID
+    ) AS CustomerOrderSummary; -- 'CustomerOrderSummary' is the mandatory alias
+
+Subquery can also be used in a select statement, in place of a column name :
+SELECT employee_name, (SELECT AVG(salary) FROM employees) AS avg_salary FROM employees; -- won't make any sense btw
+
+
+Views =>
+A view is a virtual table based on the result-set on a SQL statement.
+A view always shows up-to-date data. The database engine recreates the view, every time a user queries it.
+
+CREATE VIEW view1 AS 
+SELECT rollno, name FROM student;
+
+SELECT * FROM view1;
+
+Deleting a view :
+DROP VIEW view1;
+
+Few purposes :
+1. Simplify Complex Queries(encapsulate complex join operations, calculations, and filtering logic into a single virtual table).
+2. Enhance Data Security :
+
+A view in SQL is often used to simplify complex, frequently used queries and protect sensitive data.
+For example, HR may need employee names, department, and salary — but not bank or tax details. Instead of repeatedly writing joins (and exposing full tables), the DBA can create a view like:
+
+CREATE VIEW HR_Employee_Info AS
+SELECT E.FirstName, E.LastName, D.DepartmentName, E.Salary
+FROM Employees E
+JOIN Departments D ON E.DepartmentID = D.DepartmentID;
+
+HR can then query the view:
+SELECT * FROM HR_Employee_Info WHERE DepartmentName = 'Sales';
+
+The DBA can grant the HR user access only to the HR_Employee_Info view, and explicitly deny them access to the base Payroll table. This restricts sensitive data exposure while still providing the necessary information to perform their job.
+In essence, the view acts as a "virtual table" that serves a specific, business-oriented purpose: providing a simplified, secure, and controlled representation of underlying data for a particular group of users
