@@ -42,3 +42,102 @@ Count number of students in each city.
 SELECT city, count(name) 
 FROM student 
 GROUP BY city;
+
+rules when using group by :
+1. Select List Must Include Grouped or Aggregated Columns: Every expression in the SELECT list must be either a column present in the GROUP BY clause, or an aggregate function (like COUNT(), SUM(), AVG(), MIN(), MAX()) that operates on the group as a whole [1].
+Example (Valid): 
+SELECT department_id, AVG(salary) FROM employees GROUP BY department_id;
+Example (Invalid): 
+SELECT department_id, first_name FROM employees GROUP BY department_id; 
+(Because first_name is not in the GROUP BY list and is not aggregated.
+the database doesn’t know which first_name to show for each department, because there may be many employees in the same department.
+so you will have to include first_name in group by or remove it whole from select statement.
+if you include first_name is group by too, each group will be defined by the unique combination of (department_id + first_name, So you will get one row per employee name per department, not one per department)
+).
+
+2. Placement in the Query: The GROUP BY clause must come after the WHERE clause (if where is used) and before the HAVING clause, the ORDER BY clause, and the LIMIT clause (if used)
+
+3. Cannot Group by Aggregate Functions: You cannot use aggregate functions directly within the GROUP BY clause itself
+
+4. Filtering Groups with HAVING: The WHERE clause filters individual rows before grouping occurs. To filter the results of the GROUP BY clause (the groups themselves), you must use the HAVING clause.
+Example (Valid): 
+... GROUP BY department_id HAVING AVG(salary) > 50000;
+
+
+Find max age from each country and list age in descending order :
+(using order by with group by)
+
+SELECT country, max(age)
+FROM customers
+GROUP BY country
+ORDER BY max(age) DESC;
+
+OR 
+
+SELECT country, max(age) AS ma
+FROM customers
+GROUP BY country
+ORDER BY ma DESC;
+
+HAVING Clause =>
+
+Similar to WHERE i.e. applies some condition on rows, HAVING is used when we want to apply any condition after grouping.
+
+In most SQL database systems, the HAVING clause is specifically designed to filter groups created by the GROUP BY clause and is most commonly used in conjunction with it. 
+It is necessary to use a GROUP BY clause when using a HAVING clause in SQL. The HAVING clause filters the grouped results, not individual rows
+
+HAVING filters groups: The HAVING clause is designed to filter the output after aggregation functions (like COUNT, SUM, AVG, MIN, MAX) have been applied to groups of rows.
+WHERE filters rows: The WHERE clause, in contrast, filters individual rows before any grouping or aggregation takes place.
+The Workflow: In a SQL query, the GROUP BY clause organizes rows with the same value in specified columns into a single group. The HAVING clause then evaluates a condition for each of these resulting groups, removing those that do not meet the criteria.
+
+Having -> condition on groups
+Where -> condition of rows
+
+For example, finding countries with more than 5 customers:
+
+SELECT COUNT(CustomerID), Country
+FROM Customers
+GROUP BY Country
+HAVING COUNT(CustomerID) > 5;
+
+OR 
+
+SELECT COUNT(CustomerID) AS ci, Country // the column name of counted customerids will be ci
+FROM Customers
+GROUP BY Country
+HAVING ci > 5;
+
+Count number of students in each city where max marks cross 90.
+SELECT city, count(rollno)
+FROM student
+GROUP BY city
+HAVING max(marks) > 90;
+
+General Order :
+SELECT column(s)
+FROM table_name
+GROUP BY column(s)
+HAVING condition
+ORDER BY column(s) ASC;
+
+SAFE MODE :
+"Safe Mode" in SQL, specifically referring to the SQL_SAFE_UPDATES feature in MySQL, is a protective measure that prevents users from executing UPDATE or DELETE statements that could accidentally modify or delete a large number of (or all) rows in a table. 
+SET SQL_SAFE_UPDATES = 0; // toggle between 1 & 0 to turn it on & off
+
+
+Cascading for FK =>
+On Delete Cascade :
+When we create a foreign key using this option, it deletes the referencing rows in the child table when the referenced row is deleted in the parent table which has a primary key.
+On Update Cascade :
+When we create a foreign key using UPDATE CASCADE the referencing rows are update in the child table when the referenced row is updated in the parent table which has a primary key.
+
+CREATE TABLE student (
+  id INT PRIMARY KEY,
+  coursed INT,
+  FOREIGN KEY(courseID) REFERENCES course(id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+);
+
+if id in course table get updated then the id of that course will be auto updated in the students table (courseID will auto update) and if course get deleted then all the students that belong to that course will be auto deleted based on courseID
+
